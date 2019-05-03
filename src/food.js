@@ -1,3 +1,3 @@
-module.sayHello = function(rs) {
+exports.sayHello = function() {
     console.log("HelloFood");
   }

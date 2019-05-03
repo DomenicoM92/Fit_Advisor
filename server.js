@@ -8,6 +8,7 @@ var injuries = require("./src/injuries");
 var equipment = require("./src/equipment");
 
 app.use(compression());
+
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname + "/public/index.html"));
 

@@ -19,7 +19,7 @@ app.get('/exercise', function(req, res) {
 });
 
 app.get('/food', function(req, res) {
-  res.sendFile(path.join(__dirname + "/public/food.html"));
+  food.sayHello();
 });
 
 app.get('/injuries', function(req, res) {

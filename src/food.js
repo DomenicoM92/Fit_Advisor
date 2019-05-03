@@ -1,3 +1,3 @@
-module.prova = function(res) {
-    res.send("hello Domenico!!!");
+module.sayHello = function(rs) {
+    console.log("HelloFood");
   }

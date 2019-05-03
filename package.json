@@ -1,0 +1,26 @@
+{
+  "name": "fit_advisor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "compression": "1.7.4",
+    "express": "4.16.4",
+    "unirest": "0.6.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DomenicoM92/Fit_Advisor.git"
+  },
+  "author": "Francesco Califano, Domenico Marino, Mario Ruggiero, Pietro Russo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DomenicoM92/Fit_Advisor/issues"
+  },
+  "homepage": "https://github.com/DomenicoM92/Fit_Advisor#readme"
+}

@@ -1,16 +1,27 @@
-var request = require('request');
 const NUTRIDIGM_SUBSCRIPTION_ID = "MyID"
+const NUTRIDIGM_ALL_FOODS_URL = "https://api.nutridigm.com/api/v1/nutridigm/fooditems?subscriptionId=MyID"
 
-exports.sayHello = function() {
-    console.log("HelloFood");
-}
 
 
 //Retrieve all foods from the nutridigm API
 function getFoodItems(){
-  request('https://api.nutridigm.com/api/v1/nutridigm/fooditems?subscriptionId=MyID', {json : true}, function(error, response, body) {
-    console.log('error:', error); // Print the error if one occurred
-    console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-    console.log('body:', body); // Print the response body
-  });
+  $.ajax(
+    { url: NUTRIDIGM_ALL_FOODS_URL, 
+      success: function(data, status, xhr){
+                if(status == "success")
+                  printResult(data);
+              },
+      dataType: "json",
+      error: function(xhr, status, error){
+        console.log(error);
+      }
+    });
+}
+
+
+
+function printResult(JsonArray){
+  for(i = 0; i < JsonArray.length; i++){
+    $(".result-div").append("<h5>" + JsonArray[i].fiText + "</h5>" + "</br>");
+  }
 }

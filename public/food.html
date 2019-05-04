@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang = "eng">
     <head>
         <title>Food section</title>
         <meta charset="utf-8">
@@ -9,8 +9,21 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     </head>
     <body>
-        Hello food
+        <h1>Hello Food</h1>
 
         <button>Get All Foods</button>
     </body>
+
+
+
+
+
+    <script type="text/javascript" src="public/food.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("button").click(function(){
+                getFoodItems();
+            });
+        });
+    </script>
 </html>

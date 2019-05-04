@@ -3,9 +3,10 @@ var app = express();
 var path = require('path');
 var compression = require('compression');
 var exercise = require("./src/exercise");
-var food = require("./src/food");
 var injuries = require("./src/injuries");
 var equipment = require("./src/equipment");
+
+app.use(express.static('public'));
 
 //Using gzip compression on responses to improve performances
 app.use(compression());

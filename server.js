@@ -15,11 +15,11 @@ app.get('/', function(req, res) {
 });
 
 app.get('/exercise', function(req, res) {
-    
   res.sendFile(path.join(__dirname + "/public/exercise.html"));
 });
 
 app.get('/food', function(req, res) {
+  res.sendFile(path.join(__dirname + "/public/food.html"));
   food.sayHello();
 });
 

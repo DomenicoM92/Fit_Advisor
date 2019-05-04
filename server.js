@@ -15,7 +15,9 @@ app.get('/', function(req, res) {
 
 app.get('/exercise', function(req, res) {
     
-  res.sendFile(path.join(__dirname + "/public/exercise.html"));
+  //res.sendFile(path.join(__dirname + "/public/exercise.html"));
+  exercise.exerciseRequest();
+  exercise.videoExerciseRequest();
 });
 
 app.get('/food', function(req, res) {

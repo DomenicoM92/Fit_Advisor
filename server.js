@@ -3,7 +3,7 @@ var app = express();
 var path = require('path');
 var compression = require('compression');
 var exercise = require("./src/exercise");
-var food = require("./src/food");
+var food = require("./public/js/food");
 var injuries = require("./src/injuries");
 var equipment = require("./src/equipment");
 

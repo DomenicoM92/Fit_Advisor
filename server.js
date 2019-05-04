@@ -7,7 +7,9 @@ var food = require("./src/food");
 var injuries = require("./src/injuries");
 var equipment = require("./src/equipment");
 
+//Using gzip compression on responses to improve performances
 app.use(compression());
+
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname + "/public/index.html"));
 

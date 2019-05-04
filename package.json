@@ -5,8 +5,7 @@
   "main": "server.js",
   "dependencies": {
     "compression": "1.7.4",
-    "express": "4.16.4",
-    "unirest": "0.6.0"
+    "express": "4.16.4"
   },
   "devDependencies": {},
   "scripts": {

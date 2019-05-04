@@ -6,7 +6,12 @@ var exercise = require("./src/exercise");
 var injuries = require("./src/injuries");
 var equipment = require("./src/equipment");
 
+<<<<<<< HEAD
 app.use(express.static('public'));
+=======
+//Serving static files such as Images, CSS, JavaScript
+app.use(express.static("public"));
+>>>>>>> d5517dbcd5cbd3f8cc5cca366139df300718b258
 
 //Using gzip compression on responses to improve performances
 app.use(compression());

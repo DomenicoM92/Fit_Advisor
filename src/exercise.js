@@ -1,48 +1,58 @@
 var request = require('sync-request');
 var search = require('youtube-search');
-var fs = require('fs');
+const REQUEST_NUMB = 30;
 
-exports.exerciseRequest = function() {
-  exerciseRequest();
+exports.exerciseRequest = function (MongoClient, urlDB) {
+  exerciseRequest(MongoClient, urlDB);
 }
 
-exports.videoExerciseRequest = function() {
+exports.videoExerciseRequest = function () {
   videoExercise();
 }
 
-function exerciseRequest() {
-  var jsonDocuments = "";
-  for(i=1; i < 30; i++) {
-   
-    var getUrl = 'https://wger.de/api/v2/exerciseinfo';
-     
-    jsonDocuments+= httpGet(getUrl,i);
+function exerciseRequest(MongoClient, urlDB) {
 
+  for (i = 1; i < REQUEST_NUMB; i++) {
+
+    var APIUrl = 'https://wger.de/api/v2/exerciseinfo';
+    
     if(i == 29) {
-      fs.writeFileSync('exercise.json', '['+ jsonDocuments+']', function (err) {
+      //Create index after all request and insertion
+      MongoClient.connect(urlDB, function (err, db) {
         if (err) throw err;
-        console.log('JSON FILE CREATED!!');
+        var dbo = db.db("Fit_AdvisorDB");
+        
+        dbo.collection("Exercise").createIndex(
+          { "category.name" : 1 }, function(err, result) {
+          console.log(result);
+          
+        });
       });
     }
-    function httpGet(url,i){
-      var response = request('GET',url+'?page='+i);
-        console.log("Status Code (request "+i+ ") : "+response.statusCode);
-        if(i > 1)
-          response.body = ","+response.body;
-        return response.body;
+    httpGet(APIUrl, i);
+
+    function httpGet(APIUrl, i) {
+      var response = request('GET', APIUrl + '?page=' + i);
+      console.log("Status Code (request " + i + ") : " + response.statusCode);
+      //insert document on MongoDB 
+      MongoClient.connect(urlDB, function (err, db) {
+        if (err) throw err;
+        var dbo = db.db("Fit_AdvisorDB");
+        dbo.collection("Exercise").insertMany(JSON.parse(response.body).results, function (err, res) {
+          if (err) throw err;
+          console.log(i + " document inserted");
+          db.close();
+        });
+      });
     }
   }
 }
 
 function videoExercise() {
-  
+
   var opts = {
     maxResults: 4,
     key: 'AIzaSyB10jgQoDvOoZo3NopHUvYPpHFFIFU1e6o'
   };
-   
-  search('arms exercise', opts, function(err, results) {
-    if(err) return console.log(err);
-    //console.dir(results);
-  });
+
 }

@@ -2,40 +2,40 @@ var request = require('sync-request');
 var search = require('youtube-search');
 const REQUEST_NUMB = 30;
 
-exports.exerciseRequest = function (MongoClient, urlDB) {
-  exerciseRequest(MongoClient, urlDB);
+exports.exerciseHandler = function (MongoClient, urlDB) {
+  exerciseHandler(MongoClient, urlDB);
 }
 
-exports.videoExerciseRequest = function () {
-  videoExercise();
+exports.videoExerciseRequest = function (exerciseName) {
+  videoExercise(exerciseName);
 }
 
-function exerciseRequest(MongoClient, urlDB) {
+exports.findByCategory = function (category,MongoClient,urlDB) {
+  var exercises;
+  MongoClient.connect(urlDB,{ useNewUrlParser: true },function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("Fit_AdvisorDB");
+    dbo.collection("Exercise").find({"category.name":category}).toArray(function(err, result) {
+      if (err) throw err;
+      exercises = result;
+      console.log(exercises);
+      db.close();
+    });
+  });
+  return exercises;
+}
+
+function exerciseHandler(MongoClient, urlDB) {
 
   for (i = 1; i < REQUEST_NUMB; i++) {
 
     var APIUrl = 'https://wger.de/api/v2/exerciseinfo';
-    
-    if(i == 29) {
-      //Create index after all request and insertion
-      MongoClient.connect(urlDB, function (err, db) {
-        if (err) throw err;
-        var dbo = db.db("Fit_AdvisorDB");
-        
-        dbo.collection("Exercise").createIndex(
-          { "category.name" : 1 }, function(err, result) {
-          console.log(result);
-          
-        });
-      });
-    }
     httpGet(APIUrl, i);
-
     function httpGet(APIUrl, i) {
       var response = request('GET', APIUrl + '?page=' + i);
       console.log("Status Code (request " + i + ") : " + response.statusCode);
       //insert document on MongoDB 
-      MongoClient.connect(urlDB, function (err, db) {
+      MongoClient.connect(urlDB, { useNewUrlParser: true },function (err, db) {
         if (err) throw err;
         var dbo = db.db("Fit_AdvisorDB");
         dbo.collection("Exercise").insertMany(JSON.parse(response.body).results, function (err, res) {
@@ -45,14 +45,29 @@ function exerciseRequest(MongoClient, urlDB) {
         });
       });
     }
+    if(i == 29) {
+      //Create index after all request and insertion
+      MongoClient.connect(urlDB, { useNewUrlParser: true },function (err, db) {
+        if (err) throw err;
+        var dbo = db.db("Fit_AdvisorDB");
+        dbo.collection("Exercise").createIndex(
+          { "category.name" : 1 }, function(err, result) {
+          console.log("Index:"+result+", created correctly");
+        });
+      });
+    }
   }
 }
 
-function videoExercise() {
+function videoExercise(exerciseName) {
 
   var opts = {
     maxResults: 4,
     key: 'AIzaSyB10jgQoDvOoZo3NopHUvYPpHFFIFU1e6o'
   };
-
+  search(exerciseName, opts, function(err, results) {
+    if(err) return console.log(err);
+    console.dir(results);
+  });
 }
+

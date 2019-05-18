@@ -2,27 +2,42 @@ var request = require('sync-request');
 var search = require('youtube-search');
 const REQUEST_NUMB = 30;
 
+
 exports.exerciseHandler = function (MongoClient, urlDB) {
   exerciseHandler(MongoClient, urlDB);
 }
 
 exports.videoExerciseRequest = function (exerciseName) {
-  videoExercise(exerciseName);
+  return new Promise(function (fulfill, reject){
+    var opts = {
+      maxResults: 4,
+      key: 'AIzaSyB10jgQoDvOoZo3NopHUvYPpHFFIFU1e6o'
+    };
+    search(exerciseName, opts, function(err, results) {
+      if(err) return console.log(err);
+      else
+        fulfill(results);
+    }); 
+  });
 }
 
 exports.findByCategory = function (category,MongoClient,urlDB) {
-  var exercises;
-  MongoClient.connect(urlDB,{ useNewUrlParser: true },function(err, db) {
-    if (err) throw err;
-    var dbo = db.db("Fit_AdvisorDB");
-    dbo.collection("Exercise").find({"category.name":category}).toArray(function(err, result) {
-      if (err) throw err;
-      exercises = result;
-      console.log(exercises);
-      db.close();
+  
+   return new Promise(function (fulfill, reject){
+    MongoClient.connect(urlDB,{ useNewUrlParser: true },function(err, db) {
+      if (err) 
+        throw err;
+      else {
+        var dbo = db.db("Fit_AdvisorDB");
+        dbo.collection("Exercise").find({"category.name":category}).toArray(function(err, result) {
+          if (err) throw err;
+          //console.log(exercises);
+          db.close();
+          fulfill(result);
+        });
+      } 
     });
   });
-  return exercises;
 }
 
 function exerciseHandler(MongoClient, urlDB) {
@@ -59,15 +74,4 @@ function exerciseHandler(MongoClient, urlDB) {
   }
 }
 
-function videoExercise(exerciseName) {
-
-  var opts = {
-    maxResults: 4,
-    key: 'AIzaSyB10jgQoDvOoZo3NopHUvYPpHFFIFU1e6o'
-  };
-  search(exerciseName, opts, function(err, results) {
-    if(err) return console.log(err);
-    console.dir(results);
-  });
-}
 

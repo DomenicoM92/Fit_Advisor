@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE = edge">
+    <meta name="viewport" content="width = device-width, initial-scale = 1">
+    <link rel="stylesheet" type="text/css" href="css/exercise_list.css">
+    <title>Exercise List</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="tab">
+            <button class="tablinks" onclick="switchTab(event, 'Arms')">Arms</button>
+            <button class="tablinks" onclick="switchTab(event, 'Abs')">Abs</button>
+            <button class="tablinks" onclick="switchTab(event, 'Back')">Back</button>
+            <button class="tablinks" onclick="switchTab(event, 'Chest')">Chest</button>
+            <button class="tablinks" onclick="switchTab(event, 'Calves')">Calves</button>
+            <button class="tablinks" onclick="switchTab(event, 'Legs')">Legs</button>
+            <button class="tablinks" onclick="switchTab(event, 'Shoulders')">Shoulders</button>
+
+        </div>
+        <div id="Arms" class="tabcontent">
+            <table>
+                
+            </table>
+        </div>
+        <div id="Abs" class="tabcontent">
+            <table>
+                
+            </table>
+        </div>
+        <div id="Back" class="tabcontent">
+            <table>
+                
+            </table>
+        </div>
+        <div id="Chest" class="tabcontent">
+            <table>
+                
+            </table>
+        </div>
+        <div id="Calves" class="tabcontent">
+            <table>
+               
+            </table>
+        </div>
+
+        <div id="Legs" class="tabcontent">
+            <table>
+               
+            </table>
+        </div>
+        <div id="Shoulders" class="tabcontent">
+            <table>
+               
+            </table>
+        </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script>
+        function switchTab(evt, category) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            document.getElementById(category).style.display = "block";
+            evt.currentTarget.className += " active";
+            
+            var httpReq = new XMLHttpRequest();
+            httpReq.open("GET", "/exerciseCategory", false);
+            httpReq.setRequestHeader("category", category);
+            httpReq.send();
+            var exercises = JSON.parse(httpReq.response);
+            var name;
+            var description;
+            var equipment;
+            if (httpReq.status == 200) {
+                for(i = 0; i < exercises.length; i++) {
+                    // Find a <table> element with id="myTable":
+                    var table = document.getElementById(category).children[0];
+
+                    // Create an empty <tr> element and add it to the 1st position of the table:
+                    var row = table.insertRow(i);
+
+                    // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    var cell3 = row.insertCell(2);
+                    // Add some text to the new cells:
+                    cell1.innerHTML = exercises[i].name;
+                    var equipments="";
+                    if(exercises[i].equipment.length > 1) {
+                        for(j = 0; j < exercises[i].equipment.length; j++) {
+                            if(j < exercises[i].equipment.length -1)
+                                equipments += exercises[i].equipment[j].name + ", ";
+                             else
+                                equipments += exercises[i].equipment[j].name;
+
+                            console.log(exercises[i].equipment[j].name);
+
+                        }
+                        cell2.innerHTML = equipments;
+                    }else
+                        cell2.innerHTML = "Not required";
+                        
+                        var aTag = document.createElement('a');
+                        name = exercises[i].name;
+                        description = exercises[i].description;
+                        
+                        aTag.setAttribute('href',"/exercise_info?name="+name+"&description="+description+"&equipments="+equipments+"&category="+category+'"');
+                        aTag.innerHTML = "show more";
+                        cell3.appendChild(aTag);
+                    console.log(exercises[i].equipment.length);
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

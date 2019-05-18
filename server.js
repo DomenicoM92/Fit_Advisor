@@ -21,15 +21,35 @@ app.get('/', function(req, res) {
 });
 
 app.get('/exercise', function(req, res) {
-    
   //Update Exercise every month
   schedule.scheduleJob('* * * 1 1 7', function(){
     console.log('Update Exercise '+ new Date());
     exercise.exerciseHandler(MongoClient,urlDB);
   });
-  //exercise.videoExerciseRequest('Arnold Press');
-  var exerciseByCategory = exercise.findByCategory("Arms",MongoClient,urlDB);
-  res.sendFile(path.join(__dirname + "/public/index.html"));
+  res.sendFile(path.join(__dirname + "/public/exercise_list.html"));
+});
+
+app.get('/exerciseCategory', function(req, res) {
+  var exerciseByCategory = exercise.findByCategory(req.get("category"),MongoClient,urlDB);
+  exerciseByCategory.then(function(result){
+    res.setHeader('Content-Type', 'application/json');  
+    res.send(result);
+  });
+});
+
+app.get('/exercise_info', function(req, res) {
+  res.sendFile(path.join(__dirname + "/public/exercise_info.html"));
+
+});
+
+app.get('/exercise_video', function(req, res) {
+  var exercise_video =  exercise.videoExerciseRequest(req.get("name"));
+  console.log(exercise_video);
+  exercise_video.then(function(result){
+    res.setHeader('Content-Type', 'application/json');  
+    res.send(result);
+    console.log(result);
+  });
 });
 
 app.get('/food', function(req, res) {

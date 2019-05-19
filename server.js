@@ -44,11 +44,11 @@ app.get('/exercise_info', function(req, res) {
 
 app.get('/exercise_video', function(req, res) {
   var exercise_video =  exercise.videoExerciseRequest(req.get("name"));
-  console.log(exercise_video);
   exercise_video.then(function(result){
     res.setHeader('Content-Type', 'application/json');  
     res.send(result);
-    console.log(result);
+  }).catch(function(){
+    res.sendStatus(403);
   });
 });
 
@@ -65,5 +65,5 @@ app.get('/equipment', function(req, res) {
 });
 
 app.listen(8080, function() {
-  console.log('Example app listening on port 8080!');
+  console.log('Fit_Advisor app listening on port 8080!');
 });

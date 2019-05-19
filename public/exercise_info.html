@@ -11,6 +11,7 @@
 </head>
 
 <body onload="fillSection()">
+    <h1 style="font-size: 500%">&#9432;</h1>
     <div class="card" style="margin:0 auto; padding: 10%">
         <div class="card-body">
           <h1 class="card-title">Name</h1>
@@ -25,18 +26,26 @@
             <p id="equipment" class="card-text"></p>
         </div>
         <div class="card-body">
+            <h3 class="card-title">Primary Muscles</h3>
+            <p id="muscles_primary" class="card-text"></p>
+        </div>
+        <div class="card-body">
+            <h3 class="card-title">Secondary Muscles</h3>
+            <p id="muscles_secondary" class="card-text"></p>
+        </div>
+        <div class="card-body">
             <h3 class="card-title">Category</h3>
             <p id="category" class="card-text"></p>
         </div>
         <div class="container">
             <div class="row">
-                <div class="col">
+                <div id="iFrameContainer" class="col">
                     <div class="embed-responsive embed-responsive-16by9">
-                        <iframe id="iFrame1" class="embed-responsive-item" src="https://www.youtube.com/embed/P6N9782MzFQ"allowfullscreen></iframe>
+                        <iframe id="iFrame1" allowfullscreen></iframe>
                     </div>
                     <br>
                     <div class="embed-responsive embed-responsive-16by9">
-                        <iframe id="iFrame2" class="embed-responsive-item" allowfullscreen></iframe>
+                        <iframe id="iFrame2" allowfullscreen></iframe>
                     </div>
                 </div>
             </div>
@@ -53,27 +62,31 @@
            var name = sections[0].replace(/name=/g,"");
            var description = sections[1].replace(/description=/g,"");
            var equipments = sections[2].replace(/equipments=/g,"");
-           var category = sections[3].replace(/category=/g,"");
+           var muscles_primary = sections[3].replace(/muscles_primary=/g,"");
+           var muscles_secondary = sections[4].replace(/muscles_secondary=/g,"");
+           var category = sections[5].replace(/category=/g,"");
            category = category.replace(/%22/g,"");
-           console.log(name);
-           console.log(description);
-           console.log(equipments);
-           console.log(category);
-           document.getElementById("name").innerHTML = name;
-           document.getElementById("description").innerHTML = description;
+           document.getElementById("name").innerHTML = name.replace(/%/g," ");;
+           document.getElementById("description").innerHTML = description.replace(/%/g," ");
            document.getElementById("equipment").innerHTML = equipments;
            document.getElementById("category").innerHTML = category;
+           document.getElementById("muscles_primary").innerHTML = muscles_primary;
+           
+           document.getElementById("muscles_secondary").innerHTML = muscles_secondary;
            var httpReq = new XMLHttpRequest();
             httpReq.open("GET", "/exercise_video", false);
             httpReq.setRequestHeader("name", name);
             httpReq.send();
-            var video = JSON.parse(httpReq.response);
-            var link1 = video[0].link.replace(/watch\\?v=/g,"embed/");
-            var link2 = video[1].link.replace(/watch\\?v=/g,"embed/");
             if (httpReq.status == 200) {
-                console.log(link1);
+                var video = JSON.parse(httpReq.response);
+                var link1 = "https://www.youtube.com/embed/"+video[0].id;
+                var link2 = "https://www.youtube.com/embed/"+video[1].id;
+                document.getElementById('iFrameContainer').style.display = "block";
                 document.getElementById('iFrame1').setAttribute("src",link1);
                 document.getElementById('iFrame2').setAttribute("src",link2);
+            }else {
+                console.log("error 403 (exceeded number request YouTube API)");
+                document.getElementById('iFrameContainer').style.display = "none";
             }
           }
       </script>

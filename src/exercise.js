@@ -13,8 +13,11 @@ exports.videoExerciseRequest = function (exerciseName) {
       maxResults: 4,
       key: 'AIzaSyB10jgQoDvOoZo3NopHUvYPpHFFIFU1e6o'
     };
-    search(exerciseName, opts, function(err, results) {
-      if(err) return console.log(err);
+    search(exerciseName+" GYM Exercise", opts, function(err, results) {
+      if(err) {
+        console.log(err);
+        reject();
+      }
       else
         fulfill(results);
     }); 
@@ -31,7 +34,6 @@ exports.findByCategory = function (category,MongoClient,urlDB) {
         var dbo = db.db("Fit_AdvisorDB");
         dbo.collection("Exercise").find({"category.name":category}).toArray(function(err, result) {
           if (err) throw err;
-          //console.log(exercises);
           db.close();
           fulfill(result);
         });

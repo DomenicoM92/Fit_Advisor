@@ -45,7 +45,7 @@ app.get('/exercise_info', function(req, res) {
 app.get('/exercise_video', function(req, res) {
   var exercise_video =  exercise.videoExerciseRequest(req.get("name"));
   exercise_video.then(function(result){
-    res.setHeader('Content-Type', 'application/json');  
+    res.setHeader('Content-Type', 'application/json'); 
     res.send(result);
   }).catch(function(){
     res.sendStatus(403);

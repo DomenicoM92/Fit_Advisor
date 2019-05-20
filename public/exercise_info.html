@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE = edge">
     <meta name="viewport" content="width = device-width, initial-scale = 1">
     <title>Exercise info</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </head>
@@ -14,8 +15,8 @@
     <h1 style="font-size: 500%">&#9432;</h1>
     <div class="card" style="margin:0 auto; padding: 10%">
         <div class="card-body">
-          <h1 class="card-title">Name</h1>
-          <p id="name" class="card-text"></p>
+            <h1 class="card-title">Name</h1>
+            <p id="name" class="card-text"></p>
         </div>
         <div class="card-body">
             <h3 class="card-title">Description</h3>
@@ -49,47 +50,59 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
-      </div>
-      <script>
-          function fillSection() {
-           var parameters = window.location.href.split("?");
-           var sections = parameters[1].split("&");
-           for(i = 0; i < sections.length; i++) {
-               sections[i] = sections[i].split("%20").join(" ");
-           }
-           var name = sections[0].replace(/name=/g,"");
-           var description = sections[1].replace(/description=/g,"");
-           var equipments = sections[2].replace(/equipments=/g,"");
-           var muscles_primary = sections[3].replace(/muscles_primary=/g,"");
-           var muscles_secondary = sections[4].replace(/muscles_secondary=/g,"");
-           var category = sections[5].replace(/category=/g,"");
-           category = category.replace(/%22/g,"");
-           document.getElementById("name").innerHTML = name.replace(/%/g," ");;
-           document.getElementById("description").innerHTML = description.replace(/%/g," ");
-           document.getElementById("equipment").innerHTML = equipments;
-           document.getElementById("category").innerHTML = category;
-           document.getElementById("muscles_primary").innerHTML = muscles_primary;
-           
-           document.getElementById("muscles_secondary").innerHTML = muscles_secondary;
-           var httpReq = new XMLHttpRequest();
+    </div>
+    <script>
+        function fillSection() {
+            var url = decodeURI(window.location.href);
+            var parameters = url.split("?");
+            var sections = parameters[1].split("&");
+            var name = sections[0].replace(/name=/g, "");
+            var description = sections[1].replace(/description=/g, "");
+            if (sections[2] != undefined)
+                var equipments = sections[2].replace(/equipments=/g, "");
+            else
+                var equipments = "Not required";
+
+            if (sections[3] != undefined)
+                var muscles_primary = sections[3].replace(/muscles_primary=/g, "");
+            else
+                var muscles_primary = "Not present";
+
+            if (sections[4] != undefined)
+                var muscles_secondary = sections[4].replace(/muscles_secondary=/g, "");
+            else
+                var muscles_secondary = "Not present";
+
+            if (sections[5] != undefined)
+                var category = sections[5].replace(/category=/g, "");
+            else
+                var category = "Not present";
+            document.getElementById("name").innerHTML = name.replace(/%/g, " ");
+            document.getElementById("description").innerHTML = description.replace(/%/g, " ");
+            document.getElementById("equipment").innerHTML = equipments;
+            document.getElementById("category").innerHTML = category;
+            document.getElementById("muscles_primary").innerHTML = muscles_primary;
+
+            document.getElementById("muscles_secondary").innerHTML = muscles_secondary;
+            var httpReq = new XMLHttpRequest();
             httpReq.open("GET", "/exercise_video", false);
             httpReq.setRequestHeader("name", name);
             httpReq.send();
             if (httpReq.status == 200) {
                 var video = JSON.parse(httpReq.response);
-                var link1 = "https://www.youtube.com/embed/"+video[0].id;
-                var link2 = "https://www.youtube.com/embed/"+video[1].id;
+                var link1 = "https://www.youtube.com/embed/" + video[0].id;
+                var link2 = "https://www.youtube.com/embed/" + video[1].id;
                 document.getElementById('iFrameContainer').style.display = "block";
-                document.getElementById('iFrame1').setAttribute("src",link1);
-                document.getElementById('iFrame2').setAttribute("src",link2);
-            }else {
+                document.getElementById('iFrame1').setAttribute("src", link1);
+                document.getElementById('iFrame2').setAttribute("src", link2);
+            } else {
                 console.log("error 403 (exceeded number request YouTube API)");
                 document.getElementById('iFrameContainer').style.display = "none";
             }
-          }
-      </script>
+        }
+    </script>
 </body>
 
 </html>

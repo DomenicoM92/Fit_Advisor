@@ -20,7 +20,7 @@
         </div>
     </body>
 
-    <script type="text/javascript" src="../js/food_api.js"></script>
+    <script type="text/javascript" src="../js/food_apis.js"></script>
     
     <script>
         $(document).ready(function(){
@@ -29,7 +29,8 @@
 
         function initBtns(){
             $("#allFoods").click(function(){
-                getFoodItems();
+                //getFoodItems();
+                listFoodsUsda();
             });
             $("#allHC").click(function(){
                 getHealthConditions();

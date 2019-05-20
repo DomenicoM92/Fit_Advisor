@@ -52,7 +52,7 @@ app.get('/exercise_video', function(req, res) {
 });
 
 app.get('/food', function(req, res) {
-  res.sendFile(path.join(__dirname + "/public/food.html"));
+  res.sendFile(path.join(__dirname + "/public/html/food.html"));
 });
 
 app.get('/injuries', function(req, res) {

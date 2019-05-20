@@ -14,6 +14,8 @@
   },
   "devDependencies": {},
   "scripts": {
+    "configure": "./bin/npm_init.sh",
+    "launch": "./bin/launch_app.sh",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },

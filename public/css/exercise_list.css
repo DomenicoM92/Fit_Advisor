@@ -1,0 +1,78 @@
+.tab {
+    overflow: hidden; 
+    border: 1px solid #ccc; 
+    background-color: #f1f1f1;
+}
+    
+.tabcontent {display: none; 
+    padding: 6px 12px; 
+    border: 1px solid #ccc;
+    border-top: none;}
+    
+.tab button {
+    background-color: inherit; 
+    float: left; border: none;
+    outline: none; cursor: pointer;
+    padding: 14px 16px; 
+    transition: 0.3s;
+}    
+.tab button:hover {
+    background-color: #ddd;
+}
+
+.tab .active {
+    background-color: #ccc;
+}
+
+.tabcontent {
+    display: none; 
+    padding: 6px 12px;
+    border: 1px solid #ccc; 
+    border-top: none;
+}
+
+table {
+    font-family: arial, sans-serif; 
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd; 
+    padding: 8px; 
+    text-align: center;
+}
+
+/*Change color to gray*/
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+.actived a{
+    color:green
+}
+.actived a:hover{ 
+    font-weight: bold
+}
+
+.deactivated a{
+    color:red
+}
+.deactivated a:hover{
+        font-weight: bold
+}
+
+.available {
+    color:green; 
+}
+.disable{ 
+    color: red; 
+    font-weight: bold
+}
+.intraining{
+    color: blue; 
+    font-weight: bold
+}
+.vacation{ 
+    font-weight: bold
+}

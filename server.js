@@ -6,7 +6,6 @@ const urlDB = 'mongodb://localhost:27017/';
 var compression = require('compression');
 var schedule = require('node-schedule');
 var exercise = require("./src/exercise");
-var food = require("./public/js/food");
 var injuries = require("./src/injuries");
 var equipment = require("./src/equipment");
 

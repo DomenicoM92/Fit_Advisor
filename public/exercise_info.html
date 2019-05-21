@@ -82,7 +82,7 @@
             document.getElementById("name").innerHTML = name.replace(/%/g, " ");
             document.getElementById("description").innerHTML = description.replace(/%/g, " ");
             document.getElementById("equipment").innerHTML = equipments;
-            document.getElementById("category").innerHTML = category;
+            document.getElementById("category").innerHTML = category.replace(/"/g, "");
             document.getElementById("muscles_primary").innerHTML = muscles_primary;
 
             document.getElementById("muscles_secondary").innerHTML = muscles_secondary;

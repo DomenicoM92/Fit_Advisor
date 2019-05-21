@@ -33,7 +33,7 @@ exports.findByCategory = function (category,MongoClient,urlDB) {
         throw err;
       else {
         var dbo = db.db("Fit_AdvisorDB");
-        dbo.collection("Exercise").find({"category.name":category, "lang.0":"english", "name": { $ne: "" }}).toArray(function(err, result) {
+        dbo.collection("Exercise").find({"category.name":category, "lang.0":"english", "name": { $nin : ["", "Test","Test Pullups","TestBicep","Mart.05.035l","What","Awesome","L-sit (tucked)","52","Abcd","Developpé Couché"] }}).sort( { name: 1 } ).toArray(function(err, result) {
           if (err) throw err;
           db.close();
           fulfill(result);

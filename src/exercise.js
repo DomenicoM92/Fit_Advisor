@@ -1,7 +1,8 @@
 var request = require('sync-request');
 var search = require('youtube-search');
 const REQUEST_NUMB = 30;
-
+const LanguageDetect = require('languagedetect');
+const lngDetector = new LanguageDetect();
 
 exports.exerciseHandler = function (MongoClient, urlDB) {
   exerciseHandler(MongoClient, urlDB);
@@ -15,7 +16,7 @@ exports.videoExerciseRequest = function (exerciseName) {
     };
     search(exerciseName+" GYM Exercise", opts, function(err, results) {
       if(err) {
-        console.log(err);
+        //console.log(err);
         reject();
       }
       else
@@ -32,7 +33,7 @@ exports.findByCategory = function (category,MongoClient,urlDB) {
         throw err;
       else {
         var dbo = db.db("Fit_AdvisorDB");
-        dbo.collection("Exercise").find({"category.name":category}).toArray(function(err, result) {
+        dbo.collection("Exercise").find({"category.name":category, "lang.0":"english", "name": { $ne: "" }}).toArray(function(err, result) {
           if (err) throw err;
           db.close();
           fulfill(result);
@@ -55,7 +56,16 @@ function exerciseHandler(MongoClient, urlDB) {
       MongoClient.connect(urlDB, { useNewUrlParser: true },function (err, db) {
         if (err) throw err;
         var dbo = db.db("Fit_AdvisorDB");
-        dbo.collection("Exercise").insertMany(JSON.parse(response.body).results, function (err, res) {
+        var exercises = JSON.parse(response.body).results;
+        for (var item in exercises) {
+          if(exercises[item].description != undefined) {
+            var lang = lngDetector.detect(exercises[item].description);
+            if(lang != undefined)
+              exercises[item]["lang"] = lang[0];
+          }
+          
+        }
+        dbo.collection("Exercise").insertMany(exercises, function (err, res) {
           if (err) throw err;
           console.log(i + " document inserted");
           db.close();

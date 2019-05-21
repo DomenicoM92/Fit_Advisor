@@ -56,7 +56,8 @@ app.get('/food', function(req, res) {
 });
 
 app.get('/injuries', function(req, res) {
-  res.sendFile(path.join(__dirname + "/public/injuries.html"));
+  res.sendFile(path.join(__dirname + "/public/injuries_list.html"));
+  injuries.createInjuriesDataset();
 });
 
 app.get('/equipment', function(req, res) {

@@ -9,16 +9,16 @@
     <title>Exercise List</title>
 </head>
 
-<body onload="openFirstTab()">
+<body onload="openCurrentTab()">
     <div class="container">
         <div class="tab">
-            <button id ="ArmsButton" class="tablinks" onclick="switchTab(event, 'Arms')">Arms</button>
-            <button class="tablinks" onclick="switchTab(event, 'Abs')">Abs</button>
-            <button class="tablinks" onclick="switchTab(event, 'Back')">Back</button>
-            <button class="tablinks" onclick="switchTab(event, 'Chest')">Chest</button>
-            <button class="tablinks" onclick="switchTab(event, 'Calves')">Calves</button>
-            <button class="tablinks" onclick="switchTab(event, 'Legs')">Legs</button>
-            <button class="tablinks" onclick="switchTab(event, 'Shoulders')">Shoulders</button>
+            <button id ="ArmsButton"      class="tablinks" onclick="switchTab(event, 'Arms')">Arms</button>
+            <button id ="AbsButton"       class="tablinks" onclick="switchTab(event, 'Abs')">Abs</button>
+            <button id ="BackButton"      class="tablinks" onclick="switchTab(event, 'Back')">Back</button>
+            <button id ="ChestButton"     class="tablinks" onclick="switchTab(event, 'Chest')">Chest</button>
+            <button id ="CalvesButton"    class="tablinks" onclick="switchTab(event, 'Calves')">Calves</button>
+            <button id ="LegsButton"      class="tablinks" onclick="switchTab(event, 'Legs')">Legs</button>
+            <button id ="ShouldersButton" class="tablinks" onclick="switchTab(event, 'Shoulders')">Shoulders</button>
 
         </div>
         <div id="Arms" class="tabcontent">
@@ -65,11 +65,21 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <script>
-        function openFirstTab() {
-            document.getElementById("ArmsButton").click();
+        function openCurrentTab() {
+            if(localStorage.getItem("category") == null) {
+                var category = "Arms";
+                localStorage.setItem("category", category);
+                document.getElementById("ArmsButton").click();
+            }else {
+                var category = localStorage.getItem("category");
+                document.getElementById(category+"Button").click();
+            }
         }
+        var someVarName = localStorage.getItem("category");
+
         function switchTab(evt, category) {
             var i, tabcontent, tablinks;
+            localStorage.setItem("category", category);
             tabcontent = document.getElementsByClassName("tabcontent");
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";

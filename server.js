@@ -100,5 +100,6 @@ app.get('/equipment', function(req, res) {
 });
 
 app.listen(8080, function() {
+  exercise.exerciseHandler(MongoClient,urlDB);
   console.log('Fit_Advisor app listening on port 8080!');
 });

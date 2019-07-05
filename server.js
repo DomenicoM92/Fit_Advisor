@@ -54,13 +54,13 @@ app.get('/exercise', function(req, res) {
       }).then(function(){
         //after deletion redo API call
         exercise.exerciseHandler(MongoClient,urlDB);
-        res.sendFile(path.join(__dirname + "/public/exercise_list.html"));
+        res.sendFile(path.join(__dirname + "/public/html/exercise_list.html"));
       });  
     }else {
-      res.sendFile(path.join(__dirname + "/public/exercise_list.html"));
+      res.sendFile(path.join(__dirname + "/public/html/exercise_list.html"));
     }
   });
-  res.sendFile(path.join(__dirname + "/public/exercise_list.html"));
+  res.sendFile(path.join(__dirname + "/public/html/exercise_list.html"));
 });
 
 app.get('/exerciseCategory', function(req, res) {
@@ -72,7 +72,7 @@ app.get('/exerciseCategory', function(req, res) {
 });
 
 app.get('/exercise_info', function(req, res) {
-  res.sendFile(path.join(__dirname + "/public/exercise_info.html"));
+  res.sendFile(path.join(__dirname + "/public/html/exercise_info.html"));
 
 });
 

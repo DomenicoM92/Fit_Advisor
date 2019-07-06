@@ -91,8 +91,39 @@ app.get('/food', function(req, res) {
 });
 
 app.get('/injuries', function(req, res) {
-  res.sendFile(path.join(__dirname + "/public/injuries_list.html"));
-  injuries.createInjuriesDataset();
+  res.sendFile(path.join(__dirname + "/public/html/injuries_list.html"));
+  MongoClient.connect(urlDB, { useNewUrlParser: true },function (err, db) {
+    if (err) throw err;
+    injuries.createInjuriesDataset(db);
+
+    /*result.then(function ([title, content]){
+       //STORE THE RETRIEVED CONTENT IN A DOCUMENT LOCATED INTO A 'Injuries' COLLECTION 
+       const dbo = db.db("Fit_AdvisorDB");
+       var injury_obj= {injuryName: title, injuryContent: ""+content.html()};
+       dbo.collection("Injuries").insertOne(injury_obj, function (err, res) {
+         if (err) throw err;
+         db.close();
+       });
+    });*/
+
+
+    /*var ijrs= injuries.getInjuriesList(db);
+    ijrs.then(function(result){
+      res.setHeader('Content-Type', 'application/json');
+      res.send(result); 
+    });*/
+    
+  });
+});
+
+app.get('/injuryDetails', function(req, res){
+  /* var details= injuries.findByInjuryName('Neck Headache', MongoClient, urlDB);
+  details.then(function(result){
+    res.setHeader('Content-Type', 'text/html'); 
+    res.send(result);
+  }).catch(function(){
+    res.sendStatus(403);
+  }); */
 });
 
 app.get('/equipment', function(req, res) {

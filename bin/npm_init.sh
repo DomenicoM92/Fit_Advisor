@@ -10,5 +10,6 @@ npm install sync-request --save
 npm install youtube-search --save
 npm install languagedetect --save
 npm install fs --save
+npm install cheerio --save
 echo "installation completed"
 

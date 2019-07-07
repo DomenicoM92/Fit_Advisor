@@ -7,12 +7,15 @@ const MongoClient = require('mongodb').MongoClient;
 const urlDB = 'mongodb://localhost:27017/';
 var compression = require('compression');
 var schedule = require('node-schedule');
-var exercise = require("./src/exercise");
-var injuries = require("./src/injuries");
-var equipment = require("./src/equipment");
+var exercise = require('./src/exercise');
+var injuries = require('./src/injuries');
+var equipment = require('./src/equipment');
+var foodETL = require('./src/foodETL');
+var foodAPI = require('./src/foodAPI');
 
 //Serving static files such as Images, CSS, JavaScript
 app.use(express.static("public"));
+app.use(express.static("public/js"));
 
 //Using gzip compression on responses to improve performances
 app.use(compression());
@@ -87,7 +90,8 @@ app.get('/exercise_video', function (req, res) {
 });
 
 app.get('/food', function (req, res) {
-  res.sendFile(path.join(__dirname + "/public/html/food.html"));
+  foodETL.mongoConnect;
+  //res.sendFile(path.join(__dirname + "/public/html/food.html"));
 });
 
 app.get('/injuries', function (req, res) {
@@ -101,5 +105,7 @@ app.get('/equipment', function (req, res) {
 
 app.listen(8080, function () {
   console.log('Fit_Advisor app listening on port 8080!');
+  foodETL.performETL();
+  //foodAPI.retrieveFoodItemsN();
   //exercise.exerciseHandler(MongoClient,urlDB);
 });

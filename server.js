@@ -23,8 +23,8 @@ app.get('/', function (req, res) {
 
 app.get('/exercise', function (req, res) {
   //Update Exercise every month
-  schedule.scheduleJob('* * * 1 1 7', function () {
-    console.log('Update Exercise ' + new Date());
+  schedule.scheduleJob('* * 23 * 1 7', function () {
+    console.log('Update Exercise ' + new Date().toISOString());
     if (request('GET', "https://wger.de/api/v2/exerciseinfo?page=1").statusCode == 200) {
       //make a backup of collection exercises
       return new Promise(function (fulfill, reject) {
@@ -73,7 +73,6 @@ app.get('/exerciseCategory', function (req, res) {
 
 app.get('/exercise_info', function (req, res) {
   res.sendFile(path.join(__dirname + "/public/html/exercise_info.html"));
-
 });
 
 app.get('/exercise_video', function (req, res) {
@@ -101,5 +100,4 @@ app.get('/equipment', function (req, res) {
 
 app.listen(8080, function () {
   console.log('Fit_Advisor app listening on port 8080!');
-  //exercise.exerciseHandler(MongoClient,urlDB);
 });

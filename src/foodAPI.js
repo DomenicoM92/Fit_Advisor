@@ -2,7 +2,7 @@ const NUTRIDIGM_SUBSCRIPTION_ID = "MyID"
 const NUTRIDIGM_ENDPOINT = "https://api.nutridigm.com/api/v1/nutridigm"
 const NUTRIDIGM_FOOD_ITEMS = "/fooditems";
 const NUTRIDIGM_FOOD_GROUPS = "/foodgroups";
-const NUTRIDIGM_ALL_HC_API = "/healthconditions";
+const NUTRIDIGM_HC = "/healthconditions";
 
 const USDA_REST_ENDPOINT = "https://api.nal.usda.gov/ndb";
 const USDA_LIST_API = "/list";
@@ -36,6 +36,15 @@ module.exports = {
       console.log(url);
       var foodGroups = res.body;
       callback(foodGroups);
+    })
+  },
+  retrieveHealthConditionsN: function (callback){
+    const url = NUTRIDIGM_ENDPOINT + NUTRIDIGM_HC + "?subscriptionId=" + NUTRIDIGM_SUBSCRIPTION_ID;
+    request(url, {json:true}, (err, res, body) => {
+      if(err) {return console.log(err);}
+      console.log(url);
+      var healthConditions = res.body;
+      callback(healthConditions);
     })
   }
 }

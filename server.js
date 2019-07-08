@@ -105,7 +105,4 @@ app.get('/equipment', function (req, res) {
 
 app.listen(8080, function () {
   console.log('Fit_Advisor app listening on port 8080!');
-  foodETL.performETL();
-  //foodAPI.retrieveFoodItemsN();
-  //exercise.exerciseHandler(MongoClient,urlDB);
 });

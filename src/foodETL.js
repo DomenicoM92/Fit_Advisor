@@ -28,13 +28,28 @@ const insertDocuments = function(db, callback) {
   
   insertFoodItems(db, function(){
     insertFoodGroups(db, function(){
-      callback();
-    })
+      insertHealtConditions(db, function(){
+        callback();
+      });
+    });
   });
 }
-  
+
+const insertHealtConditions = function(db, callback){
+  var collection = db.collection('HealthConditions');
+
+  foodAPI.retrieveHealthConditionsN(function(healthConditions){
+    
+    collection.insertMany(healthConditions, function(err, result) {
+      console.log("Inserted health conditions items documents into the collection");
+      callback();
+    });
+  });
+}
+
 const insertFoodItems = function(db, callback){
   var collection = db.collection('FoodItems');
+
   foodAPI.retrieveFoodItemsN(function(foodItems){
     
     collection.insertMany(foodItems, function(err, result) {

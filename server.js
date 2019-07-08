@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express();
 var path = require('path');
-var request = require('sync-request');
+var request = require('request');
 var fs = require('fs');
 const MongoClient = require('mongodb').MongoClient;
 const urlDB = 'mongodb://localhost:27017/';
@@ -23,8 +23,8 @@ app.get('/', function (req, res) {
 
 app.get('/exercise', function (req, res) {
   //Update Exercise every month
-  schedule.scheduleJob('* * * 1 1 7', function () {
-    console.log('Update Exercise ' + new Date());
+  schedule.scheduleJob('* * 23 * 1 7', function () {
+    console.log('Update Exercise ' + new Date().toISOString());
     if (request('GET', "https://wger.de/api/v2/exerciseinfo?page=1").statusCode == 200) {
       //make a backup of collection exercises
       return new Promise(function (fulfill, reject) {
@@ -127,10 +127,9 @@ app.get('/equipment', function (req, res) {
 
 app.listen(8080, function () {
   console.log('Fit_Advisor app listening on port 8080!');
+  
+  injuries.createInjuriesDataset(MongoClient,urlDB);
+    
   exercise.exerciseHandler(MongoClient,urlDB);
-  MongoClient.connect(urlDB, { useNewUrlParser: true },function (err, db) {
-    if (err) throw err;
-    injuries.createInjuriesDataset(db);
-    db.close
-  });
+
 });

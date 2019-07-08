@@ -32,12 +32,10 @@
     });
   }
 
-  exports.createInjuriesDataset= function(db){
+  exports.createInjuriesDataset= function(MongoClient,urlDB){
     var request= require("request");
     var cheerio= require("cheerio");
     var fs= require("fs");
-
-    const dbo = db.db("Fit_AdvisorDB");
 
     request(URL_LIST_ITEMS,function(err,res,body){
         if(err){
@@ -85,10 +83,14 @@
                         return console.log(err);
                     }      
                   }); 
-                  dbo.collection("Injuries").insertOne(content, function (err, res) {
+                  MongoClient.connect(urlDB, { useNewUrlParser: true },function (err, db) {
                     if (err) throw err;
-                  });
-                
+                    var dbo = db.db("Fit_AdvisorDB");
+                    var injury_obj= {category:"", tile: title, content: ""+content.html()};
+                    dbo.collection("Injuries").insertOne(injury_obj, function (err, res) {
+                    if (err) throw err;
+                    });
+                  });      
                 }        
               }       
             });    

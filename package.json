@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "dependencies": {
-    "cheerio": "1.0.0-rc.3",
+    "cheerio": "^1.0.0-rc.3",
     "compression": "1.7.4",
     "express": "4.17.1",
     "fs": "0.0.1-security",
@@ -15,7 +15,6 @@
     "request": "2.88.0",
     "sync-request": "6.1.0",
     "youtube-search": "1.1.4"
-
   },
   "devDependencies": {},
   "scripts": {

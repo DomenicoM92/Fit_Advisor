@@ -1,6 +1,13 @@
-  
   const URL_ROOT = "http://physioworks.com.au";
   const URL_LIST_ITEMS= "https://physioworks.com.au/Injuries-Conditions/Activities/weightlifting-injuries";
+  const categories={"Arms":["bicep", "tricep", "forearm"], 
+                    "Abs":[], 
+                    "Back":["back"], 
+                    "Chest":[], 
+                    "Calves":["calf"], 
+                    "Legs":["glute", "femor", "hamstring", "knee"], 
+                    "Shoulders":["shoulder"]
+                  };
 
 
   exports.getInjuriesList = function(db){
@@ -10,7 +17,6 @@
       db.close();
     });
   }
-
 
   exports.findByInjuryName = function(injuryName,MongoClient, urlDB){
     MongoClient.connect(urlDB,{ useNewUrlParser: true },function(err, db) {
@@ -30,6 +36,8 @@
     var request= require("request");
     var cheerio= require("cheerio");
     var fs= require("fs");
+
+    const dbo = db.db("Fit_AdvisorDB");
 
     request(URL_LIST_ITEMS,function(err,res,body){
         if(err){
@@ -76,7 +84,10 @@
                     if(err) {
                         return console.log(err);
                     }      
-                }); 
+                  }); 
+                  dbo.collection("Injuries").insertOne(content, function (err, res) {
+                    if (err) throw err;
+                  });
                 
                 }        
               }       
@@ -88,10 +99,9 @@
 
 
 
-
-
-
-
+    function createMatching(injuryName){
+      
+    }
 
 
 

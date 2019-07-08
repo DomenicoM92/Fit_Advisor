@@ -73,7 +73,6 @@ app.get('/exerciseCategory', function (req, res) {
 
 app.get('/exercise_info', function (req, res) {
   res.sendFile(path.join(__dirname + "/public/html/exercise_info.html"));
-
 });
 
 app.get('/exercise_video', function (req, res) {
@@ -90,12 +89,8 @@ app.get('/food', function (req, res) {
   res.sendFile(path.join(__dirname + "/public/html/food.html"));
 });
 
-
 app.get('/injuries', function(req, res) {
   res.sendFile(path.join(__dirname + "/public/html/injuries_list.html"));
-  MongoClient.connect(urlDB, { useNewUrlParser: true },function (err, db) {
-    if (err) throw err;
-    injuries.createInjuriesDataset(db);
 
     /*result.then(function ([title, content]){
        //STORE THE RETRIEVED CONTENT IN A DOCUMENT LOCATED INTO A 'Injuries' COLLECTION 
@@ -114,7 +109,6 @@ app.get('/injuries', function(req, res) {
       res.send(result); 
     });*/
     
-  });
 });
 
 app.get('/injuryDetails', function(req, res){
@@ -125,6 +119,7 @@ app.get('/injuryDetails', function(req, res){
   }).catch(function(){
     res.sendStatus(403);
   }); */
+});
 
 app.get('/equipment', function (req, res) {
   res.sendFile(path.join(__dirname + "/public/equipment.html"));
@@ -132,5 +127,10 @@ app.get('/equipment', function (req, res) {
 
 app.listen(8080, function () {
   console.log('Fit_Advisor app listening on port 8080!');
-  //exercise.exerciseHandler(MongoClient,urlDB);
+  exercise.exerciseHandler(MongoClient,urlDB);
+  MongoClient.connect(urlDB, { useNewUrlParser: true },function (err, db) {
+    if (err) throw err;
+    injuries.createInjuriesDataset(db);
+    db.close
+  });
 });

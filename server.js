@@ -14,13 +14,6 @@ var equipment = require('./src/equipment');
 var foodETL = require('./src/foodETL');
 var foodAPI = require('./src/foodAPI');
 
-//Server startup routines
-function startupRoutines() {
-
-  //Setup Equipment Collection and Populate Products
-  //equipment.initEquipmentCollection(MongoClient, urlDB, "com", "relevanceblender", "1");
-}
-
 //Serving static files such as Images, CSS, JavaScript
 app.use(express.static("public"));
 app.use(express.static("public/js"));

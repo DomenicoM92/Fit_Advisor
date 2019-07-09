@@ -6,8 +6,9 @@ const assert = require('assert');
 const url = 'mongodb://localhost:27017';
 const dbName = 'Fit_AdvisorDB';
 const SITE = 'www.workout-routine.com'
-var equipment = ['dumbbells', 'barbell', 'gym', 'ball', 'bands'];
-var muscularGroups = ['hot-abs', 'strong-back', "large-chest", 'broad-shoulders', 'ripped-arms', 'defined-legs'];
+const equipment = ['dumbbells', 'barbell', 'gym', 'ball', 'bands'];
+const muscularRoutines = ['hot-abs', 'strong-back', "large-chest", 'broad-shoulders', 'ripped-arms', 'defined-legs'];
+const muscularGroups = ['abs', 'back', 'chest', 'shoulders', 'arms', 'legs'];
 
 MongoClient.connect(url, {useNewUrlParser:true}, function(err, client) {
     assert.equal(null, err);
@@ -17,7 +18,7 @@ MongoClient.connect(url, {useNewUrlParser:true}, function(err, client) {
 
     for(i=0; i < equipment.length; i++){
         for(j=0; j < muscularGroups.length; j++){
-            var scrapeUrl = 'https://' + SITE + '/' + equipment[i] + "/" + muscularGroups[j];
+            var scrapeUrl = 'https://' + SITE + '/' + equipment[i] + "/" + muscularRoutines[j];
             var res = request('GET', scrapeUrl);
             console.log('statusCode:', res.statusCode);
             if(res.statusCode != 404){
@@ -35,7 +36,6 @@ MongoClient.connect(url, {useNewUrlParser:true}, function(err, client) {
     }
     client.close();
 });
-
 
 function cleanText(type, text){
     if(type == 'title')

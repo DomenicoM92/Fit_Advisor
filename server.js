@@ -11,6 +11,7 @@ var schedule = require('node-schedule');
 var exercise = require('./src/exercise');
 var injuries = require('./src/injuries');
 var equipment = require('./src/equipment');
+const workoutRoutine = require('./src/workout_routine_mongo');
 
 //Serving static files such as Images, CSS, JavaScript
 app.use(express.static("public"));
@@ -144,6 +145,23 @@ app.get('/equipmentProducts', function(req, res) {
   });
 });
 
+app.get('/workoutRoutine', function(req, res) {
+  res.sendFile(path.join(__dirname + "/public/html/workoutroutine.html"));
+});
+
+app.get('/retrieveRoutine', function(req, res) {
+  var muscularGroup = req.query.musculargroup;
+
+  switch(muscularGroup){
+    case 'abs': workoutRoutine.retrieveByMuscleGroup('abs'); break;
+    case 'back': workoutRoutine.retrieveByMuscleGroup('back'); break;
+    case 'chest': workoutRoutine.retrieveByMuscleGroup('chest'); break;
+    case 'shoulders': workoutRoutine.retrieveByMuscleGroup('shoulders'); break;
+    case 'arms': workoutRoutine.retrieveByMuscleGroup('arms'); break;
+    case 'legs': workoutRoutine.retrieveByMuscleGroup('legs'); break;
+  }
+  console.log(muscularGroup);
+});
 
 app.listen(8080, function() {
   console.log('Fit_Advisor app listening on port 8080!');

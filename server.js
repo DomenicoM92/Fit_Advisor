@@ -8,9 +8,11 @@ const MongoClient = require('mongodb').MongoClient;
 const urlDB = 'mongodb://localhost:27017/';
 var compression = require('compression');
 var schedule = require('node-schedule');
-var exercise = require("./src/exercise");
-var injuries = require("./src/injuries");
-var equipment = require("./src/equipment");
+var exercise = require('./src/exercise');
+var injuries = require('./src/injuries');
+var equipment = require('./src/equipment');
+var foodETL = require('./src/foodETL');
+var foodAPI = require('./src/foodAPI');
 
 //Server startup routines
 function startupRoutines() {
@@ -21,6 +23,7 @@ function startupRoutines() {
 
 //Serving static files such as Images, CSS, JavaScript
 app.use(express.static("public"));
+app.use(express.static("public/js"));
 
 app.use(bodyParser.urlencoded({ extended: true })); 
 //for render page.ejs (for pass parameter from node to html with post method)
@@ -99,7 +102,8 @@ app.get('/exercise_video', function (req, res) {
 });
 
 app.get('/food', function (req, res) {
-  res.sendFile(path.join(__dirname + "/public/html/food.html"));
+  foodETL.mongoConnect;
+  //res.sendFile(path.join(__dirname + "/public/html/food.html"));
 });
 
 app.get('/injuries', function(req, res) {

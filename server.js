@@ -11,8 +11,6 @@ var schedule = require('node-schedule');
 var exercise = require('./src/exercise');
 var injuries = require('./src/injuries');
 var equipment = require('./src/equipment');
-var foodETL = require('./src/foodETL');
-var foodAPI = require('./src/foodAPI');
 
 //Serving static files such as Images, CSS, JavaScript
 app.use(express.static("public"));

@@ -17,7 +17,6 @@ function startupRoutines() {
 
   //Setup Equipment Collection and Populate Products
   //equipment.initEquipmentCollection(MongoClient, urlDB, "com", "relevanceblender", "1");
-
 }
 
 //Serving static files such as Images, CSS, JavaScript
@@ -37,7 +36,7 @@ app.get('/', function (req, res) {
 
 app.get('/exercise', function (req, res) {
   //Update Exercise every month
-  schedule.scheduleJob('* * 23 * 1 7', function () {
+  //schedule.scheduleJob('* * 23 * 1 7', function () {
     console.log('Update Exercise ' + new Date().toISOString());
     if (request('GET', "https://wger.de/api/v2/exerciseinfo?page=1").statusCode == 200) {
       //make a backup of collection exercises
@@ -73,7 +72,7 @@ app.get('/exercise', function (req, res) {
     } else {
       res.sendFile(path.join(__dirname + "/public/html/exercise_list.html"));
     }
-  });
+  //});
   res.sendFile(path.join(__dirname + "/public/html/exercise_list.html"));
 });
 

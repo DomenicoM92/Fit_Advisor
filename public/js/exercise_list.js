@@ -30,7 +30,7 @@ function switchTab(evt, category) {
     httpReq.setRequestHeader("category", category);
     httpReq.send();
     var exercises = JSON.parse(httpReq.response);
-    if (httpReq.status == 200) {
+    if (httpReq.status == 200 && document.getElementById(category).children[0].children[0] == undefined) {
         for (i = 0; i < exercises.length; i++) {
             var name= "";
             var equipments = "";

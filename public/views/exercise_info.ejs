@@ -17,27 +17,27 @@
 <body>
     <h1 style="font-size: 500%">&#9432;</h1>
     <div class="card" style="margin:0 auto; padding: 10%">
-        <div class="card-body">
+        <div id="div_name" class="card-body">
             <h1 class="card-title">Name</h1>
             <p id="name" class="card-text"></p>
         </div>
-        <div class="card-body">
+        <div id="div_description" class="card-body">
             <h3 class="card-title">Description</h3>
             <p id="description" class="card-text"></p>
         </div>
-        <div class="card-body">
+        <div id="div_equipment" class="card-body">
             <h3 class="card-title">Equipment</h3>
             <p id="equipment" class="card-text"></p>
         </div>
-        <div class="card-body">
+        <div id="div_muscles_primary" class="card-body">
             <h3 class="card-title">Primary Muscles</h3>
             <p id="muscles_primary" class="card-text"></p>
         </div>
-        <div class="card-body">
+        <div id="div_muscles_secondary" class="card-body">
             <h3 class="card-title">Secondary Muscles</h3>
             <p id="muscles_secondary" class="card-text"></p>
         </div>
-        <div class="card-body">
+        <div id="div_category" class="card-body">
             <h3 class="card-title">Category</h3>
             <p id="category" class="card-text"></p>
         </div>
@@ -58,7 +58,7 @@
     </div>
     <script src="../js/exercise_info.js"></script>
     <script>
-        var card = <%-card%>;
+        var card = <%-card %>;
         window.onload = fillSection(card);
     </script>
 </body>

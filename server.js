@@ -12,6 +12,14 @@ var exercise = require("./src/exercise");
 var injuries = require("./src/injuries");
 var equipment = require("./src/equipment");
 
+//Server startup routines
+function startupRoutines() {
+
+  //Setup Equipment Collection and Populate Products
+  //equipment.initEquipmentCollection(MongoClient, urlDB, "com", "relevanceblender", "1");
+
+}
+
 //Serving static files such as Images, CSS, JavaScript
 app.use(express.static("public"));
 
@@ -127,10 +135,23 @@ app.get('/injuryDetails', function(req, res){
   }); */
 });
 
-app.get('/equipment', function (req, res) {
-  res.sendFile(path.join(__dirname + "/public/equipment.html"));
+app.get('/equipment', function(req, res) {
+
+  res.sendFile(path.join(__dirname + "/public/equipment_list.html"));
+
 });
 
-app.listen(8080, function () {
+app.get('/equipmentProducts', function(req, res) {
+
+  var products = equipment.findByKeywordAmz(MongoClient, urlDB, req.get("domainCode"), req.get("keyword"), req.get("sortBy"), req.get("page"));
+  products.then(function(result){
+    res.setHeader('Content-Type', 'application/json');  
+    res.send(result);
+  });
+});
+
+startupRoutines();
+
+app.listen(8080, function() {
   console.log('Fit_Advisor app listening on port 8080!');
 });

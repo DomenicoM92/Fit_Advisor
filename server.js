@@ -17,7 +17,6 @@ function startupRoutines() {
 
   //Setup Equipment Collection and Populate Products
   //equipment.initEquipmentCollection(MongoClient, urlDB, "com", "relevanceblender", "1");
-
 }
 
 //Serving static files such as Images, CSS, JavaScript

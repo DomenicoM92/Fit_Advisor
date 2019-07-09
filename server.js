@@ -146,7 +146,6 @@ app.get('/equipmentProducts', function(req, res) {
   });
 });
 
-startupRoutines();
 
 app.listen(8080, function() {
   console.log('Fit_Advisor app listening on port 8080!');

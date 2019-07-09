@@ -32,7 +32,6 @@ function switchTab(evt, category) {
     var exercises = JSON.parse(httpReq.response);
     if (httpReq.status == 200 && document.getElementById(category).children[0].children[0] == undefined) {
         for (i = 0; i < exercises.length; i++) {
-            var name= "";
             var equipments = "";
             var table = document.getElementById(category).children[0];
             var row = table.insertRow(i);

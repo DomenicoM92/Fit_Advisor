@@ -23,20 +23,16 @@
                 <li class="active"><a href="exercise">Exercise</a></li>
                 <li><a href="#">Food</a></li>
                 <li><a href="injuries">Injuries</a></li>
-                <li><a href="#">Equipment</a></li>
+                <li><a href="equipment">Equipment</a></li>
             </ul>
         </div>
     </nav>
-
-
-
     <div class="container">
         <div class="tab">
             <button id="ArmsButton" class="tablinks" onclick="switchTab(event, 'Arms')">Arms</button>
             <button id="AbsButton" class="tablinks" onclick="switchTab(event, 'Abs')">Abs</button>
             <button id="BackButton" class="tablinks" onclick="switchTab(event, 'Back')">Back</button>
             <button id="ChestButton" class="tablinks" onclick="switchTab(event, 'Chest')">Chest</button>
-            <button id="CalvesButton" class="tablinks" onclick="switchTab(event, 'Calves')">Calves</button>
             <button id="LegsButton" class="tablinks" onclick="switchTab(event, 'Legs')">Legs</button>
             <button id="ShouldersButton" class="tablinks" onclick="switchTab(event, 'Shoulders')">Shoulders</button>
 
@@ -61,12 +57,6 @@
 
             </table>
         </div>
-        <div id="Calves" class="tabcontent">
-            <table>
-
-            </table>
-        </div>
-
         <div id="Legs" class="tabcontent">
             <table>
 
@@ -84,119 +74,7 @@
 
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-    <script>
-        function openCurrentTab() {
-            if (localStorage.getItem("category") == null) {
-                var category = "Arms";
-                localStorage.setItem("category", category);
-                document.getElementById("ArmsButton").click();
-            } else {
-                var category = localStorage.getItem("category");
-                document.getElementById(category + "Button").click();
-            }
-        }
-        var someVarName = localStorage.getItem("category");
-
-        function switchTab(evt, category) {
-            var i, tabcontent, tablinks;
-            localStorage.setItem("category", category);
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-
-            document.getElementById(category).style.display = "block";
-            evt.currentTarget.className += " active";
-
-            var httpReq = new XMLHttpRequest();
-            httpReq.open("GET", "/exerciseCategory", false);
-            httpReq.setRequestHeader("category", category);
-            httpReq.send();
-            var exercises = JSON.parse(httpReq.response);
-            //console.log(exercises);
-            if (httpReq.status == 200 && document.getElementById(category).children[0].children[0] == undefined) {
-                for (i = 0; i < exercises.length; i++) {
-
-                    var name;
-                    var description;
-                    var equipments = "";
-                    var muscles_primary = "";
-                    var muscles_secondary = "";
-
-                    // Find a <table> element with id="myTable":
-                    var table = document.getElementById(category).children[0];
-                    // Create an empty <tr> element and add it to the 1st position of the table:
-                    var row = table.insertRow(i);
-
-                    // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
-                    var cell1 = row.insertCell(0);
-                    var cell2 = row.insertCell(1);
-                    var cell3 = row.insertCell(2);
-                    // Add some text to the new cells:
-                    cell1.innerHTML = exercises[i].name;
-                    //set equipment
-                    if (exercises[i].equipment.length > 1) {
-                        for (j = 0; j < exercises[i].equipment.length; j++) {
-                            if (j < exercises[i].equipment.length - 1)
-                                equipments += exercises[i].equipment[j].name + ", ";
-                            else
-                                equipments += exercises[i].equipment[j].name;
-                        }
-                        cell2.innerHTML = equipments;
-                    } else if (exercises[i].equipment.length == 1) {
-                        equipments = exercises[i].equipment[0].name;
-                        cell2.innerHTML = equipments;
-                    } else {
-                        cell2.innerHTML = "Not required";
-                        equipments = "Not required";
-                    }
-                    //set primary muscles
-                    if (exercises[i].muscles.length > 1) {
-                        for (j = 0; j < exercises[i].muscles.length; j++) {
-                            if (j < exercises[i].muscles.length - 1)
-                                muscles_primary += exercises[i].muscles[j].name + ", ";
-                            else
-                                muscles_primary += exercises[i].muscles[j].name;
-                        }
-                    } else if (exercises[i].muscles.length == 1) {
-                        muscles_primary = exercises[i].muscles[0].name;
-                    } else {
-                        muscles_primary = "Not present"
-                    }
-                    //set secondary muscles
-                    if (exercises[i].muscles_secondary.length > 1) {
-                        for (j = 0; j < exercises[i].muscles_secondary.length; j++) {
-                            if (j < exercises[i].muscles_secondary.length - 1)
-                                muscles_secondary += exercises[i].muscles_secondary[j].name + ", ";
-                            else
-                                muscles_secondary += exercises[i].muscles_secondary[j].name;
-                        }
-                    } else if (exercises[i].muscles_secondary.length == 1) {
-                        muscles_secondary = exercises[i].muscles_secondary[0].name;
-                    } else {
-                        muscles_secondary = "Not present"
-                    }
-                    var aTag = document.createElement('a');
-                    name = exercises[i].name;
-                    description = exercises[i].description;
-                    var url = encodeURI("/exercise_info?name=" + name + "&description=" + description + "&equipments=" + equipments + "&muscles_primary=" + muscles_primary + "&muscles_secondary=" + muscles_secondary + "&category=" + category + '"');
-                    aTag.setAttribute('href', url);
-                    aTag.innerHTML = "show more &#x1F50E;";
-                    cell3.appendChild(aTag);
-                    cell1.style.textAlign = "left";
-                    cell2.style.textAlign = "left";
-                    cell3.style.textAlign = "left";
-
-
-                }
-            }
-        }
-    </script>
+    <script src="../js/exercise_list.js"></script>
 </body>
 
 </html>

@@ -23,10 +23,12 @@ exports.exerciseHandler = function (MongoClient, urlDB) {
                 var lang = lngDetector.detect(exercises[item].description);
                 if (lang != undefined)
                   exercises[item]["lang"] = lang[0];
+                if(exercises[item].category.name == "Calves") {
+                  exercises[item].category.name = "Legs";
+                }   
                 exercises[item]["timestamp"] = new Date().toISOString();
                 dbo.collection("Exercise").insertOne(exercises[item], function (err) {
                   if (err) throw err;
-                  console.log("INS")
                 });
               }
             }
@@ -84,7 +86,7 @@ exports.findByCategory = function (category, MongoClient, urlDB) {
 }
 
 function checkBadResult(name) {
-  var rejectedValues = ["", "Test", "Test Pullups", "TestBicep", "Mart.05.035l", "What", "Awesome", "L-sit (tucked)", "52", "Abcd", "Developpé Couché"];
+  var rejectedValues = ["", "Test", "Test Pullups", "TestBicep", "Mart.05.035l", "What", "Awesome", "L-sit (tucked)", "52", "Abcd", "Developpé Couché","Upper Body","Snach"];
   for (index in rejectedValues) {
     if (rejectedValues[index] == name) {
       return true;

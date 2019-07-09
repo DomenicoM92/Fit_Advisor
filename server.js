@@ -1,18 +1,25 @@
 var express = require('express');
 var app = express();
 var path = require('path');
-var request = require('request');
+var request = require('sync-request');
 var fs = require('fs');
+var bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
 const urlDB = 'mongodb://localhost:27017/';
 var compression = require('compression');
 var schedule = require('node-schedule');
-var exercise = require("./src/exercise");
-var injuries = require("./src/injuries");
-var equipment = require("./src/equipment");
+var exercise = require('./src/exercise');
+var injuries = require('./src/injuries');
+var equipment = require('./src/equipment');
 
 //Serving static files such as Images, CSS, JavaScript
 app.use(express.static("public"));
+app.use(express.static("public/js"));
+
+app.use(bodyParser.urlencoded({ extended: true })); 
+//for render page.ejs (for pass parameter from node to html with post method)
+app.set('views', path.join(__dirname, 'public/views'));
+app.set('view engine', 'ejs');
 
 //Using gzip compression on responses to improve performances
 app.use(compression());
@@ -71,8 +78,8 @@ app.get('/exerciseCategory', function (req, res) {
   });
 });
 
-app.get('/exercise_info', function (req, res) {
-  res.sendFile(path.join(__dirname + "/public/html/exercise_info.html"));
+app.post('/exercise_info', function (req, res) {
+  res.render('exercise_info',{card:req.body.card});
 });
 
 app.get('/exercise_video', function (req, res) {
@@ -86,7 +93,8 @@ app.get('/exercise_video', function (req, res) {
 });
 
 app.get('/food', function (req, res) {
-  res.sendFile(path.join(__dirname + "/public/html/food.html"));
+  foodETL.mongoConnect;
+  //res.sendFile(path.join(__dirname + "/public/html/food.html"));
 });
 
 app.get('/injuries', function(req, res) {
@@ -121,15 +129,22 @@ app.get('/injuryDetails', function(req, res){
   }); */
 });
 
-app.get('/equipment', function (req, res) {
-  res.sendFile(path.join(__dirname + "/public/equipment.html"));
+app.get('/equipment', function(req, res) {
+
+  res.sendFile(path.join(__dirname + "/public/equipment_list.html"));
+
 });
 
-app.listen(8080, function () {
-  console.log('Fit_Advisor app listening on port 8080!');
-  
-  injuries.createInjuriesDataset(MongoClient,urlDB);
-    
-  exercise.exerciseHandler(MongoClient,urlDB);
+app.get('/equipmentProducts', function(req, res) {
 
+  var products = equipment.findByKeywordAmz(MongoClient, urlDB, req.get("domainCode"), req.get("keyword"), req.get("sortBy"), req.get("page"));
+  products.then(function(result){
+    res.setHeader('Content-Type', 'application/json');  
+    res.send(result);
+  });
+});
+
+
+app.listen(8080, function() {
+  console.log('Fit_Advisor app listening on port 8080!');
 });

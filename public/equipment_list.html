@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE = edge">
+    <meta name="viewport" content="width = device-width, initial-scale = 1">
+    <link rel="stylesheet" type="text/css" href="css/exercise_list.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <title>Equipment List</title>
+</head>
+
+<body onload="openCurrentTab()">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Fit Advisor</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="/">Home</a></li>
+                <li><a href="exercise">Exercise</a></li>
+                <li><a href="#">Food</a></li>
+                <li><a href="injuries">Injuries</a></li>
+                <li class="active"><a href="equipment">Equipment</a></li>
+            </ul>
+        </div>
+    </nav>
+
+
+
+    <div class="container">
+        <div class="tab">
+            <button id ="BarbellButton"      class="tablinks" onclick="switchTab(event, 'Barbell')">Barbell</button>
+            <button id ="BenchButton"       class="tablinks" onclick="switchTab(event, 'Bench')">Bench</button>
+            <button id ="DumbellButton"      class="tablinks" onclick="switchTab(event, 'Dumbell')">Dumbell</button>
+            <button id ="Gym matButton"     class="tablinks" onclick="switchTab(event, 'Gym mat')">Gym mat</button>
+            <button id ="Incline benchButton"    class="tablinks" onclick="switchTab(event, 'Incline bench')">Incline bench</button>
+            <button id ="KettlebellButton"      class="tablinks" onclick="switchTab(event, 'Kettlebell')">Kettlebell</button>
+            <button id ="Pull-up barButton"      class="tablinks" onclick="switchTab(event, 'Pull-up bar')">Pull-up bar</button>
+            <button id ="Swiss BallButton"       class="tablinks" onclick="switchTab(event, 'Swiss Ball')">Swiss Ball</button>
+            <button id ="EZ-BarButton"      class="tablinks" onclick="switchTab(event, 'EZ-Bar')">EZ-Bar</button>
+            
+        </div>
+        <div id="Barbell" class="tabcontent">
+            <table>
+
+            </table>
+        </div>
+        <div id="Bench" class="tabcontent">
+            <table>
+
+            </table>
+        </div>
+        <div id="Dumbell" class="tabcontent">
+            <table>
+
+            </table>
+        </div>
+        <div id="Gym mat" class="tabcontent">
+            <table>
+
+            </table>
+        </div>
+        <div id="Incline bench" class="tabcontent">
+            <table>
+
+            </table>
+        </div>
+        <div id="Kettlebell" class="tabcontent">
+            <table>
+
+            </table>
+        </div>
+        <div id="Pull-up bar" class="tabcontent">
+            <table>
+
+            </table>
+        </div>
+        <div id="Swiss Ball" class="tabcontent">
+            <table>
+
+            </table>
+        </div>
+        <div id="EZ-Bar" class="tabcontent">
+            <table>
+
+            </table>
+        </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script>
+        
+        function openCurrentTab() {
+            if(localStorage.getItem("item") == null) {
+                var equipment = "Barbell";
+                localStorage.setItem("item", equipment);
+                document.getElementById("BarbellButton").click();
+            }else {
+                var equipment = localStorage.getItem("item");
+                document.getElementById(equipment+"Button").click();
+            }
+        }
+
+        function switchTab(evt, item) {
+            var i, tabcontent, tablinks;
+            localStorage.setItem("item", item);
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            document.getElementById(item).style.display = "block";
+            evt.currentTarget.className += " active";
+
+            var httpReq = new XMLHttpRequest();
+            httpReq.open("GET", "/equipmentProducts", false);
+            httpReq.setRequestHeader("domainCode", "com");
+            httpReq.setRequestHeader("keyword", item);
+            httpReq.setRequestHeader("sortBy", "relevanceblender");
+            httpReq.setRequestHeader("page", "1");
+            httpReq.send();
+
+            var equipmentProducts = JSON.parse(httpReq.response);
+            console.log("RESPONSE!");
+            console.log(equipmentProducts);
+            
+            if (httpReq.status == 200) {
+                for (i = 0; i < equipmentProducts.length; i++) {
+                   
+                    var image;
+                    var asin;
+                    var name;
+                    //var description;
+                    var producer;
+                    var price;
+                    var seller;
+                    var rating;
+                    var reviews;
+
+
+                    // Find a <table> element with id="myTable":
+                    var table = document.getElementById(item).children[0];
+
+                    // Create an empty <tr> element and add it to the 1st position of the table:
+                    if(table.getElementsByTagName("tr").length > i) {
+                        table.deleteRow(i);
+                    }
+                    var row = table.insertRow(i);
+
+                    // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    var cell3 = row.insertCell(2);
+                    var cell4 = row.insertCell(3);
+                    var cell5 = row.insertCell(4);
+                    var cell6 = row.insertCell(5);
+                    var cell7 = row.insertCell(6);
+                    var cell8 = row.insertCell(7);
+
+
+                    //Set image
+                    cell1.innerHTML = "<img src='" + equipmentProducts[i].imageUrlList[0] +"' width = '80px' height = '80px'>";
+
+                    //Set ASIN
+                    cell2.innerHTML = equipmentProducts[i].asin;
+
+                    //Set name
+                    cell3.innerHTML = equipmentProducts[i].productTitle;
+
+                    //Set description
+                    //cell4.innerHTML = equipmentProducts[i].productDescription;
+
+                    //Set producer
+                    cell4.innerHTML = equipmentProducts[i].manufacturer;
+
+                    //Set price
+                    cell5.innerHTML = equipmentProducts[i].price;
+
+                    //Set seller
+                    cell6.innerHTML = equipmentProducts[i].soldBy;
+
+                    //Set rating
+                    cell7.innerHTML = equipmentProducts[i].productRating;
+
+                    //Set reviews
+                    cell8.innerHTML = equipmentProducts[i].countReview;
+
+                    
+                    
+                    cell1.style.textAlign = "center";
+                    cell2.style.textAlign = "center";
+                    cell3.style.textAlign = "center";
+                    cell4.style.textAlign = "center";
+                    cell5.style.textAlign = "center";
+                    cell6.style.textAlign = "center";
+                    cell7.style.textAlign = "center";
+                    cell8.style.textAlign = "center";
+                    
+                    
+
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

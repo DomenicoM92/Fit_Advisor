@@ -3,6 +3,7 @@ var app = express();
 var path = require('path');
 var request = require('sync-request');
 var fs = require('fs');
+var bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
 const urlDB = 'mongodb://localhost:27017/';
 var compression = require('compression');
@@ -13,9 +14,21 @@ var equipment = require('./src/equipment');
 var foodETL = require('./src/foodETL');
 var foodAPI = require('./src/foodAPI');
 
+//Server startup routines
+function startupRoutines() {
+
+  //Setup Equipment Collection and Populate Products
+  //equipment.initEquipmentCollection(MongoClient, urlDB, "com", "relevanceblender", "1");
+}
+
 //Serving static files such as Images, CSS, JavaScript
 app.use(express.static("public"));
 app.use(express.static("public/js"));
+
+app.use(bodyParser.urlencoded({ extended: true })); 
+//for render page.ejs (for pass parameter from node to html with post method)
+app.set('views', path.join(__dirname, 'public/views'));
+app.set('view engine', 'ejs');
 
 //Using gzip compression on responses to improve performances
 app.use(compression());
@@ -26,8 +39,8 @@ app.get('/', function (req, res) {
 
 app.get('/exercise', function (req, res) {
   //Update Exercise every month
-  schedule.scheduleJob('* * * 1 1 7', function () {
-    console.log('Update Exercise ' + new Date());
+  schedule.scheduleJob('* * 23 * 1 7', function () {
+    console.log('Update Exercise ' + new Date().toISOString());
     if (request('GET', "https://wger.de/api/v2/exerciseinfo?page=1").statusCode == 200) {
       //make a backup of collection exercises
       return new Promise(function (fulfill, reject) {
@@ -74,9 +87,8 @@ app.get('/exerciseCategory', function (req, res) {
   });
 });
 
-app.get('/exercise_info', function (req, res) {
-  res.sendFile(path.join(__dirname + "/public/html/exercise_info.html"));
-
+app.post('/exercise_info', function (req, res) {
+  res.render('exercise_info',{card:req.body.card});
 });
 
 app.get('/exercise_video', function (req, res) {
@@ -94,15 +106,55 @@ app.get('/food', function (req, res) {
   //res.sendFile(path.join(__dirname + "/public/html/food.html"));
 });
 
-app.get('/injuries', function (req, res) {
-  res.sendFile(path.join(__dirname + "/public/injuries_list.html"));
-  injuries.createInjuriesDataset();
+app.get('/injuries', function(req, res) {
+  res.sendFile(path.join(__dirname + "/public/html/injuries_list.html"));
+
+    /*result.then(function ([title, content]){
+       //STORE THE RETRIEVED CONTENT IN A DOCUMENT LOCATED INTO A 'Injuries' COLLECTION 
+       const dbo = db.db("Fit_AdvisorDB");
+       var injury_obj= {injuryName: title, injuryContent: ""+content.html()};
+       dbo.collection("Injuries").insertOne(injury_obj, function (err, res) {
+         if (err) throw err;
+         db.close();
+       });
+    });*/
+
+
+    /*var ijrs= injuries.getInjuriesList(db);
+    ijrs.then(function(result){
+      res.setHeader('Content-Type', 'application/json');
+      res.send(result); 
+    });*/
+    
 });
 
-app.get('/equipment', function (req, res) {
-  res.sendFile(path.join(__dirname + "/public/equipment.html"));
+app.get('/injuryDetails', function(req, res){
+  /* var details= injuries.findByInjuryName('Neck Headache', MongoClient, urlDB);
+  details.then(function(result){
+    res.setHeader('Content-Type', 'text/html'); 
+    res.send(result);
+  }).catch(function(){
+    res.sendStatus(403);
+  }); */
 });
 
-app.listen(8080, function () {
+app.get('/equipment', function(req, res) {
+
+  res.sendFile(path.join(__dirname + "/public/equipment_list.html"));
+
+});
+
+app.get('/equipmentProducts', function(req, res) {
+
+  var products = equipment.findByKeywordAmz(MongoClient, urlDB, req.get("domainCode"), req.get("keyword"), req.get("sortBy"), req.get("page"));
+  products.then(function(result){
+    res.setHeader('Content-Type', 'application/json');  
+    res.send(result);
+  });
+});
+
+startupRoutines();
+
+app.listen(8080, function() {
   console.log('Fit_Advisor app listening on port 8080!');
 });

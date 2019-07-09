@@ -32,29 +32,11 @@ function switchTab(evt, category) {
     var exercises = JSON.parse(httpReq.response);
     if (httpReq.status == 200 && document.getElementById(category).children[0].children[0] == undefined) {
         for (i = 0; i < exercises.length; i++) {
-            var equipments = "";
             var table = document.getElementById(category).children[0];
             var row = table.insertRow(i);
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
-            var cell3 = row.insertCell(2);
             cell1.innerHTML = exercises[i].name;
-            //set equipment
-            if (exercises[i].equipment.length > 1) {
-                for (j = 0; j < exercises[i].equipment.length; j++) {
-                    if (j < exercises[i].equipment.length - 1)
-                        equipments += exercises[i].equipment[j].name + ", ";
-                    else
-                        equipments += exercises[i].equipment[j].name;
-                }
-                cell2.innerHTML = equipments;
-            } else if (exercises[i].equipment.length == 1) {
-                equipments = exercises[i].equipment[0].name;
-                cell2.innerHTML = equipments;
-            } else {
-                cell2.innerHTML = "Not required";
-                equipments = "Not required";
-            }
             var form = document.createElement('form');
             form.setAttribute('method', 'POST');
             form.setAttribute('action', "/exercise_info");
@@ -70,10 +52,9 @@ function switchTab(evt, category) {
             submit.className = 'btn btn-primary';
             form.appendChild(card);
             form.appendChild(submit);
-            cell3.appendChild(form); 
+            cell2.appendChild(form); 
             cell1.style.textAlign = "left";
             cell2.style.textAlign = "left";
-            cell3.style.textAlign = "left";
         }
     }
 }

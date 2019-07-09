@@ -16,7 +16,7 @@ function fillSection(card) {
         equipments = card.equipment[0].name;
         document.getElementById("equipment").innerHTML = equipments;
     } else {
-        document.getElementById("equipment").innerHTML = "Not required";
+        document.getElementById("div_equipment").style.display = "none";
     }
     //primaryM
     var primaryM = "";
@@ -32,7 +32,7 @@ function fillSection(card) {
         primaryM = card.muscles[0].name;
         document.getElementById("muscles_primary").innerHTML = primaryM;
     } else {
-        document.getElementById("muscles_primary").innerHTML = "Not present";
+        document.getElementById("div_muscles_primary").style.display = "none"
     }
     //secondaryM
     var secondaryM = "";
@@ -48,7 +48,7 @@ function fillSection(card) {
         secondaryM = card.muscles_secondary[0].name;
         document.getElementById("muscles_secondary").innerHTML = secondaryM;
     } else {
-        document.getElementById("muscles_secondary").innerHTML = "Not present";
+        document.getElementById("div_muscles_secondary").style.display = "none"
     }
 
     var httpReq = new XMLHttpRequest();

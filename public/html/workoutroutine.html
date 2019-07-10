@@ -26,8 +26,33 @@
         $(document).ready(function() {     
             //alert('ciao');      
             $.get("/retrieveRoutine?category=" + $.urlParam('category'), function(data, status){
+                console.log(data.length);
                 for(i=0; i<data.length; i++){
-                    $('.box').append(data[i]['routine']);
+                    /*var woutRoutine = {
+                        title:"",
+                        description:"",
+                        muscularGroup:"",
+                        equipment:"",
+                        routine:[{
+                            title:"",
+                            img:"",
+                            sets:"",
+                            reps:"",
+                            notes:""
+                            }]
+                    };*/
+                    var woutRoutine = data[i];
+                    
+                    $('.box').append('<h3>' + woutRoutine['title'] + '</h3><br>');
+                    $('.box').append(woutRoutine['description'] + '<br>');
+                    
+                    for(j=0; j< woutRoutine['routine'].length; j++){
+                        $('.box').append('<br>' + woutRoutine.routine[j]['title'] + '<br>');
+                        $('.box').append('<img src=' + woutRoutine.routine[j]['img'] + '>');
+                        $('.box').append(woutRoutine.routine[j]['sets'] + '\t');
+                        $('.box').append(woutRoutine.routine[j]['reps'] + '\t\t\t');
+                        $('.box').append(woutRoutine.routine[j]['notes']);
+                    }
                     $('.box').append('<br>');
                 }
                 

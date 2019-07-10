@@ -42,21 +42,21 @@ MongoClient.connect(url, {useNewUrlParser:true}, function(err, client) {
                 woutRoutine['muscularGroup'] = muscularGroups[j];
                 woutRoutine['equipment'] = equipment[i];
                       
-                $('th.tableName').each(function(i, elem) {
-                    woutRoutine.routine[i] = {};
-                    woutRoutine.routine[i]['title'] = $(this).text();
+                $('th.tableName').each(function(index, elem) {
+                    woutRoutine.routine[index] = {};
+                    woutRoutine.routine[index]['title'] = $(this).text();
                 })
-                $('td.tableImage img').each(function(i, elem) {
-                    woutRoutine.routine[i]['img'] = $(this).attr('src');
+                $('td.tableImage img').each(function(index, elem) {
+                    woutRoutine.routine[index]['img'] = 'https://' + SITE + '/' + equipment[i] + '/' + muscularRoutines[j] + '/' + $(this).attr('src');
                 })
-                $('td.tableSets').each(function(i, elem) {
-                    woutRoutine.routine[i]['sets'] = $(this).text();
+                $('td.tableSets').each(function(index, elem) {
+                    woutRoutine.routine[index]['sets'] = $(this).text();
                 })
-                $('td.tableReps').each(function(i, elem) {
-                    woutRoutine.routine[i]['reps'] = $(this).text();
+                $('td.tableReps').each(function(index, elem) {
+                    woutRoutine.routine[index]['reps'] = $(this).text();
                 })
-                $('td.tableNotes').each(function(i, elem) {
-                    woutRoutine.routine[i]['notes'] = cleanText('description', $(this).text());
+                $('td.tableNotes').each(function(index, elem) {
+                    woutRoutine.routine[index]['notes'] = cleanText('description', $(this).text());
                 })
 
                 addToCollection(woutRoutine, collection); //Add workout routine object to Mongo collection

@@ -11,6 +11,7 @@ var schedule = require('node-schedule');
 var exercise = require('./src/exercise');
 var injuries = require('./src/injuries');
 var equipment = require('./src/equipment');
+const workoutRoutine = require('./src/workout_routine_mongo');
 
 //Serving static files such as Images, CSS, JavaScript
 app.use(express.static("public"));
@@ -98,25 +99,7 @@ app.get('/food', function (req, res) {
 });
 
 app.get('/injuries', function(req, res) {
-  res.sendFile(path.join(__dirname + "/public/html/injuries_list.html"));
-
-    /*result.then(function ([title, content]){
-       //STORE THE RETRIEVED CONTENT IN A DOCUMENT LOCATED INTO A 'Injuries' COLLECTION 
-       const dbo = db.db("Fit_AdvisorDB");
-       var injury_obj= {injuryName: title, injuryContent: ""+content.html()};
-       dbo.collection("Injuries").insertOne(injury_obj, function (err, res) {
-         if (err) throw err;
-         db.close();
-       });
-    });*/
-
-
-    /*var ijrs= injuries.getInjuriesList(db);
-    ijrs.then(function(result){
-      res.setHeader('Content-Type', 'application/json');
-      res.send(result); 
-    });*/
-    
+  res.sendFile(path.join(__dirname + "/public/html/injuries_list.html"));    
 });
 
 app.get('/injuryDetails', function(req, res){
@@ -144,6 +127,17 @@ app.get('/equipmentProducts', function(req, res) {
   });
 });
 
+app.get('/workoutRoutine', function(req, res) {
+  res.sendFile(path.join(__dirname + "/public/html/workoutroutine.html"));
+});
+
+app.get('/retrieveRoutine', function(req, res) {
+  var muscularGroup = req.query.category;
+  if(muscularGroup != undefined)
+    workoutRoutine.retrieveByMuscularGroup(req.query.category, function(woutRoutines){
+      res.send(woutRoutines);
+    });
+});
 
 app.listen(8080, function() {
   console.log('Fit_Advisor app listening on port 8080!');

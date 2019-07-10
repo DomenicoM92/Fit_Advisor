@@ -1,0 +1,40 @@
+<html>
+    <head>
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE = edge">
+            <meta name="viewport" content="width = device-width, initial-scale = 1">
+            <link rel="stylesheet" type="text/css" href="css/exercise_list.css">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+            <title>Workout Routine</title>
+    </head>
+    <body>
+        <h1>Workout Routine</h1>
+        <div class="box"></div>
+    </body>
+
+    <script>
+        $.urlParam = function(name){
+            var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+            if (results==null) {
+            return null;
+            }
+            return decodeURI(results[1]) || 0;
+        }
+
+        $(document).ready(function() {     
+            //alert('ciao');      
+            $.get("/retrieveRoutine?category=" + $.urlParam('category'), function(data, status){
+                for(i=0; i<data.length; i++){
+                    $('.box').append(data[i]['routine']);
+                    $('.box').append('<br>');
+                }
+                
+            });
+        });
+
+        
+    </script>
+
+</html>

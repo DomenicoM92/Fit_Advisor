@@ -153,7 +153,6 @@ app.get('/retrieveRoutine', function(req, res) {
   var muscularGroup = req.query.category;
   if(muscularGroup != undefined)
     workoutRoutine.retrieveByMuscularGroup(req.query.category, function(woutRoutines){
-      console.log(woutRoutines);
       res.send(woutRoutines);
     });
 });

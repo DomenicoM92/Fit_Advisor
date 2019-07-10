@@ -12,28 +12,58 @@ const muscularGroups = ['abs', 'back', 'chest', 'shoulders', 'arms', 'legs'];
 
 MongoClient.connect(url, {useNewUrlParser:true}, function(err, client) {
     assert.equal(null, err);
-    //console.log("Connected successfully to server");
     var db = client.db('Fit_AdvisorDB');
     const collection = db.collection('WorkoutRoutine');
-
+    console.log('Starting insertion...');
     for(i=0; i < equipment.length; i++){
         for(j=0; j < muscularGroups.length; j++){
             var scrapeUrl = 'https://' + SITE + '/' + equipment[i] + "/" + muscularRoutines[j];
             var res = request('GET', scrapeUrl);
             console.log('statusCode:', res.statusCode);
             if(res.statusCode != 404){
-                $ = cheerio.load(res.getBody());
-                var woutRoutine = {};
+                var $ = cheerio.load(res.getBody());
+                
+                var woutRoutine = {
+                    title:"",
+                    description:"",
+                    muscularGroup:"",
+                    equipment:"",
+                    routine:[{
+                        title:"",
+                        img:"",
+                        sets:"",
+                        reps:"",
+                        notes:""
+                    }]
+                };
+
                 woutRoutine['title'] = cleanText('title', $('title').text());
                 woutRoutine['description'] = cleanText('description', $('p').first().text());
                 woutRoutine['muscularGroup'] = muscularGroups[j];
                 woutRoutine['equipment'] = equipment[i];
-                woutRoutine['routine'] = $('.tableExercise').html(); //Modo becero, devo prendere singolarmente gli esercizi
-                
+                      
+                $('th.tableName').each(function(i, elem) {
+                    woutRoutine.routine[i] = {};
+                    woutRoutine.routine[i]['title'] = $(this).text();
+                })
+                $('td.tableImage img').each(function(i, elem) {
+                    woutRoutine.routine[i]['img'] = $(this).attr('src');
+                })
+                $('td.tableSets').each(function(i, elem) {
+                    woutRoutine.routine[i]['sets'] = $(this).text();
+                })
+                $('td.tableReps').each(function(i, elem) {
+                    woutRoutine.routine[i]['reps'] = $(this).text();
+                })
+                $('td.tableNotes').each(function(i, elem) {
+                    woutRoutine.routine[i]['notes'] = cleanText('description', $(this).text());
+                })
+
                 addToCollection(woutRoutine, collection); //Add workout routine object to Mongo collection
             }
         }
     }
+    console.log('Insertion ended')
     client.close();
 });
 
@@ -47,7 +77,6 @@ function cleanText(type, text){
 function addToCollection(woutRoutine, collection){
     collection.insertOne(woutRoutine, function(err, result) {
         assert.equal(err, null);
-        console.log("Inserted document");
     });
 }
 

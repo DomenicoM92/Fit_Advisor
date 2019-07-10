@@ -10,6 +10,31 @@
             <title>Workout Routine</title>
     </head>
     <body>
-
+        <h1>Workout Routine</h1>
+        <div class="box"></div>
     </body>
+
+    <script>
+        $.urlParam = function(name){
+            var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+            if (results==null) {
+            return null;
+            }
+            return decodeURI(results[1]) || 0;
+        }
+
+        $(document).ready(function() {     
+            //alert('ciao');      
+            $.get("/retrieveRoutine?category=" + $.urlParam('category'), function(data, status){
+                for(i=0; i<data.length; i++){
+                    $('.box').append(data[i]['routine']);
+                    $('.box').append('<br>');
+                }
+                
+            });
+        });
+
+        
+    </script>
+
 </html>

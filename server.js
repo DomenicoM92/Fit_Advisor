@@ -150,17 +150,12 @@ app.get('/workoutRoutine', function(req, res) {
 });
 
 app.get('/retrieveRoutine', function(req, res) {
-  var muscularGroup = req.query.musculargroup;
-
-  switch(muscularGroup){
-    case 'abs': workoutRoutine.retrieveByMuscleGroup('abs'); break;
-    case 'back': workoutRoutine.retrieveByMuscleGroup('back'); break;
-    case 'chest': workoutRoutine.retrieveByMuscleGroup('chest'); break;
-    case 'shoulders': workoutRoutine.retrieveByMuscleGroup('shoulders'); break;
-    case 'arms': workoutRoutine.retrieveByMuscleGroup('arms'); break;
-    case 'legs': workoutRoutine.retrieveByMuscleGroup('legs'); break;
-  }
-  console.log(muscularGroup);
+  var muscularGroup = req.query.category;
+  if(muscularGroup != undefined)
+    workoutRoutine.retrieveByMuscularGroup(req.query.category, function(woutRoutines){
+      console.log(woutRoutines);
+      res.send(woutRoutines);
+    });
 });
 
 app.listen(8080, function() {

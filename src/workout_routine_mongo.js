@@ -13,7 +13,6 @@ module.exports = {
             const collection = db.collection('WorkoutRoutine');
 
             
-
             client.close();
         });
     }

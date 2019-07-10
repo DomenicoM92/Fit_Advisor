@@ -1,5 +1,6 @@
 body{
     background: #eee;
+    width: 100%
 }
 span{
     font-size:15px;
@@ -19,8 +20,30 @@ a{
     margin:10px 0px 10px 0px;
 }
 
+.box-img-content{
+    overflow: hidden;
+    max-height: 278px;
+}
+
+.col{
+    width: 320px;
+    margin:0.5%;
+}
+
 .box-part:hover img{
-    src: url("../media/abs-zoomed.png");
+    -webkit-transform:scale(1.5); /* Safari and Chrome */
+    -moz-transform:scale(1.5); /* Firefox */
+    -ms-transform:scale(1.5); /* IE 9 */
+    -o-transform:scale(1.5); /* Opera */
+     transform:scale(1.5);
+}
+
+.box-part img{
+    -webkit-transition: all 1s ease; /* Safari and Chrome */
+    -moz-transition: all 1s ease; /* Firefox */
+    -ms-transition: all 1s ease; /* IE 9 */
+    -o-transition: all 1s ease; /* Opera */
+    transition: all 1s ease;
 }
 
 .text{

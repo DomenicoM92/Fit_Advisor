@@ -4,17 +4,17 @@
                     "Abs":[], 
                     "Back":["back"], 
                     "Chest":[], 
-                    "Calves":["calf"], 
-                    "Legs":["glute", "femor", "hamstring", "knee"], 
+                    "Legs":["glute", "femor", "hamstring", "knee", "calf"], 
                     "Shoulders":["shoulder"]
                   };
 
 
-  exports.getInjuriesList = function(db){
+  exports.retrieveByMuscularGroup = function(db){
     var dbo = db.db("Fit_AdvisorDB");
     dbo.collection("Injuries").find({'injuryName': 1}).sort({injuryName: 1}).toArray(function(err, result){
       if(err) throw err;
       db.close();
+      return result;
     });
   }
 
@@ -32,7 +32,7 @@
     });
   }
 
-  exports.createInjuriesDataset= function(MongoClient,urlDB){
+  exports.ETLInjury= function(MongoClient,urlDB){
     var request= require("request");
     var cheerio= require("cheerio");
     var fs= require("fs");
@@ -101,7 +101,7 @@
 
 
 
-    function createMatching(injuryName){
+    function createMatchingByTitle(injuryName){
       
     }
 

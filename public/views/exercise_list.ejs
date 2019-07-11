@@ -7,13 +7,15 @@
     <meta name="viewport" content="width = device-width, initial-scale = 1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <title>Exercise List</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <title><%-category%> Exercise List</title>
 </head>
 
 
 <body>
-    <nav class="navbar navbar-dark default-color" style="background: #000000">
-        <a class="navbar-brand" href="#">FitAdvisor</a>
+    <nav class="navbar navbar-dark default-color bg-dark">
+        <a class="navbar-brand text-white" href="#">FitAdvisor</a>
         <div>
             <form class="form-inline">
                 <div class="md-form my-0">
@@ -25,9 +27,9 @@
     <div class="container-fluid w-50" style="margin-top: 2%">
 
         <table class="table table-bordered table-striped">
-            <thead class="thead-dark">
-                <th><%-category%> Exercise</th>
-                <th>Exercise Card</th>
+            <thead class="thead bg-dark">
+                <th class="text-white"><%-category%> Exercise</th>
+                <th class="text-white">Exercise Card</th>
             </thead>
             <tbody id="body_table">
             </tbody>
@@ -40,8 +42,8 @@
                     <li id="list_container" class="page-link">
 
                     </li>
-                    <li class="page-item"><a a id="rightArrow" onclick="arrowSwitch(1);" class="page-link text-dark"
-                            href="#">Next</a></li>
+                    <li class="page-item"><a a id="rightArrow" onclick="arrowSwitch(1);"
+                            class="page-link text-dark">Next</a></li>
                 </ul>
             </nav>
         </div>

@@ -3,15 +3,15 @@
             <meta charset="utf-8">
             <meta http-equiv="X-UA-Compatible" content="IE = edge">
             <meta name="viewport" content="width = device-width, initial-scale = 1">
-            <link rel="stylesheet" type="text/css" href="css/exercise_list.css">
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">            
+            <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>            
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
             <title>Workout Routine</title>
     </head>
     <body>
-        <h1>Workout Routine</h1>
-        <div class="box"></div>
+        <div id="grid" class = "container-fluid p-4"></div>
+        
     </body>
 
     <script>
@@ -24,15 +24,92 @@
         }
 
         $(document).ready(function() {     
-            //alert('ciao');      
             $.get("/retrieveRoutine?category=" + $.urlParam('category'), function(data, status){
+                console.log(data.length);
                 for(i=0; i<data.length; i++){
-                    $('.box').append(data[i]['routine']);
-                    $('.box').append('<br>');
+                    /*var woutRoutine = {
+                        title:"",
+                        description:"",
+                        muscularGroup:"",
+                        equipment:"",
+                        routine:[{
+                            title:"",
+                            img:"",
+                            sets:"",
+                            reps:"",
+                            notes:""
+                            }]
+                    };*/
+                    var woutRoutine = data[i];
+                    
+                    createCard(woutRoutine);  
                 }
                 
             });
         });
+
+        function createCard(woutRoutine){
+            /*var woutRoutine = {
+                title:"",
+                description:"",
+                muscularGroup:"",
+                equipment:"",
+                routine:[{
+                    title:"",
+                    img:"",
+                    sets:"",
+                    reps:"",
+                    notes:""
+                    }]
+            };*/
+
+            /*This is the card template to generate
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="../media/test.png" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>*/
+
+            var grid = document.getElementById('grid');
+            var container = document.createElement('div');
+            container.classList.add('row'); 
+            var br = document.createElement('br');
+            var woutRoutineTitle = document.createElement('h2');
+            woutRoutineTitle.innerHTML += woutRoutine['title'];
+            woutRoutineTitle.append(br);
+            var woutRoutineDesc = document.createElement('p');
+            woutRoutineDesc.innerHTML += woutRoutine['description'];
+            woutRoutineDesc.append(br);
+
+            var card, img, cardBody, cardHeader, cardText;
+
+            container.append(woutRoutineTitle);
+            container.append(woutRoutineDesc);
+
+
+            woutRoutine['routine'].forEach(function(exercise, index) {
+                card = document.createElement('div');
+                card.classList.add('card'); card.classList.add('bg-dark'); card.classList.add('m-4'); card.setAttribute('style', 'width: 20rem');
+                cardHeader = document.createElement('h5')
+                cardHeader.classList.add('card-header'); cardHeader.classList.add('text-white'); cardHeader.innerHTML += exercise['title'];
+                img = document.createElement('img')
+                img.classList.add('card-img-top'); img.setAttribute('src', exercise['img']); img.setAttribute('alt', 'Card image cap');
+                cardBody = document.createElement('div');
+                cardBody.classList.add('card-body');
+                cardText = document.createElement('p');
+                cardText.classList.add('card-text'); cardText.classList.add('text-white'); cardText.innerHTML += exercise['sets'] + "\t" + exercise['reps'] + "<br>" + exercise['notes'];
+                cardBody.append(cardText);
+                card.append(cardHeader)
+                card.append(img)
+                card.append(cardBody);
+                container.append(card);
+            });
+
+            grid.append(container);
+        }
 
         
     </script>

@@ -34,18 +34,16 @@
             <tbody id="body_table">
             </tbody>
         </table>
-        <div class="clearfix">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item"><a id="leftArrow" onclick="arrowSwitch(-1);"
-                            class="page-link text-dark">Previous</a></li>
-                    <li id="list_container" class="page-link">
+        <div>
+            <ul class="pagination" style="margin: auto;width: 50%;">
+                <li class="page-item"><a id="leftArrow" onclick="pageSwitch(-1);"
+                        class="page-link text-dark">Previous</a></li>
+                <li id="list_container" class="page-link" style="width: 50%">
 
-                    </li>
-                    <li class="page-item"><a a id="rightArrow" onclick="arrowSwitch(1);"
-                            class="page-link text-dark">Next</a></li>
-                </ul>
-            </nav>
+                </li>
+                <li class="page-item"><a a id="rightArrow" onclick="pageSwitch(1);"
+                        class="page-link text-dark">Next</a></li>
+            </ul>
         </div>
     </div>
 

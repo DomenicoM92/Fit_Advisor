@@ -51,19 +51,17 @@ function fillSection(card) {
         document.getElementById("div_muscles_secondary").style.display = "none"
     }
 
-    var httpReq = new XMLHttpRequest();
-    httpReq.open("GET", "/exercise_video", false);
-    httpReq.setRequestHeader("name", card.name);
-    httpReq.send();
-    if (httpReq.status == 200) {
-        var video = JSON.parse(httpReq.response);
-        var link1 = "https://www.youtube.com/embed/" + video[0].id;
-        var link2 = "https://www.youtube.com/embed/" + video[1].id;
-        document.getElementById('iFrameContainer').style.display = "block";
-        document.getElementById('iFrame1').setAttribute("src", link1);
-        document.getElementById('iFrame2').setAttribute("src", link2);
-    } else {
-        console.log("error 403 (exceeded number request YouTube API)");
-        document.getElementById('iFrameContainer').style.display = "none";
-    }
+    $.get("/exercise_video?name=" + card.name, function (data, status) {
+        if(status == "success") {
+            var video = data;
+            var link1 = "https://www.youtube.com/embed/" + video[0].id;
+            var link2 = "https://www.youtube.com/embed/" + video[1].id;
+            document.getElementById('iFrameContainer').style.display = "block";
+            document.getElementById('iFrame1').setAttribute("src", link1);
+            document.getElementById('iFrame2').setAttribute("src", link2);
+        }else {
+            console.log("error 403 (exceeded number request YouTube API)");
+            document.getElementById('iFrameContainer').style.display = "none"; 
+        }
+    });
 }

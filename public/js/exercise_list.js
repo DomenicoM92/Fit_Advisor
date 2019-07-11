@@ -33,7 +33,8 @@ function buildTable(category) {
             form.appendChild(submit);
             cell2.appendChild(form);
             cell1.style.textAlign = "left";
-            cell2.style.textAlign = "left";
+            cell1.style.fontSize = "x-large";
+            cell2.style.textAlign = "center";
             if (i > LIMIT_ITEM)
                 row.style.display = "none";
             row.appendChild(cell1);

@@ -23,36 +23,33 @@
             </form>
         </div>
     </nav>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="table-responsive">
-                    <table class="table table-bordred table-fixed w-50">
-                        <thead class="thead-dark">
-                            <th><%-category%> Exercise</th>
-                            <th>Exercise Card</th>
-                        </thead>
-                        <tbody id="body_table">
-                        </tbody>
-                </div>
-                </table>
-            </div>
-        </div>
+    <div class="container-fluid w-50">
+
+        <table class="table table-bordered table-striped text-cente">
+            <thead class="thead-dark">
+                <th><%-category%> Exercise</th>
+                <th>Exercise Card</th>
+            </thead>
+            <tbody id="body_table">
+            </tbody>
+        </table>
         <div class="clearfix">
             <ul class="pagination pull-right">
                 <li><a id="rightArrow" onclick="arrowSwitch(1);"><span
-                            class="glyphicon glyphicon-chevron-right"></span></a></li>
+                            class="glyphicon glyphicon-chevron-right"></span></a>
+                </li>
             </ul>
             <ul id="list_container" class="pagination pull-right">
 
             </ul>
             <ul class="pagination pull-right">
                 <li><a id="leftArrow" onclick="arrowSwitch(-1);"><span
-                            class="glyphicon glyphicon-chevron-left"></span></a></li>
+                            class="glyphicon glyphicon-chevron-left"></span></a>
+                </li>
             </ul>
         </div>
-
     </div>
+
     <script src="../js/exercise_list.js"></script>
     <script>
         var category = "<%-category%>";

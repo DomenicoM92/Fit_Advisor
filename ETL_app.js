@@ -1,12 +1,16 @@
 const exercise = require('./src/exercise');
-var equipment = require('./src/equipment');
+const equipment = require('./src/equipment');
+const woutRoutine = require('./src/workout_routine_scraper.js');
 const MongoClient = require('mongodb').MongoClient;
 const urlDB = 'mongodb://localhost:27017/';
-var request = require('sync-request');
-var fs = require('fs');
+const request = require('sync-request');
+const fs = require('fs');
 
 //Setup Equipment Collection and Populate Products
 equipment.initEquipmentCollection(MongoClient, urlDB, "com", "relevanceblender", "1");
+
+//Setup and Populate Workout Routine Collection
+woutRoutine.ETLWoutRoutine();
 
 //Check if API is available, then save a backup copy of Exercise collection, delete it, eventually call exercise handler (wrapper for exercise)
 console.log('Update Exercise ' + new Date().toISOString());

@@ -16,68 +16,73 @@ module.exports = {
             assert.equal(null, err);
             var db = client.db(dbName);
             const collection = db.collection('WorkoutRoutine');
-            console.log('Starting insertion...');
-            for(i=0; i < equipment.length; i++){
-                for(j=0; j < muscularGroups.length; j++){
-                    var scrapeUrl = 'https://' + SITE + '/' + equipment[i] + "/" + muscularRoutines[j];
-                    var res = request('GET', scrapeUrl);
-                    console.log('statusCode:', res.statusCode);
-                    if(res.statusCode == 200){
-                        var $ = cheerio.load(res.getBody());
-                        
-                        var woutRoutine = {
-                            title:"",
-                            description:"",
-                            muscularGroup:"",
-                            equipment:"",
-                            routine:[{
+            
+            collection.drop(function(err, delOK) {
+                if (delOK) console.log("Collection deleted");
+                
+                console.log('Starting insertion...');
+
+                for(i=0; i < equipment.length; i++){
+                    for(j=0; j < muscularGroups.length; j++){
+                        var scrapeUrl = 'https://' + SITE + '/' + equipment[i] + "/" + muscularRoutines[j];
+                        var res = request('GET', scrapeUrl);
+                        //console.log('statusCode:', res.statusCode);
+                        if(res.statusCode == 200){
+                            var $ = cheerio.load(res.getBody());
+                            
+                            var woutRoutine = {
                                 title:"",
-                                img:"",
-                                sets:"",
-                                reps:"",
-                                notes:""
-                            }],
-                            timestamp:""
-                        };
-        
-                        woutRoutine['title'] = cleanText('title', $('title').text());
-                        woutRoutine['description'] = cleanText('description', $('p').first().text());
-                        woutRoutine['muscularGroup'] = muscularGroups[j];
-                        woutRoutine['equipment'] = equipment[i];
-                              
-                        $('th.tableName').each(function(index, elem) {
-                            woutRoutine.routine[index] = {};
-                            woutRoutine.routine[index]['title'] = $(this).text();
-                        })
-                        $('td.tableImage img').each(function(index, elem) {
-                            woutRoutine.routine[index]['img'] = 'https://' + SITE + '/' + equipment[i] + '/' + muscularRoutines[j] + '/' + $(this).attr('src');
-                        })
-                        $('td.tableSets').each(function(index, elem) {
-                            woutRoutine.routine[index]['sets'] = $(this).text();
-                        })
-                        $('td.tableReps').each(function(index, elem) {
-                            woutRoutine.routine[index]['reps'] = $(this).text();
-                        })
-                        $('td.tableNotes ul').each(function(index, elem) {
-                            var notes = "";
-                            $(this).find('li').each(function(index, elem) {
-                                notes += '<p class="m-0">' + $(this).text() + '</p>';
+                                description:"",
+                                muscularGroup:"",
+                                equipment:"",
+                                routine:[{
+                                    title:"",
+                                    img:"",
+                                    sets:"",
+                                    reps:"",
+                                    notes:""
+                                }],
+                                timestamp:""
+                            };
+            
+                            woutRoutine['title'] = cleanText('title', $('title').text());
+                            woutRoutine['description'] = cleanText('description', $('p').first().text());
+                            woutRoutine['muscularGroup'] = muscularGroups[j];
+                            woutRoutine['equipment'] = equipment[i];
+                                
+                            $('th.tableName').each(function(index, elem) {
+                                woutRoutine.routine[index] = {};
+                                woutRoutine.routine[index]['title'] = $(this).text();
                             })
-                            woutRoutine.routine[index]['notes'] = notes;
-                        })
-        
-                        woutRoutine["timestamp"] = new Date().toISOString();
-                        addToCollection(woutRoutine, collection); //Add workout routine object to Mongo collection
+                            $('td.tableImage img').each(function(index, elem) {
+                                woutRoutine.routine[index]['img'] = 'https://' + SITE + '/' + equipment[i] + '/' + muscularRoutines[j] + '/' + $(this).attr('src');
+                            })
+                            $('td.tableSets').each(function(index, elem) {
+                                woutRoutine.routine[index]['sets'] = $(this).text();
+                            })
+                            $('td.tableReps').each(function(index, elem) {
+                                woutRoutine.routine[index]['reps'] = $(this).text();
+                            })
+                            $('td.tableNotes ul').each(function(index, elem) {
+                                var notes = "";
+                                $(this).find('li').each(function(index, elem) {
+                                    notes += '<p class="m-0">' + $(this).text() + '</p>';
+                                })
+                                woutRoutine.routine[index]['notes'] = notes;
+                            })
+            
+                            woutRoutine["timestamp"] = new Date().toISOString();
+                            addToCollection(woutRoutine, collection); //Add workout routine object to Mongo collection
+                        }
                     }
                 }
-            }
-            console.log('Insertion ended')
-            console.log('Creating index...');
-            collection.createIndex({'muscularGroup': 1}, function(err, result) {
-                console.log("Index:" + result + ", created correctly");
-                client.close();
+                console.log('Insertion ended')
+                console.log('Creating index...');
+                collection.createIndex({'muscularGroup': 1}, function(err, result) {
+                    console.log("Index:" + result + ", created correctly");
+                    client.close();
+                });
             });
-        
         });
     }
 }

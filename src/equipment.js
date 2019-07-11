@@ -80,7 +80,7 @@ function populateEquipmentCollection(MongoClient, urlDB, domainCode, sortBy, pag
       if(equipment) {
         equipment.forEach(eq => {
           if(eq.name != "none (bodyweight exercise)") {
-            console.log("Found equipment: '" + eq.name + "'.");
+            //console.log("Found equipment: '" + eq.name + "'.");
             searchByKeywordAmz(MongoClient, urlDB, domainCode, eq.name, sortBy, page);
           }
         });
@@ -92,7 +92,7 @@ function populateEquipmentCollection(MongoClient, urlDB, domainCode, sortBy, pag
 
 function lookupByKeywordAmz(MongoClient, urlDB, keyword) {
 
-  console.log("Looking up for '" + keyword + "' in DB...");
+  //console.log("Looking up for '" + keyword + "' in DB...");
   return new Promise(function (fulfill, reject){
     MongoClient.connect(urlDB,{ useNewUrlParser: true },function(err, db) {
       if (err) 
@@ -105,7 +105,7 @@ function lookupByKeywordAmz(MongoClient, urlDB, keyword) {
             reject(err);
           }
           if(found.amazonProducts != undefined) {
-            console.log("Found '" + keyword + "' in DB!");
+            //console.log("Found '" + keyword + "' in DB!");
             db.close();
             fulfill(found.amazonProducts);
           }
@@ -135,7 +135,7 @@ function searchByKeywordAmz(MongoClient, urlDB, domainCode, keyword, sortBy, pag
 
       if(keyword == "Flat bench") keyword = "Bench";
 
-      console.log("Found Products for '" + keyword + "'...");
+      //console.log("Found Products for '" + keyword + "'...");
       updateProducts(result, keyword, MongoClient, urlDB);
       fulfill(true);
 
@@ -152,7 +152,7 @@ function updateProducts(result, keyword, MongoClient, urlDB) {
     var equipmentSearch = JSON.parse(JSON.stringify(result.body)).foundProductDetails;
 
 
-    console.log("Updating '" + keyword + "' in DB...");
+    //console.log("Updating '" + keyword + "' in DB...");
 
     dbo.collection("Equipment").updateMany(
       {"name" : keyword},

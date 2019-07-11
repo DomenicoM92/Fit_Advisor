@@ -5,9 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE = edge">
     <meta name="viewport" content="width = device-width, initial-scale = 1">
-    <link href="../css/index-style.css" rel="stylesheet">
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <title>Exercise List</title>
 </head>
 
@@ -23,9 +22,9 @@
             </form>
         </div>
     </nav>
-    <div class="container-fluid w-50">
+    <div class="container-fluid w-50" style="margin-top: 2%">
 
-        <table class="table table-bordered table-striped text-cente">
+        <table class="table table-bordered table-striped">
             <thead class="thead-dark">
                 <th><%-category%> Exercise</th>
                 <th>Exercise Card</th>
@@ -34,21 +33,20 @@
             </tbody>
         </table>
         <div class="clearfix">
-            <ul class="pagination pull-right">
-                <li><a id="rightArrow" onclick="arrowSwitch(1);"><span
-                            class="glyphicon glyphicon-chevron-right"></span></a>
-                </li>
-            </ul>
-            <ul id="list_container" class="pagination pull-right">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item"><a id="leftArrow" onclick="arrowSwitch(-1);"
+                            class="page-link text-dark">Previous</a></li>
+                    <li id="list_container" class="page-link">
 
-            </ul>
-            <ul class="pagination pull-right">
-                <li><a id="leftArrow" onclick="arrowSwitch(-1);"><span
-                            class="glyphicon glyphicon-chevron-left"></span></a>
-                </li>
-            </ul>
+                    </li>
+                    <li class="page-item"><a a id="rightArrow" onclick="arrowSwitch(1);" class="page-link text-dark"
+                            href="#">Next</a></li>
+                </ul>
+            </nav>
         </div>
     </div>
+
 
     <script src="../js/exercise_list.js"></script>
     <script>

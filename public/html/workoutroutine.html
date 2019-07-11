@@ -10,8 +10,7 @@
             <title>Workout Routine</title>
     </head>
     <body>
-        <h1>Workout Routine</h1>
-        <div id="grid" class = "container-fluid"></div>
+        <div id="grid" class = "container-fluid p-4"></div>
         
     </body>
 
@@ -76,7 +75,7 @@
 
             var grid = document.getElementById('grid');
             var container = document.createElement('div');
-            container.classList.add('row');
+            container.classList.add('row'); 
             var br = document.createElement('br');
             var woutRoutineTitle = document.createElement('h2');
             woutRoutineTitle.innerHTML += woutRoutine['title'];
@@ -85,7 +84,7 @@
             woutRoutineDesc.innerHTML += woutRoutine['description'];
             woutRoutineDesc.append(br);
 
-            var card, img, cardBody, cardTitle, cardText;
+            var card, img, cardBody, cardHeader, cardText;
 
             container.append(woutRoutineTitle);
             container.append(woutRoutineDesc);
@@ -93,18 +92,17 @@
 
             woutRoutine['routine'].forEach(function(exercise, index) {
                 card = document.createElement('div');
-                card.classList.add('card'); card.classList.add('float-left'); card.setAttribute('style', 'width: 18rem');
+                card.classList.add('card'); card.classList.add('bg-dark'); card.classList.add('m-4'); card.setAttribute('style', 'width: 20rem');
+                cardHeader = document.createElement('h5')
+                cardHeader.classList.add('card-header'); cardHeader.classList.add('text-white'); cardHeader.innerHTML += exercise['title'];
                 img = document.createElement('img')
                 img.classList.add('card-img-top'); img.setAttribute('src', exercise['img']); img.setAttribute('alt', 'Card image cap');
                 cardBody = document.createElement('div');
                 cardBody.classList.add('card-body');
-                cardTitle = document.createElement('h5')
-                cardTitle.classList.add('card-title'); cardTitle.innerHTML += exercise['title'];
-                cardText = document.createElement('p')
-                cardText.classList.add('card-text'); cardText.innerHTML += exercise['sets'] + exercise['reps'] + "<br>" + exercise['notes'];
-                
-                cardBody.append(cardTitle)
+                cardText = document.createElement('p');
+                cardText.classList.add('card-text'); cardText.classList.add('text-white'); cardText.innerHTML += exercise['sets'] + "\t" + exercise['reps'] + "<br>" + exercise['notes'];
                 cardBody.append(cardText);
+                card.append(cardHeader)
                 card.append(img)
                 card.append(cardBody);
                 container.append(card);

@@ -50,7 +50,9 @@ function buildTable(category) {
         a.innerHTML = i + 1;
         a.id = "anchor" + (i + 1);
         a.addEventListener('click', function (event) {
-            var offset = (parseInt(event.toElement.childNodes[0].textContent)) - 1;
+            if( !event ) event = window.event ; 
+            console.log(event);          
+            var offset = (parseInt(event.target.childNodes[0].textContent)) - 1;
             buttonNumb = offset + 1;
             var allExer = document.getElementById("body_table").children.length;
             //remove active button

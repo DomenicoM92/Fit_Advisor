@@ -98,8 +98,19 @@ app.get('/food', function (req, res) {
   //res.sendFile(path.join(__dirname + "/public/html/food.html"));
 });
 
-app.get('/injuries', function(req, res) {
-  res.sendFile(path.join(__dirname + "/public/html/injuries_list.html"));    
+app.get('/injury', function(req, res) {
+  res.sendFile(path.join(__dirname + "/public/html/injuries_list.html"));  
+  const categories={"Arms":["bicep", "tricep", "forearm"], 
+                    "Abs":[], 
+                    "Back":["back"], 
+                    "Chest":[], 
+                    "Legs":["glute", "femor", "hamstring", "knee", "calf"], 
+                    "Shoulders":["shoulder"]
+                  };
+                  Object.keys(categories).forEach(function(key) {
+                    var value = categories[key];
+                    console.log(value[0]);
+                });
 });
 
 app.get('/injuryDetails', function(req, res){

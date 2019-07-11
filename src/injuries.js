@@ -102,7 +102,7 @@
 
 
     function createMatchingByTitle(injuryName){
-      
+      console.log(categories);
     }
 
 

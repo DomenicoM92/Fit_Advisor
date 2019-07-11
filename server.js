@@ -62,13 +62,13 @@ app.get('/exercise', function (req, res) {
       }).then(function () {
         //after deletion redo API call
         exercise.exerciseHandler(MongoClient, urlDB);
-        res.sendFile(path.join(__dirname + "/public/html/exercise_list.html"));
+        res.render('exercise_list',{category:req.query.category});
       });
     } else {
-      res.sendFile(path.join(__dirname + "/public/html/exercise_list.html"));
+      res.render('exercise_list',{category:req.query.category});
     }
   });
-  res.sendFile(path.join(__dirname + "/public/html/exercise_list.html"));
+  res.render('exercise_list',{category:req.query.category});
 });
 
 app.get('/exerciseCategory', function (req, res) {
@@ -99,25 +99,7 @@ app.get('/food', function (req, res) {
 });
 
 app.get('/injuries', function(req, res) {
-  res.sendFile(path.join(__dirname + "/public/html/injuries_list.html"));
-
-    /*result.then(function ([title, content]){
-       //STORE THE RETRIEVED CONTENT IN A DOCUMENT LOCATED INTO A 'Injuries' COLLECTION 
-       const dbo = db.db("Fit_AdvisorDB");
-       var injury_obj= {injuryName: title, injuryContent: ""+content.html()};
-       dbo.collection("Injuries").insertOne(injury_obj, function (err, res) {
-         if (err) throw err;
-         db.close();
-       });
-    });*/
-
-
-    /*var ijrs= injuries.getInjuriesList(db);
-    ijrs.then(function(result){
-      res.setHeader('Content-Type', 'application/json');
-      res.send(result); 
-    });*/
-    
+  res.sendFile(path.join(__dirname + "/public/html/injuries_list.html"));    
 });
 
 app.get('/injuryDetails', function(req, res){

@@ -1,39 +1,18 @@
-function openCurrentTab() {
-    if (localStorage.getItem("category") == null) {
-        var category = "Arms";
-        localStorage.setItem("category", category);
-        document.getElementById("ArmsButton").click();
-    } else {
-        var category = localStorage.getItem("category");
-        document.getElementById(category + "Button").click();
-    }
-}
-var someVarName = localStorage.getItem("category");
-function switchTab(evt, category) {
-    var i, tabcontent, tablinks;
-    localStorage.setItem("category", category);
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
+var buttonNumb = 0;
 
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-
-    document.getElementById(category).style.display = "block";
-    evt.currentTarget.className += " active";
-
+function buildTable(category) {
+    var LIMIT_ITEM = 10;
     var httpReq = new XMLHttpRequest();
     httpReq.open("GET", "/exerciseCategory", false);
     httpReq.setRequestHeader("category", category);
     httpReq.send();
     var exercises = JSON.parse(httpReq.response);
-    if (httpReq.status == 200 && document.getElementById(category).children[0].children[0] == undefined) {
+    if (httpReq.status == 200) {
+
+        var tbody = document.getElementById("body_table");
         for (i = 0; i < exercises.length; i++) {
-            var table = document.getElementById(category).children[0];
-            var row = table.insertRow(i);
+            var row = tbody.insertRow(i);
+            row.id = i;
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
             cell1.innerHTML = exercises[i].name;
@@ -49,12 +28,68 @@ function switchTab(evt, category) {
             var submit = document.createElement('input');
             submit.type = 'submit';
             submit.value = "show more";
-            submit.className = 'btn btn-primary';
+            submit.className = 'btn btn-outline-dark btn-lg';
             form.appendChild(card);
             form.appendChild(submit);
-            cell2.appendChild(form); 
+            cell2.appendChild(form);
             cell1.style.textAlign = "left";
-            cell2.style.textAlign = "left";
+            cell1.style.fontSize = "x-large";
+            cell2.style.textAlign = "center";
+            if (i > LIMIT_ITEM)
+                row.style.display = "none";
+            row.appendChild(cell1);
+            row.appendChild(cell2);
+            tbody.appendChild(row);
         }
+    }
+    var exeNumb = document.getElementById("body_table").children.length;
+    var list_container = document.getElementById("list_container");
+    for (i = 0; i < exeNumb / 10; i++) {
+        var li = document.createElement("li");
+        var a = document.createElement("a");
+        a.innerHTML = i + 1;
+        a.id = "anchor" + (i + 1);
+        a.addEventListener('click', function (event) {
+            if( !event ) event = window.event ; 
+            console.log(event);          
+            var offset = (parseInt(event.target.childNodes[0].textContent)) - 1;
+            buttonNumb = offset + 1;
+            var allExer = document.getElementById("body_table").children.length;
+            //remove active button
+            for (i = 1; i < (allExer / 10) + 1; i++) {
+                if (i == buttonNumb)
+                    document.getElementById("anchor" + i).style.backgroundColor = "Gainsboro";
+                else
+                    document.getElementById("anchor" + i).style.backgroundColor = "White";
+            }
+            for (i = 0; i < allExer; i++) {
+                if (i >= (offset * 10) && i <= ((offset * 10) + 10)) {
+                    document.getElementById(i).style.display = "table-row";
+                } else {
+                    document.getElementById(i).style.display = "none";
+                }
+            }
+        });
+        li.appendChild(a);
+        list_container.appendChild(li);
+        if (i == 0)
+            document.getElementById("anchor" + (i + 1)).style.backgroundColor = "Gainsboro";
+    }
+}
+
+function arrowSwitch(value) {
+
+    if (value > 0 && buttonNumb < document.getElementById("list_container").children.length) {
+        buttonNumb += value;
+        document.getElementById("anchor" + buttonNumb).click();
+        document.getElementById("anchor" + buttonNumb).style.backgroundColor = "Gainsboro";
+        document.getElementById("anchor" + (buttonNumb - 1)).style.backgroundColor = "White";
+    }
+    if (buttonNumb > 0 && value < 0) {
+        buttonNumb += value;
+        document.getElementById("anchor" + buttonNumb).click();
+        document.getElementById("anchor" + buttonNumb).className = "active";
+        document.getElementById("anchor" + buttonNumb).style.backgroundColor = "Gainsboro";
+        document.getElementById("anchor" + (buttonNumb + 1)).style.backgroundColor = "White";
     }
 }

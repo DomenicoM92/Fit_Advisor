@@ -54,7 +54,7 @@ exports.exerciseHandler = function (MongoClient, urlDB) {
 exports.videoExerciseRequest = function (exerciseName) {
   return new Promise(function (fulfill, reject) {
     var opts = {
-      maxResults: 2,
+      maxResults: 1,
       key: 'AIzaSyB10jgQoDvOoZo3NopHUvYPpHFFIFU1e6o'
     };
     search(exerciseName + " GYM Exercise", opts, function (err, results) {

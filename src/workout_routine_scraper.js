@@ -1,5 +1,4 @@
 const cheerio = require('cheerio');
-//const request = require('request');
 const request = require('sync-request');
 var MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
@@ -12,7 +11,7 @@ const muscularGroups = ['abs', 'back', 'chest', 'shoulders', 'arms', 'legs'];
 
 MongoClient.connect(url, {useNewUrlParser:true}, function(err, client) {
     assert.equal(null, err);
-    var db = client.db('Fit_AdvisorDB');
+    var db = client.db(dbName);
     const collection = db.collection('WorkoutRoutine');
     console.log('Starting insertion...');
     for(i=0; i < equipment.length; i++){
@@ -20,7 +19,7 @@ MongoClient.connect(url, {useNewUrlParser:true}, function(err, client) {
             var scrapeUrl = 'https://' + SITE + '/' + equipment[i] + "/" + muscularRoutines[j];
             var res = request('GET', scrapeUrl);
             console.log('statusCode:', res.statusCode);
-            if(res.statusCode != 404){
+            if(res.statusCode == 200){
                 var $ = cheerio.load(res.getBody());
                 
                 var woutRoutine = {
@@ -34,7 +33,8 @@ MongoClient.connect(url, {useNewUrlParser:true}, function(err, client) {
                         sets:"",
                         reps:"",
                         notes:""
-                    }]
+                    }],
+                    timestamp:""
                 };
 
                 woutRoutine['title'] = cleanText('title', $('title').text());
@@ -55,16 +55,26 @@ MongoClient.connect(url, {useNewUrlParser:true}, function(err, client) {
                 $('td.tableReps').each(function(index, elem) {
                     woutRoutine.routine[index]['reps'] = $(this).text();
                 })
-                $('td.tableNotes').each(function(index, elem) {
-                    woutRoutine.routine[index]['notes'] = cleanText('description', $(this).text());
+                $('td.tableNotes ul').each(function(index, elem) {
+                    var notes = "";
+                    $(this).find('li').each(function(index, elem) {
+                        notes += '<p class="m-0">' + $(this).text() + '</p>';
+                    })
+                    woutRoutine.routine[index]['notes'] = notes;
                 })
 
+                woutRoutine["timestamp"] = new Date().toISOString();
                 addToCollection(woutRoutine, collection); //Add workout routine object to Mongo collection
             }
         }
     }
     console.log('Insertion ended')
-    client.close();
+    console.log('Creating index...');
+    collection.createIndex({'muscularGroup': 1}, function(err, result) {
+        console.log("Index:" + result + ", created correctly");
+        client.close();
+    });
+
 });
 
 function cleanText(type, text){

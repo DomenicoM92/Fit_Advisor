@@ -89,10 +89,9 @@
             container.append(woutRoutineTitle);
             container.append(woutRoutineDesc);
 
-
             woutRoutine['routine'].forEach(function(exercise, index) {
                 card = document.createElement('div');
-                card.classList.add('card'); card.classList.add('bg-dark'); card.classList.add('m-4'); card.setAttribute('style', 'width: 20rem');
+                card.classList.add('card'); card.classList.add('bg-dark'); card.classList.add('m-4'); card.setAttribute('style', 'width: 18rem');
                 cardHeader = document.createElement('h5')
                 cardHeader.classList.add('card-header'); cardHeader.classList.add('text-white'); cardHeader.innerHTML += exercise['title'];
                 img = document.createElement('img')

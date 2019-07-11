@@ -5,16 +5,25 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE = edge">
     <meta name="viewport" content="width = device-width, initial-scale = 1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
     <title>Exercise info</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-        crossorigin="anonymous"></script>
+    
 </head>
 
 <body>
+    <nav class="navbar navbar-dark default-color bg-dark">
+        <a class="navbar-brand text-white" href="#">FitAdvisor</a>
+        <div>
+            <form class="form-inline">
+                <div class="md-form my-0">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+                </div>
+            </form>
+        </div>
+    </nav>
     <h1 style="font-size: 500%">&#9432;</h1>
     <div class="card" style="margin:0 auto; padding: 10%">
         <div id="div_name" class="card-body">
@@ -56,6 +65,39 @@
 
         </div>
     </div>
+    <header class="exercise-hero">
+            <div class="exercise-hero__inner">
+                <div class="exercise-hero__image-wrap">
+                    <div class="exercise-hero__image" style="background-image: url('https://acewebcontent.azureedge.net/exercise-library/large/5-1.jpg');"></div>
+                </div>
+                <div class="exercise-hero__content-wrap">
+                    <h2 class="exercise-hero__category-title">Arm Exercises</h2>
+                    <h1 class="exercise-hero__title">Chest Press</h1>
+                    <div class="exercise-hero__data">
+        <dl class="exercise-info exercise-info--hero">
+            <div class="exercise-info__term exercise-info__term--body-part">
+                <dt><span>Target </span>Body Part:</dt>
+                <dd>Arms, Chest, Shoulders</dd>
+            </div>
+            <div class="exercise-info__term exercise-info__term--equipment">
+                <dt>Equipment:</dt>
+                <dd>Barbell, Bench</dd>
+            </div>
+            <div class="exercise-info__term exercise-info__term--difficulty">
+                <dt>Difficulty:</dt>
+                <dd class="exercise-info__meter-wrap">
+                    <div class="exercise-info__meter">
+                        <img class="exercise-info__bar-img" src="https://acewebstatic.azureedge.net/v-636640097574908193/images/layout/2017/dist/exercise-meter.png">
+                                    <span class="exercise-info__lvl-label exercise-info__lvl-label--lvl1"><span class="icon-wrap"><svg aria-hidden="true" class="icon icon--caret-up icon--white"><use xlink:href="#icon-caret-up"></use></svg></span>Beginner</span>
+                    </div>
+                </dd>
+            </div>
+        </dl>
+        
+                    </div>
+                </div>
+            </div>
+        </header>
     <script src="../js/exercise_info.js"></script>
     <script>
         var card = <%-card%>;

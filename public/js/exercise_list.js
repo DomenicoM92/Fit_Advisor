@@ -1,4 +1,4 @@
-var buttonNumb = 0;
+var buttonNumb = 1;
 
 function buildTable(category) {
     var LIMIT_ITEM = 10;
@@ -28,12 +28,12 @@ function buildTable(category) {
             var submit = document.createElement('input');
             submit.type = 'submit';
             submit.value = "show more";
-            submit.className = 'btn btn-outline-dark btn-lg';
+            submit.className = 'btn btn-outline-dark btn-smal';
             form.appendChild(card);
             form.appendChild(submit);
             cell2.appendChild(form);
             cell1.style.textAlign = "left";
-            cell1.style.fontSize = "x-large";
+            cell1.style.fontSize = "medium";
             cell2.style.textAlign = "center";
             if (i > LIMIT_ITEM)
                 row.style.display = "none";
@@ -49,9 +49,9 @@ function buildTable(category) {
         var a = document.createElement("a");
         a.innerHTML = i + 1;
         a.id = "anchor" + (i + 1);
+        a.className = "text-dark";
         a.addEventListener('click', function (event) {
             if( !event ) event = window.event ; 
-            console.log(event);          
             var offset = (parseInt(event.target.childNodes[0].textContent)) - 1;
             buttonNumb = offset + 1;
             var allExer = document.getElementById("body_table").children.length;
@@ -70,6 +70,7 @@ function buildTable(category) {
                 }
             }
         });
+        li.style.display = "inline-block";
         li.appendChild(a);
         list_container.appendChild(li);
         if (i == 0)
@@ -81,14 +82,15 @@ function arrowSwitch(value) {
 
     if (value > 0 && buttonNumb < document.getElementById("list_container").children.length) {
         buttonNumb += value;
+        console.log("right "+buttonNumb)
         document.getElementById("anchor" + buttonNumb).click();
         document.getElementById("anchor" + buttonNumb).style.backgroundColor = "Gainsboro";
         document.getElementById("anchor" + (buttonNumb - 1)).style.backgroundColor = "White";
     }
-    if (buttonNumb > 0 && value < 0) {
+    if (buttonNumb > 1 && value < 0) {
         buttonNumb += value;
+        console.log("left "+buttonNumb);
         document.getElementById("anchor" + buttonNumb).click();
-        document.getElementById("anchor" + buttonNumb).className = "active";
         document.getElementById("anchor" + buttonNumb).style.backgroundColor = "Gainsboro";
         document.getElementById("anchor" + (buttonNumb + 1)).style.backgroundColor = "White";
     }

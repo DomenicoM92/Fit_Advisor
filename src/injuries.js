@@ -43,7 +43,7 @@
     });
   }
 
-  exports.findByInjuryName = function(injuryName,MongoClient, urlDB){
+  exports.findByInjuryName = function(injuryName,MongoClient, urlDB, callback){
     MongoClient.connect(urlDB,{ useNewUrlParser: true },function(err, db) {
       if (err) 
         throw err;
@@ -52,6 +52,7 @@
         dbo.collection("Injuries").findOne({'title':injuryName}, function(err, result){
           if(err) throw err;
             db.close();
+            callback(result);
         });
       } 
     });

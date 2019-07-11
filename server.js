@@ -107,13 +107,11 @@ app.get("/injuryList", function(req, res){
 })
 
 app.get('/injuryDetails', function(req, res){
-  /* var details= injuries.findByInjuryName('Neck Headache', MongoClient, urlDB);
-  details.then(function(result){
+  injuries.findByInjuryName(req.query.title, MongoClient, urlDB, function(result){
     res.setHeader('Content-Type', 'text/html'); 
-    res.send(result);
-  }).catch(function(){
-    res.sendStatus(403);
-  }); */
+    res.send(result.content);
+  });
+    
 });
 
 app.get('/equipment', function(req, res) {

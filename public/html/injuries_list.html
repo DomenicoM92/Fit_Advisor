@@ -22,8 +22,8 @@
             </form>
         </div>
     </nav>
-    <div class="p-1" style="width: 90%; margin:0 auto">
-        <div class="row" style="margin: 0 auto">
+    <div class="p-1" style="width: 100%">
+        <div class="row" style="width: 90%;margin: 0 auto;">
 
         </div>
     </div>
@@ -46,7 +46,7 @@
                     console.log(data);
                     for(var i=0; i< data.length; i++){
                         $(".row").append(
-                            "<div class='w-25 m-3'>"+
+                            "<div class='m-3' style='width:300px;height:350px;>"+
                             "   <div class='card elegant-color white-text'>"+
                             "       <div class='view'>"+
                             "           <img src='https://mdbootstrap.com/img/Photos/Slides/img%20(125).jpg' class='card-img-top' alt='photo'>"+
@@ -56,9 +56,10 @@
                             "       </div>"+
                             "       <div class='card-body'>"+
                             "           <h4 class='card-title'>"+data[i].title+"</h4>"+
-                            "           <p class='card-text white-text'>Last update: "+data[i].timestamp+"</p>"+
-                            "           <a href='#' class='btn btn-outline-white btn-md waves-effect'>More Details</a>"+
+                            "           <b class='card-text white-text'>Last update</b> "+
+                            "           <p>"+data[i].timestamp+"</p>"+    
                             "       </div>"+
+                            "           <a href='/injuryDetails?title="+data[i].title+"' class='btn btn-outline-white btn-md waves-effect' style='bottom:2px;'>More Details</a>"+
                             "   </div>"+
                             "</div>");
                     }

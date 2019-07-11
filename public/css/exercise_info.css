@@ -12588,15 +12588,13 @@ hr {
 }
 
 .content__secondary-two-column {
-    position: relative;
     min-height: 1px;
-    padding-left: 30px;
-    padding-right: 30px
+    padding-left: 3px;
+
 }
 
 @media (min-width: 768px) {
     .content__secondary-two-column {
-        float:left;
         width: 100%
     }
 }
@@ -12604,14 +12602,13 @@ hr {
 @media (min-width: 992px) {
     .content__secondary-two-column {
         width:23%;
-        right: 77%
+        right: 77%;
     }
 }
 
 .content__secondary-two-column-right {
-    position: relative;
     min-height: 1px;
-    padding-left: 30px;
+    padding-left: 3px;
     padding-right: 30px
 }
 
@@ -17714,7 +17711,7 @@ form.errors .download-guide__form-feedback {
     top: 70px;
     left: 0;
     right: 0;
-    background-color: #02263c;
+    background-color: #343A40;
     text-align: right;
     text-transform: uppercase;
     font-weight: 500;
@@ -24091,7 +24088,7 @@ form.errors .download-guide__form-feedback {
 .widget__link-list--accordian .widget__link-list-title {
     position: relative;
     font-size: 1.25rem;
-    color: #02263c;
+    color: #343A40;
     cursor: pointer;
     margin-bottom: 0;
     font-weight: 400
@@ -32321,10 +32318,6 @@ exercise-info--hero .exercise-info__meter {
         width: 33.33%
     }
 
-    .exercise-info--hero .exercise-info__term:last-child dt {
-        padding-left: 3.4rem
-    }
-
     .exercise-info--hero .exercise-info__meter {
         width: 270px
     }
@@ -32727,7 +32720,7 @@ exercise-info--hero .exercise-info__meter {
 
 .exercise-hero {
     position: relative;
-    background-color: #02263c;
+    background-color: #343A40;
     margin-bottom: 40px
 }
 

@@ -80,7 +80,8 @@ app.get('/exerciseCategory', function (req, res) {
 });
 
 app.post('/exercise_info', function (req, res) {
-  res.render('exercise_info',{card:req.body.card});
+  var exerciseCard = JSON.parse(req.body.card);
+  res.render('exercise_info',{card:JSON.stringify(exerciseCard), categoryName:exerciseCard.category.name, exeName:exerciseCard.name, description:exerciseCard.description});
 });
 
 app.get('/exercise_video', function (req, res) {

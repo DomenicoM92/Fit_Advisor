@@ -7,8 +7,7 @@
     <meta name="viewport" content="width = device-width, initial-scale = 1">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <link href="./css/index-style.css" rel="stylesheet">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
     <title>Injuries List</title>
 </head>
 
@@ -23,29 +22,54 @@
             </form>
         </div>
     </nav>
-    <table class="table" style="width: 50%; margin: 10% auto;">
-        <thead class="black white-text">
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Title</th>
-                <th scope="col">LastUpdate</th>
-                <th scope="col">Handle</th>
-            </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td><a type="button">Details</a></td>
-        </tr>
-        </tbody>
-    </table>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <div class="p-1" style="width: 90%; margin:0 auto">
+        <div class="row" style="margin: 0 auto">
 
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+        </div>
+    </div>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        jQuery(document).ready(function() {
+            //Get URL
+            $.urlParam = function(name){
+                var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+                return results[1] || 0;
+            }
+                    
+            $.ajax({
+                type: "GET",
+                url : "/injuryList",
+                data : "category="+$.urlParam('category'),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function(data){
+                    console.log(data);
+                    for(var i=0; i< data.length; i++){
+                        $(".row").append(
+                            "<div class='w-25 m-3'>"+
+                            "   <div class='card elegant-color white-text'>"+
+                            "       <div class='view'>"+
+                            "           <img src='https://mdbootstrap.com/img/Photos/Slides/img%20(125).jpg' class='card-img-top' alt='photo'>"+
+                            "           <a href='#'>"+
+                            "       <div class='mask rgba-white-slight waves-effect waves-light'></div>"+
+                            "          </a>"+
+                            "       </div>"+
+                            "       <div class='card-body'>"+
+                            "           <h4 class='card-title'>"+data[i].title+"</h4>"+
+                            "           <p class='card-text white-text'>Last update: "+data[i].timestamp+"</p>"+
+                            "           <a href='#' class='btn btn-outline-white btn-md waves-effect'>More Details</a>"+
+                            "       </div>"+
+                            "   </div>"+
+                            "</div>");
+                    }
+                },
+                error: function(err){
+                    console.log(err)
+                }
+            });
+        
+        });
+    </script>
 </body>
-
+    
 </html>

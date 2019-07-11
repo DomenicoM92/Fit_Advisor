@@ -93,25 +93,18 @@ app.get('/exercise_video', function (req, res) {
   });
 });
 
-app.get('/food', function (req, res) {
-  foodETL.mongoConnect;
-  //res.sendFile(path.join(__dirname + "/public/html/food.html"));
-});
 
 app.get('/injury', function(req, res) {
   res.sendFile(path.join(__dirname + "/public/html/injuries_list.html"));  
-  const categories={"Arms":["bicep", "tricep", "forearm"], 
-                    "Abs":[], 
-                    "Back":["back"], 
-                    "Chest":[], 
-                    "Legs":["glute", "femor", "hamstring", "knee", "calf"], 
-                    "Shoulders":["shoulder"]
-                  };
-                  Object.keys(categories).forEach(function(key) {
-                    var value = categories[key];
-                    console.log(value[0]);
-                });
 });
+
+app.get("/injuryList", function(req, res){
+  var categoryName= req.query.category;
+  injuries.retrieveByMuscularGroup(categoryName, MongoClient, urlDB, function(result){
+    res.setHeader('Content-Type','application/json');
+    res.send(result);
+  }); 
+})
 
 app.get('/injuryDetails', function(req, res){
   /* var details= injuries.findByInjuryName('Neck Headache', MongoClient, urlDB);

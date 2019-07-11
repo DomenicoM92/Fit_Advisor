@@ -4,14 +4,17 @@
             <meta http-equiv="X-UA-Compatible" content="IE = edge">
             <meta name="viewport" content="width = device-width, initial-scale = 1">
             <link rel="stylesheet" type="text/css" href="css/exercise_list.css">
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">            
+            <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>            
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
             <title>Workout Routine</title>
     </head>
     <body>
         <h1>Workout Routine</h1>
-        <div class="box"></div>
+        <div id="container" class="container-fluid"></div>
+
+        
     </body>
 
     <script>
@@ -24,7 +27,6 @@
         }
 
         $(document).ready(function() {     
-            //alert('ciao');      
             $.get("/retrieveRoutine?category=" + $.urlParam('category'), function(data, status){
                 console.log(data.length);
                 for(i=0; i<data.length; i++){
@@ -43,6 +45,8 @@
                     };*/
                     var woutRoutine = data[i];
                     
+                    createCard(woutRoutine);
+                    /*
                     $('.box').append('<h3>' + woutRoutine['title'] + '</h3><br>');
                     $('.box').append(woutRoutine['description'] + '<br>');
                     
@@ -53,11 +57,59 @@
                         $('.box').append(woutRoutine.routine[j]['reps'] + '\t\t\t');
                         $('.box').append(woutRoutine.routine[j]['notes']);
                     }
-                    $('.box').append('<br>');
+                    $('.box').append('<br>');*/
                 }
                 
             });
         });
+
+        function createCard(woutRoutine){
+            /*var woutRoutine = {
+                title:"",
+                description:"",
+                muscularGroup:"",
+                equipment:"",
+                routine:[{
+                    title:"",
+                    img:"",
+                    sets:"",
+                    reps:"",
+                    notes:""
+                    }]
+            };*/
+
+            /*This is the card template to generate
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="../media/test.png" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>*/
+
+            
+
+
+            var container = document.getElementById('container');
+            var card = document.createElement('div');
+            card.classList.add('card'); card.classList.add('float-left'); card.setAttribute('style', 'width: 18rem');
+            var img = document.createElement('img')
+            img.classList.add('card-img-top'); img.setAttribute('src', '../media/test.png'); img.setAttribute('alt', 'Card image cap');
+            var cardBody = document.createElement('div')
+            cardBody.classList.add('card-body');
+            var cardTitle = document.createElement('h5')
+            cardTitle.classList.add('card-title'); cardTitle.innerHTML += 'Card title';
+            var cardText = document.createElement('p')
+            cardText.classList.add('card-text'); cardText.innerHTML += "Some quick example text to build on the card title and make up the bulk of the card's content.";
+            
+            cardBody.append(cardTitle)
+            cardBody.append(cardText);
+            card.append(img)
+            card.append(cardBody);
+            container.append(card);
+
+        }
 
         
     </script>

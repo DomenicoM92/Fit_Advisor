@@ -94,23 +94,25 @@ app.get('/exercise_video', function (req, res) {
   });
 });
 
-app.get('/food', function (req, res) {
-  foodETL.mongoConnect;
-  //res.sendFile(path.join(__dirname + "/public/html/food.html"));
+
+app.get('/injury', function(req, res) {
+  res.sendFile(path.join(__dirname + "/public/html/injuries_list.html"));  
 });
 
-app.get('/injuries', function(req, res) {
-  res.sendFile(path.join(__dirname + "/public/html/injuries_list.html"));    
-});
+app.get("/injuryList", function(req, res){
+  var categoryName= req.query.category;
+  injuries.retrieveByMuscularGroup(categoryName, MongoClient, urlDB, function(result){
+    res.setHeader('Content-Type','application/json');
+    res.send(result);
+  }); 
+})
 
 app.get('/injuryDetails', function(req, res){
-  /* var details= injuries.findByInjuryName('Neck Headache', MongoClient, urlDB);
-  details.then(function(result){
+  injuries.findByInjuryName(req.query.title, MongoClient, urlDB, function(result){
     res.setHeader('Content-Type', 'text/html'); 
-    res.send(result);
-  }).catch(function(){
-    res.sendStatus(403);
-  }); */
+    res.send(result.content);
+  });
+    
 });
 
 app.get('/equipment', function(req, res) {

@@ -10,7 +10,7 @@ var request = require('sync-request');
 var fs = require('fs');
 
 //Setup Equipment Collection and Populate Products
-//equipment.initEquipmentCollection(MongoClient, urlDB, "com", "relevanceblender", "1");
+equipment.initEquipmentCollection(MongoClient, urlDB, "com", "relevanceblender", "1");
 
 
 //Setup Injury Collection 
@@ -18,15 +18,12 @@ injury.bodyParser(MongoClient, urlDB, function(){
     MongoClient.connect(urlDB, { useNewUrlParser: true }, function (err, db) {
         if (err) throw err;
         var dbo = db.db("Fit_AdvisorDB");
-        dbo.collection("Injuries").createIndex(
+        dbo.collection("Injury").createIndex(
           { "category": 1 }, function (err, result) {
           });
         db.close();
     });
 });
-
-//Setup WorkoutRoutine Collection
-//woutRoutine.ETLWorkoutRutine();
 
 //Setup and Populate Workout Routine Collection
 woutRoutine.ETLWoutRoutine();

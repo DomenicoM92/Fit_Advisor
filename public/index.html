@@ -7,19 +7,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <link href="./css/index-style.css" rel="stylesheet">
+    <script>
+        $(function(){
+            $(".navbar").load("./html/nav-bar.html"); 
+        });    
+    </script> 
 </head>
 <body>
-    <nav class="navbar navbar-black default-color bg-dark">
-        <a class="navbar-brand text-white" href="#">FitAdvisor</a>
-        <div>
-            <form class="form-inline">
-            <div class="md-form my-0">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-            </div>
-            </form>
-        </div>
-    </nav>
-
+    <nav class="navbar navbar-black default-color bg-dark"></nav>
     <!-- Exercises Category -->
     <div class="box">
         <div class="container" style="width: 100%">

@@ -11,6 +11,7 @@ var schedule = require('node-schedule');
 var exercise = require('./src/exercise');
 var injuries = require('./src/injuries');
 var equipment = require('./src/equipment');
+var scheduledUpdate = require('./src/scheduled_update');
 const workoutRoutine = require('./src/workout_routine_mongo');
 
 //Serving static files such as Images, CSS, JavaScript
@@ -30,7 +31,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/exercise', function (req, res) {
-  //Update Exercise every month
+/*   //Update Exercise every month
   schedule.scheduleJob('* * 23 * 1 7', function () {
     console.log('Update Exercise ' + new Date().toISOString());
     if (request('GET', "https://wger.de/api/v2/exerciseinfo?page=1").statusCode == 200) {
@@ -67,7 +68,7 @@ app.get('/exercise', function (req, res) {
     } else {
       res.render('exercise_list',{category:req.query.category});
     }
-  });
+  }); */
   res.render('exercise_list',{category:req.query.category});
 });
 
@@ -154,4 +155,5 @@ app.get('/retrieveRoutine', function(req, res) {
 
 app.listen(8080, function() {
   console.log('Fit_Advisor app listening on port 8080!');
+  
 });

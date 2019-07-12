@@ -7,8 +7,7 @@
     <meta name="viewport" content="width = device-width, initial-scale = 1">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <link href="./css/index-style.css" rel="stylesheet">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
     <title>Injuries List</title>
 </head>
 
@@ -23,60 +22,55 @@
             </form>
         </div>
     </nav>
-<table class="table">
-        <thead class="black white-text">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Title</th>
-            <th scope="col">LastUpdate</th>
-            <th scope="col">Handle</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-        </tr>
-        </tbody>
-    </table>
-    
-    <table class="table">
-        <thead class="grey lighten-2">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-        </tr>
-        </tbody>
-    </table>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <div class="p-1" style="width: 100%">
+        <div class="row" style="width: 90%;margin: 0 auto;">
 
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+        </div>
+    </div>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        jQuery(document).ready(function() {
+            //Get URL
+            $.urlParam = function(name){
+                var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+                return results[1] || 0;
+            }
+                    
+            $.ajax({
+                type: "GET",
+                url : "/injuryList",
+                data : "category="+$.urlParam('category'),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function(data){
+                    console.log(data);
+                    for(var i=0; i< data.length; i++){
+                        $(".row").append(
+                            "<div class='m-3' style='width:300px;height:350px;>"+
+                            "   <div class='card elegant-color white-text'>"+
+                            "       <div class='view'>"+
+                            "           <img src='https://mdbootstrap.com/img/Photos/Slides/img%20(125).jpg' class='card-img-top' alt='photo'>"+
+                            "           <a href='#'>"+
+                            "       <div class='mask rgba-white-slight waves-effect waves-light'></div>"+
+                            "          </a>"+
+                            "       </div>"+
+                            "       <div class='card-body'>"+
+                            "           <h4 class='card-title'>"+data[i].title+"</h4>"+
+                            "           <b class='card-text white-text'>Last update</b> "+
+                            "           <p>"+data[i].timestamp+"</p>"+    
+                            "       </div>"+
+                            "           <a href='/injuryDetails?title="+data[i].title+"' class='btn btn-outline-white btn-md waves-effect' style='bottom:2px;'>More Details</a>"+
+                            "   </div>"+
+                            "</div>");
+                    }
+                },
+                error: function(err){
+                    console.log(err)
+                }
+            });
+        
+        });
+    </script>
 </body>
-
+    
 </html>

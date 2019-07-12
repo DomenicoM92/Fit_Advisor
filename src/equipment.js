@@ -4,7 +4,7 @@ var request = require('sync-request');
 
 exports.initEquipmentCollection = function(MongoClient, urlDB, domainCode, sortBy, page) {
 
-  console.log("Creating Equipment Collection...");
+  console.log("EQUIPMENT: Creating Equipment Collection...");
   var created = createEquipmentCollection(MongoClient, urlDB);
   created.then(function(result) {
     populateEquipmentCollection(MongoClient, urlDB, domainCode, sortBy, page);
@@ -38,13 +38,13 @@ exports.findByKeywordAmz = function(MongoClient, urlDB, domainCode, keyword, sor
 function createEquipmentCollection(MongoClient, urlDB) {
 
   return new Promise(function(fulfill, reject) {
-    console.log("Wger API Request for equipment...");
+    //console.log("Wger API Request for equipment...");
     // Wger API Request
     var APIUrl = 'https://wger.de/api/v2/equipment';
     var response = request('GET', APIUrl);
-    console.log("Request Status Code: " + response.statusCode);
+    //console.log("Request Status Code: " + response.statusCode);
 
-    console.log("Creating Collection...");
+    //console.log("Creating Collection...");
     // Create Equipment Collection
     MongoClient.connect(urlDB, { useNewUrlParser: true },function (err, db) {
       if (err) throw err;
@@ -58,7 +58,7 @@ function createEquipmentCollection(MongoClient, urlDB) {
       dbo.collection("Equipment").drop();
       dbo.collection("Equipment").insertMany(equipment, function (err, res) {
         if (err) throw err;
-        console.log("Equipment Collection created");
+        console.log("EQUIPMENT: Collection created");
         db.close();
         fulfill(true);
       });
@@ -68,7 +68,7 @@ function createEquipmentCollection(MongoClient, urlDB) {
 
 function populateEquipmentCollection(MongoClient, urlDB, domainCode, sortBy, page) {
 
-  console.log("Populating Equipment Collection...");
+  //console.log("Populating Equipment Collection...");
   // Populate Equipment Collection
   MongoClient.connect(urlDB, { useNewUrlParser: true },function (err, db) {
     if (err) throw err;
@@ -118,7 +118,7 @@ function lookupByKeywordAmz(MongoClient, urlDB, keyword) {
 
 function searchByKeywordAmz(MongoClient, urlDB, domainCode, keyword, sortBy, page) {
 
-  console.log("Axesso API Request for '" + keyword + "'...");
+  //console.log("Axesso API Request for '" + keyword + "'...");
 
   if(keyword == "Bench") keyword = "Flat bench";
 

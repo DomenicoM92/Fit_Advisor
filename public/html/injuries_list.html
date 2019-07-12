@@ -21,10 +21,8 @@
 
 <body>
     <nav class="navbar navbar-black default-color bg-dark"></nav>
-    <div class="p-1" style="width: 100%">
-        <div class="row" style="width: 90%;margin: 0 auto;">
-
-        </div>
+    <div class="p-1" style="width: 100%; margin: 3% auto;">
+        
     </div>
     <script>
         jQuery(document).ready(function() {
@@ -43,11 +41,24 @@
                 success: function(data){
                     console.log(data);
                     for(var i=0; i< data.length; i++){
-                        $(".row").append(
-                            "<div class='m-3' style='width:300px;height:350px;>"+
-                            "   <div class='card elegant-color white-text'>"+
+                        $(".p-1").append(
+                        "<div class='col' style='float: left'>"+
+                            "<div class='card'>"+
+                                "<div class='view'>"+
+                                    "<img src='"+data[i].mainImg+"' class='card-img-top' alt='photo' style='height: 250px;'>"+
+                                "</div>"+
+                                "<div class='card-body elegant-color white-text' style='height:200px'>"+
+                                    "<h4 class='card-title'>"+data[i].title+"</h4>"+
+                                    "<p class='card-text white-text'><b>Last Update: </b>"+data[i].timestamp.split('T')[0]+"</p>"+
+                                    "<a href='/injuryDetails?title="+data[i].title+"' class='btn btn-outline-dark btn-smal' style='bottom:10px; position: absolute; right: 10px'>More Details</a>"+
+                                "</div>"+
+                            "</div>"
+                        );
+
+                            /*"<div style='width:300px; height:450px; margin: 3%'>"+
+                            "   <div class=''>"+
                             "       <div class='view'>"+
-                            "           <img src='https://mdbootstrap.com/img/Photos/Slides/img%20(125).jpg' class='card-img-top' alt='photo'>"+
+                            "           <img src='"+data[i].mainImg+"' class='card-img-top' alt='photo' style='height:250px'>"+
                             "           <a href='#'>"+
                             "       <div class='mask rgba-white-slight waves-effect waves-light'></div>"+
                             "          </a>"+
@@ -59,7 +70,7 @@
                             "       </div>"+
                             "           <a href='/injuryDetails?title="+data[i].title+"' class='btn btn-outline-white btn-md waves-effect' style='bottom:2px;'>More Details</a>"+
                             "   </div>"+
-                            "</div>");
+                            "</div>");*/
                     }
                 },
                 error: function(err){

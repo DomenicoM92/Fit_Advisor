@@ -5,6 +5,82 @@ const LanguageDetect = require('languagedetect');
 const lngDetector = new LanguageDetect();
 var docDuplicate = {};
 
+const categoryIDs= [
+  {
+    id: 1,
+    value: "chest"
+  },
+  {
+    id: 2,
+    value: "forearms"
+  },
+  {
+    id: 3,
+    value: "lats"
+  },
+  {
+    id: 4,
+    value: "middle back"
+  },
+  {
+    id: 5,
+    value: "lower back"
+  },
+  {
+    id: 6,
+    value: "neck"
+  },
+  {
+    id: 7,
+    value: "quadriceps"
+  },
+  {
+    id: 8,
+    value: "hamstring"
+  },
+  {
+    id: 9,
+    value: "calves"
+  },
+  {
+    id: 10,
+    value: "triceps"
+  },
+  {
+    id: 11,
+    value: "traps"
+  },
+  {
+    id: 12,
+    value: "lats"
+  },
+  {
+    id: 13,
+    value: "shoulders"
+  },
+  {
+    id: 14,
+    value: "abs"
+  },
+  {
+    id: 15,
+    value: "glutes"
+  },
+  {
+    id: 16,
+    value: "biceps"
+  },
+  {
+    id: 17,
+    value: "adductor"
+  },
+  {
+    id: 18,
+    value: "abductor"
+  },
+
+]
+
 exports.exerciseHandler = function (MongoClient, urlDB) {
 
   return new Promise(function (fulfill, reject) {
@@ -87,6 +163,18 @@ exports.findByCategory = function (category, MongoClient, urlDB) {
   });
 }
 
+
+//MARIO: feature retrieve img to enhance exercise 
+exports.retrieveImgsByExercise= function(excerciseName, category,callback){
+  const cheerio= require("cheerio");
+  const URL_SOURCE= "https://www.bodybuilding.com/exercises/finder/?muscleid=";
+
+
+}
+
+
+
+
 function checkBadResult(name) {
   var rejectedValues = ["", "Test", "Test Pullups", "TestBicep", "Mart.05.035l", "What", "Awesome", "L-sit (tucked)", "52", "Abcd", "Developpé Couché","Upper Body","Snach"];
   for (index in rejectedValues) {
@@ -101,4 +189,5 @@ function checkBadResult(name) {
 
   return false;
 }
+
 

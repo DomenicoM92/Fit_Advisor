@@ -7,19 +7,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <link href="./css/index-style.css" rel="stylesheet">
+    <script>
+        $(function(){
+            $(".navbar").load("./html/nav-bar.html"); 
+        });    
+    </script> 
 </head>
 <body>
-    <nav class="navbar navbar-black default-color bg-dark">
-        <a class="navbar-brand text-white" href="#">FitAdvisor</a>
-        <div>
-            <form class="form-inline">
-            <div class="md-form my-0">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-            </div>
-            </form>
-        </div>
-    </nav>
-
+    <nav class="navbar navbar-black default-color bg-dark"></nav>
     <!-- Exercises Category -->
     <div class="box">
         <div class="container" style="width: 100%">
@@ -36,7 +31,7 @@
                                 <span>This category includes Abdominal, Obliques and Serratus Anterior</span>
                             </div>
                             <span>
-                                <a href="injury" type="button" class="btn btn-danger" style="width:45%; color:floralwhite">Common Injuries</a>
+                                <a href="injury?category=abs" type="button" class="btn btn-danger" style="width:45%; color:floralwhite">Common Injuries</a>
                                 <a href="workoutRoutine?category=abs" type="button" class="btn btn-danger" style="width:45%; color:floralwhite">Workout Routines</a>
                             </span>  
                             <a href="" type="button" class="btn btn-danger" style="width: 91%; color:floralwhite; margin:1%;">Equipment</a> 
@@ -54,7 +49,7 @@
                                 <span>This category includes Biceps, Triceps and Forearms</span>
                             </div>
                             <span>
-                                <a href="injury" type="button" class="btn btn-danger" style="width:45%; color:floralwhite">Common Injuries</a>
+                                <a href="injury?category=arms" type="button" class="btn btn-danger" style="width:45%; color:floralwhite">Common Injuries</a>
                                 <a href="workoutRoutine?category=arms" type="button" class="btn btn-danger" style="width:45%; color:floralwhite">Workout Routines</a>
                             </span>  
                             <a href="" type="button" class="btn btn-danger" style="width: 91%; color:floralwhite; margin:1%;">Equipment</a> 
@@ -72,7 +67,7 @@
                                 <span>This category includes Erector Spinae, Infraspinatus, Lats, Teres and Trapezius </span>
                             </div>
                             <span>
-                                <a href="injury" type="button" class="btn btn-danger" style="width:45%; color:floralwhite">Common Injuries</a>
+                                <a href="injury?category=back" type="button" class="btn btn-danger" style="width:45%; color:floralwhite">Common Injuries</a>
                                 <a href="workoutRoutine?category=back" type="button" class="btn btn-danger" style="width:45%; color:floralwhite">Workout Routines</a>
                             </span>   
                             <a href="" type="button" class="btn btn-danger" style="width: 91%; color:floralwhite; margin:1%;">Equipment</a>
@@ -92,7 +87,7 @@
                                 <span>This category includes Pecs </span>
                             </div>
                             <span>
-                                <a href="injury" type="button" class="btn btn-danger" style="width:45%; color:floralwhite">Common Injuries</a>
+                                <a href="injury?category=chest" type="button" class="btn btn-danger" style="width:45%; color:floralwhite">Common Injuries</a>
                                 <a href="workoutRoutine?category=chest" type="button" class="btn btn-danger" style="width:45%; color:floralwhite">Workout Routines</a>
                             </span>   
                             <a href="" type="button" class="btn btn-danger" style="width: 91%; color:floralwhite; margin:1%;">Equipment</a>
@@ -110,7 +105,7 @@
                                 <span>This category includes Calves, Hamstrings, Quads, Sartorius and Tibialis Anterior</span>
                             </div>
                             <span>
-                                <a href="injury" type="button" class="btn btn-danger" style="width:45%; color:floralwhite">Common Injuries</a>
+                                <a href="injury?category=legs" type="button" class="btn btn-danger" style="width:45%; color:floralwhite">Common Injuries</a>
                                 <a href="workoutRoutine?category=legs" type="button" class="btn btn-danger" style="width:45%; color:floralwhite">Workout Routines</a>
                             </span>  
                             <a href="" type="button" class="btn btn-danger" style="width: 91%; color:floralwhite; margin:1%;">Equipment</a> 
@@ -128,7 +123,7 @@
                                 <span>This category includes Anterior Delts, Lateral Delts and Posterior Delts</span>
                             </div>
                             <span>
-                                <a href="injury" type="button" class="btn btn-danger" style="width:45%; color:floralwhite">Common Injuries</a>
+                                <a href="injury?category=shoulders" type="button" class="btn btn-danger" style="width:45%; color:floralwhite">Common Injuries</a>
                                 <a href="workoutRoutine?category=shoulders" type="button" class="btn btn-danger" style="width:45%; color:floralwhite">Workout Routines</a>
                             </span> 
                             <a href="" type="button" class="btn btn-danger" style="width: 91%; color:floralwhite; margin:1%;">Equipment</a>

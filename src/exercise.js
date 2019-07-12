@@ -8,6 +8,7 @@ var docDuplicate = {};
 exports.exerciseHandler = function (MongoClient, urlDB) {
 
   return new Promise(function (fulfill, reject) {
+    console.log("EXERCISE: begin etl module")
     for (i = 1; i < REQUEST_NUMB; i++) {
       var APIUrl = 'https://wger.de/api/v2/exerciseinfo';
       request(APIUrl + '?page=' + i, function (error, response, body) {
@@ -38,13 +39,13 @@ exports.exerciseHandler = function (MongoClient, urlDB) {
     }
     fulfill();
   }).then(function () {
-    console.log("Documents inserted");
+    console.log("EXERCISE: Documents inserted");
     MongoClient.connect(urlDB, { useNewUrlParser: true }, function (err, db) {
       if (err) throw err;
       var dbo = db.db("Fit_AdvisorDB");
       dbo.collection("Exercise").createIndex(
         { "category.name": 1 }, function (err, result) {
-          console.log("Index:" + result + ", created correctly");
+          console.log("EXERCISE: Index:" + result + ", created correctly");
         });
       db.close();
     });

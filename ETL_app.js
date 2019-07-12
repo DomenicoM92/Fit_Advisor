@@ -7,7 +7,7 @@ const request = require('sync-request');
 const fs = require('fs');
 
 //Setup Equipment Collection and Populate Products
-equipment.initEquipmentCollection(MongoClient, urlDB, "com", "relevanceblender", "1");
+//equipment.initEquipmentCollection(MongoClient, urlDB, "com", "relevanceblender", "1");
 
 //Setup and Populate Workout Routine Collection
 woutRoutine.ETLWoutRoutine();

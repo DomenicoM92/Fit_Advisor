@@ -79,6 +79,16 @@ app.get('/exerciseCategory', function (req, res) {
   });
 });
 
+app.get('/exerciseByName', function (req, res) {
+  var exerciseByName = exercise.findByName(req.query.exe_name, MongoClient, urlDB);
+  exerciseByName.then(function (result) {
+    var exerciseCard = result;
+    res.render('exercise_info',{card:JSON.stringify(exerciseCard), categoryName:exerciseCard.category.name, exeName:exerciseCard.name, description:exerciseCard.description});
+  }).catch(function(){
+      res.sendFile(path.join(__dirname + "/public/html/not_found.html"));
+  })
+});
+
 app.post('/exercise_info', function (req, res) {
   var exerciseCard = JSON.parse(req.body.card);
   res.render('exercise_info',{card:JSON.stringify(exerciseCard), categoryName:exerciseCard.category.name, exeName:exerciseCard.name, description:exerciseCard.description});
@@ -92,11 +102,6 @@ app.get('/exercise_video', function (req, res) {
   }).catch(function () {
     res.sendStatus(403);
   });
-});
-
-app.get('/food', function (req, res) {
-  foodETL.mongoConnect;
-  //res.sendFile(path.join(__dirname + "/public/html/food.html"));
 });
 
 app.get('/injuries', function(req, res) {

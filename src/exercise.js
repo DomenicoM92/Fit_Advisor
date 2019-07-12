@@ -23,9 +23,9 @@ exports.exerciseHandler = function (MongoClient, urlDB) {
                 var lang = lngDetector.detect(exercises[item].description);
                 if (lang != undefined)
                   exercises[item]["lang"] = lang[0];
-                if(exercises[item].category.name == "Calves") {
+                if (exercises[item].category.name == "Calves") {
                   exercises[item].category.name = "Legs";
-                }   
+                }
                 exercises[item]["timestamp"] = new Date().toISOString();
                 dbo.collection("Exercise").insertOne(exercises[item], function (err) {
                   if (err) throw err;
@@ -48,6 +48,10 @@ exports.exerciseHandler = function (MongoClient, urlDB) {
         });
       db.close();
     });
+  }).then(function(){
+    //MARIO
+  }).then(function(){
+    //FRANCESCO
   });
 }
 
@@ -86,8 +90,29 @@ exports.findByCategory = function (category, MongoClient, urlDB) {
   });
 }
 
+exports.findByName = function (name, MongoClient, urlDB) {
+
+  return new Promise(function (fulfill, reject) {
+    MongoClient.connect(urlDB, { useNewUrlParser: true }, function (err, db) {
+      if (err)
+        throw err;
+      else {
+        var dbo = db.db("Fit_AdvisorDB");
+        var query = ".*"+name+".*";
+        dbo.collection("Exercise").findOne({ 'name': {'$regex': query,'$options':'i'}, "lang.0": "english" }, function (err, result) {
+          if (err) throw err;
+          db.close();
+          fulfill(result);
+        });
+      }
+    });
+  }).catch(function() {
+    reject();
+  })
+}
+
 function checkBadResult(name) {
-  var rejectedValues = ["", "Test", "Test Pullups", "TestBicep", "Mart.05.035l", "What", "Awesome", "L-sit (tucked)", "52", "Abcd", "Developpé Couché","Upper Body","Snach"];
+  var rejectedValues = ["", "Test", "Test Pullups", "TestBicep", "Mart.05.035l", "What", "Awesome", "L-sit (tucked)", "52", "Abcd", "Developpé Couché", "Upper Body", "Snach"];
   for (index in rejectedValues) {
     if (rejectedValues[index] == name) {
       return true;

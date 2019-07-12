@@ -61,8 +61,9 @@ exports.videoExerciseRequest = function (exerciseName) {
       if (err) {
         reject();
       }
-      else
+      else {
         fulfill(results);
+      }
     });
   });
 }

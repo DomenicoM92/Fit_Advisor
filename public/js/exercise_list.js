@@ -66,6 +66,7 @@ function buildTable(category) {
                 }
             });
             li.style.display = "inline";
+            li.style.padding = "0 5%";
             li.appendChild(a);
             list_container.appendChild(li);
             if (i == 0)
@@ -74,7 +75,7 @@ function buildTable(category) {
     });
 }
 
-function arrowSwitch(value) {
+function pageSwitch(value) {
 
     if (value > 0 && buttonNumb < document.getElementById("list_container").children.length) {
         buttonNumb += value;

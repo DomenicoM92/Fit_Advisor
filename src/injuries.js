@@ -3,15 +3,15 @@
   const categories=  [
     {
       title: "Arms",
-      values: ["bicep", "tricep", "forearm"],
+      values: ["bicep", "tricep", "forearm", "carpal"]
     },
     {
       title: "Abs",
-      values: ["abdominal"],
+      values: ["abdominal"]
     },
     {
       title: "Back",
-      values: ["back"]
+      values: ["back", "spine", "neck"]
     },
     {
       title: "Chest",
@@ -19,11 +19,11 @@
     },
     {
       title: "Legs",
-      values: ["glute", "femor", "hamstring", "knee", "calf"], 
+      values: ["glute", "femor", "hamstring", "knee", "calf"]
     },
     {
       title: "Shoulders",
-      values: ["shoulder"]
+      values: ["shoulder", "cuff"]
     }
   ];
 
@@ -34,7 +34,7 @@
         throw err;
       else {
         var dbo = db.db("Fit_AdvisorDB");
-        dbo.collection("Injuries").find({'category': category}).toArray(function(err, result){
+        dbo.collection("Injury").find({'category': category}).toArray(function(err, result){
           if(err) throw err;
           db.close();
           callback(result);
@@ -49,7 +49,7 @@
         throw err;
       else {
         var dbo = db.db("Fit_AdvisorDB");
-        dbo.collection("Injuries").findOne({'title':injuryName}, function(err, result){
+        dbo.collection("Injury").findOne({'title':injuryName}, function(err, result){
           if(err) throw err;
             db.close();
             callback(result);
@@ -67,7 +67,7 @@
         if(err){
           console.log(err);
         }else{
-          console.log("INJURIES: begin etl module")
+          console.log("INJURY: begin etl module")
           var $= cheerio.load(body);
           $("a[href *='/injuries-conditions-1/']").each(function(){
             const URL_RESOURCE= URL_ROOT+$(this).attr('href');     
@@ -109,7 +109,7 @@
                     if (err) throw err;
                     var dbo = db.db("Fit_AdvisorDB");
                     var injury_obj= {category:createMatchingByTitle(title), title: title, timestamp: new Date().toISOString(), content: ""+content.html()};
-                    dbo.collection("Injuries").insertOne(injury_obj, function (err, res) {
+                    dbo.collection("Injury").insertOne(injury_obj, function (err, res) {
                     if (err) throw err;
                     });
                   });      
@@ -118,7 +118,7 @@
             });    
           });
         } //END OF REQUEST FUNCT
-        console.log("INJURIES: end etl module")
+        console.log("INJURY: end etl module")
     }); //END OF MODULE
 
     callback();

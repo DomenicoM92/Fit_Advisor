@@ -72,7 +72,7 @@ app.get('/exercise', function (req, res) {
 });
 
 app.get('/exerciseCategory', function (req, res) {
-  var exerciseByCategory = exercise.findByCategory(req.get("category"), MongoClient, urlDB);
+  var exerciseByCategory = exercise.findByCategory(req.query.category, MongoClient, urlDB);
   exerciseByCategory.then(function (result) {
     res.setHeader('Content-Type', 'application/json');
     res.send(result);
@@ -80,11 +80,12 @@ app.get('/exerciseCategory', function (req, res) {
 });
 
 app.post('/exercise_info', function (req, res) {
-  res.render('exercise_info',{card:req.body.card});
+  var exerciseCard = JSON.parse(req.body.card);
+  res.render('exercise_info',{card:JSON.stringify(exerciseCard), categoryName:exerciseCard.category.name, exeName:exerciseCard.name, description:exerciseCard.description});
 });
 
 app.get('/exercise_video', function (req, res) {
-  var exercise_video = exercise.videoExerciseRequest(req.get("name"));
+  var exercise_video = exercise.videoExerciseRequest(req.query.name);
   exercise_video.then(function (result) {
     res.setHeader('Content-Type', 'application/json');
     res.send(result);

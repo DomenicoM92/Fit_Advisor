@@ -5,60 +5,88 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE = edge">
     <meta name="viewport" content="width = device-width, initial-scale = 1">
-    <title>Exercise info</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-        crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="../css/exercise_info.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <link href="./css/index-style.css" rel="stylesheet">
+    <title><%-exeName%></title>
+
 </head>
 
 <body>
-    <h1 style="font-size: 500%">&#9432;</h1>
-    <div class="card" style="margin:0 auto; padding: 10%">
-        <div id="div_name" class="card-body">
-            <h1 class="card-title">Name</h1>
-            <p id="name" class="card-text"></p>
+    <nav class="navbar navbar-dark default-color bg-dark">
+        <a class="navbar-brand text-white" href="#">FitAdvisor</a>
+        <div>
+            <form class="form-inline">
+                <div class="md-form my-0">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+                </div>
+            </form>
         </div>
-        <div id="div_description" class="card-body">
-            <h3 class="card-title">Description</h3>
-            <p id="description" class="card-text"></p>
-        </div>
-        <div id="div_equipment" class="card-body">
-            <h3 class="card-title">Equipment</h3>
-            <p id="equipment" class="card-text"></p>
-        </div>
-        <div id="div_muscles_primary" class="card-body">
-            <h3 class="card-title">Primary Muscles</h3>
-            <p id="muscles_primary" class="card-text"></p>
-        </div>
-        <div id="div_muscles_secondary" class="card-body">
-            <h3 class="card-title">Secondary Muscles</h3>
-            <p id="muscles_secondary" class="card-text"></p>
-        </div>
-        <div id="div_category" class="card-body">
-            <h3 class="card-title">Category</h3>
-            <p id="category" class="card-text"></p>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div id="iFrameContainer" class="col">
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe id="iFrame1" allowfullscreen></iframe>
-                    </div>
-                    <br>
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe id="iFrame2" allowfullscreen></iframe>
-                    </div>
+    </nav>
+
+    <header class="exercise-hero" style="margin-top: 2%">
+        <div class="exercise-hero__inner">
+            <div class="exercise-hero__image-wrap">
+                <div class="exercise-hero__image"
+                    style="background-image: url('https://acewebcontent.azureedge.net/exercise-library/large/5-1.jpg');">
                 </div>
             </div>
+            <div class="exercise-hero__content-wrap">
+                <h2 class="exercise-hero__category-title"> <%= categoryName %> Exercises</h2>
+                <h1 class="exercise-hero__title"><%= exeName %></h1>
+                <div class="exercise-hero__data">
+                    <dl class="exercise-info exercise-info--hero">
+                        <div class="exercise-info__term exercise-info__term--body-part">
+                            <dt><span>Target </span>Primary Muscles:</dt>
+                            <dd id="primary_muscles"></dd>
+                        </div>
+                        <div class="exercise-info__term exercise-info__term--body-part">
+                            <dt><span>Target </span>Secondary Muscles:</dt>
+                            <dd id="secondary_muscles"></dd>
+                        </div>
+                        <div class="exercise-info__term exercise-info__term--equipment">
+                            <dt style="text-align: left">Equipment:</dt>
+                            <dd id="equipment"></dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="content__wrap">
+        <div class="content__row">
+            <main class="content__primary-two-column" role="main">
 
+
+                <div class="exercise-post">
+                    <section class="exercise-post__step">
+                        <div class="exercise-post__step-image-wrap">
+                            <iframe id="iFrame1" height="240" allowfullscreen></iframe>
+                        </div>
+                        <div class="exercise-post__step-content">
+                            <div class="exercise-info__term exercise-info__term--body-part">
+                                <dt><span>Target </span>Description:</dt>
+                                <dd style="text-align: justify"><%-description%></dd>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </main>
+            <div class="content__secondary-two-column">
+
+                <div class="marquee-manager marquee-manager-flat Ads-Sitewide-Leaderboard ">
+                    <h1>Peter zone</h1>
+                </div>
+
+            </div>
         </div>
     </div>
     <script src="../js/exercise_info.js"></script>
     <script>
-        var card = <%-card%>;
+        var card = <%-card %>;
         window.onload = fillSection(card);
     </script>
 </body>

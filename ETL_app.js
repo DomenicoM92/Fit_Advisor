@@ -28,6 +28,9 @@ injury.bodyParser(MongoClient, urlDB, function(){
 //Setup WorkoutRoutine Collection
 //woutRoutine.ETLWorkoutRutine();
 
+//Setup and Populate Workout Routine Collection
+woutRoutine.ETLWoutRoutine();
+
 //Check if API is available, then save a backup copy of Exercise collection, delete it, eventually call exercise handler (wrapper for exercise)
 //console.log('Update Exercise ' + new Date().toISOString());
 if (request('GET', "https://wger.de/api/v2/exerciseinfo?page=1").statusCode == 200) {

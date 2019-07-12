@@ -1,7 +1,5 @@
 function fillSection(card) {
-    document.getElementById("name").innerHTML = card.name;
-    document.getElementById("description").innerHTML = card.description;
-    document.getElementById("category").innerHTML = card.category.name;
+    
     //equipment
     var equipments = "";
     if (card.equipment.length > 1) {
@@ -16,7 +14,7 @@ function fillSection(card) {
         equipments = card.equipment[0].name;
         document.getElementById("equipment").innerHTML = equipments;
     } else {
-        document.getElementById("div_equipment").style.display = "none";
+        document.getElementById("equipment").innerHTML = "-";
     }
     //primaryM
     var primaryM = "";
@@ -27,12 +25,12 @@ function fillSection(card) {
             else
                 primaryM += card.muscles[i].name;
         }
-        document.getElementById("muscles_primary").innerHTML = primaryM;
+        document.getElementById("primary_muscles").innerHTML = primaryM;
     } else if (card.muscles.length == 1) {
         primaryM = card.muscles[0].name;
-        document.getElementById("muscles_primary").innerHTML = primaryM;
+        document.getElementById("primary_muscles").innerHTML = primaryM;
     } else {
-        document.getElementById("div_muscles_primary").style.display = "none"
+        document.getElementById("primary_muscles").innerHTML = card.category.name;
     }
     //secondaryM
     var secondaryM = "";
@@ -43,27 +41,23 @@ function fillSection(card) {
             else
                 secondaryM += card.muscles_secondary[i].name;
         }
-        document.getElementById("muscles_secondary").innerHTML = secondaryM;
+        document.getElementById("secondary_muscles").innerHTML = secondaryM;
     } else if (card.muscles_secondary.length == 1) {
         secondaryM = card.muscles_secondary[0].name;
-        document.getElementById("muscles_secondary").innerHTML = secondaryM;
+        document.getElementById("secondary_muscles").innerHTML = secondaryM;
     } else {
-        document.getElementById("div_muscles_secondary").style.display = "none"
+        document.getElementById("secondary_muscles").innerHTML = "-";
     }
-
-    var httpReq = new XMLHttpRequest();
-    httpReq.open("GET", "/exercise_video", false);
-    httpReq.setRequestHeader("name", card.name);
-    httpReq.send();
-    if (httpReq.status == 200) {
-        var video = JSON.parse(httpReq.response);
-        var link1 = "https://www.youtube.com/embed/" + video[0].id;
-        var link2 = "https://www.youtube.com/embed/" + video[1].id;
-        document.getElementById('iFrameContainer').style.display = "block";
-        document.getElementById('iFrame1').setAttribute("src", link1);
-        document.getElementById('iFrame2').setAttribute("src", link2);
-    } else {
-        console.log("error 403 (exceeded number request YouTube API)");
-        document.getElementById('iFrameContainer').style.display = "none";
-    }
+   
+    $.get("/exercise_video?name=" + card.name, function (data, status) {
+        console.log("data"+data)
+        if(status == "success") {
+            var video = data;
+            console.log(video);
+            var link = "https://www.youtube.com/embed/" + video[0].id;
+            document.getElementById('iFrame1').setAttribute("src", link);
+        }else {
+            console.log("error 403 (exceeded number request YouTube API)");
+        }
+    });
 }

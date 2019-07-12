@@ -152,7 +152,7 @@ function updateProducts(result, keyword, MongoClient, urlDB) {
     var equipmentSearch = JSON.parse(JSON.stringify(result.body)).foundProductDetails;
 
 
-    console.log("Updating '" + keyword + "' in DB...");
+    //console.log("Updating '" + keyword + "' in DB...");
 
     dbo.collection("Equipment").updateMany(
       {"name" : keyword},

@@ -10,22 +10,17 @@
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.4.1.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
-    <link href="./css/index-style.css" rel="stylesheet">
+    <link href="../css/index-style.css" rel="stylesheet">
     <title><%-exeName%></title>
-
+    <script>
+        $(function(){
+            $(".navbar").load("./html/nav-bar.html"); 
+        });    
+    </script> 
 </head>
 
 <body>
-    <nav class="navbar navbar-dark default-color bg-dark">
-        <a class="navbar-brand text-white" href="#">FitAdvisor</a>
-        <div>
-            <form class="form-inline">
-                <div class="md-form my-0">
-                    <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-                </div>
-            </form>
-        </div>
-    </nav>
+    <nav class="navbar navbar-black default-color bg-dark"></nav>
 
     <header class="exercise-hero" style="margin-top: 2%">
         <div class="exercise-hero__inner">

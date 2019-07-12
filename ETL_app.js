@@ -10,7 +10,7 @@ var request = require('sync-request');
 var fs = require('fs');
 
 //Setup Equipment Collection and Populate Products
-//equipment.initEquipmentCollection(MongoClient, urlDB, "com", "relevanceblender", "1");
+equipment.initEquipmentCollection(MongoClient, urlDB, "com", "relevanceblender", "1");
 
 
 //Setup Injury Collection 

@@ -176,8 +176,26 @@ exports.retrieveImgsByExercise= function(excerciseName, category,callback){
 
 }
 
+exports.findByName = function (name, MongoClient, urlDB) {
 
-
+  return new Promise(function (fulfill, reject) {
+    MongoClient.connect(urlDB, { useNewUrlParser: true }, function (err, db) {
+      if (err)
+        throw err;
+      else {
+        var dbo = db.db("Fit_AdvisorDB");
+        var query = ".*"+name+".*";
+        dbo.collection("Exercise").findOne({ 'name': {'$regex': query,'$options':'i'}, "lang.0": "english" }, function (err, result) {
+          if (err) throw err;
+          db.close();
+          fulfill(result);
+        });
+      }
+    });
+  }).catch(function() {
+    reject();
+  })
+}
 
 function checkBadResult(name) {
   var rejectedValues = ["", "Test", "Test Pullups", "TestBicep", "Mart.05.035l", "What", "Awesome", "L-sit (tucked)", "52", "Abcd", "Developpé Couché", "Upper Body", "Snach"];

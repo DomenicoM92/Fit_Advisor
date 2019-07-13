@@ -143,6 +143,7 @@ exports.videoExerciseRequest = function (exerciseName) {
         reject();
       }
       else {
+        console.log(results);
         fulfill(results);
       }
     });
@@ -198,12 +199,13 @@ exports.findByName = function (name, MongoClient, urlDB) {
 }
 
 function checkBadResult(name) {
-  var rejectedValues = ["", "Test", "Test Pullups", "TestBicep", "Mart.05.035l", "What", "Awesome", "L-sit (tucked)", "52", "Abcd", "Developpé Couché", "Upper Body", "Snach"];
+  var rejectedValues = ["", "Test", "Test Pullups", "TestBicep", "Mart.05.035l", "What", "Awesome", "L-sit (tucked)", "52", "Abcd", "Developpé Couché", "Upper Body", "Snach","BenchPress"];
   for (index in rejectedValues) {
     if (rejectedValues[index] == name) {
       return true;
     }
   }
+  
   if (!docDuplicate[name])
     docDuplicate[name] = name;
   else

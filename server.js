@@ -54,11 +54,7 @@ app.get('/exerciseByName', function (req, res) {
 
 app.post('/exercise_info', function (req, res) {
   var exerciseCard = JSON.parse(req.body.card);
-<<<<<<< HEAD
   res.render('exercise_info',{card:JSON.stringify(exerciseCard), categoryName:exerciseCard.category.name, exeName:exerciseCard.name, description:exerciseCard.description, equipment:exerciseCard.equipment});
-=======
-  res.render('exercise_info', { card: JSON.stringify(exerciseCard), categoryName: exerciseCard.category.name, exeName: exerciseCard.name, description: exerciseCard.description });
->>>>>>> c796db3cd09a1d2b0e3b573d20f456883f752931
 });
 
 app.get('/exercise_video', function (req, res) {
@@ -92,7 +88,6 @@ app.get('/injuryDetails', function (req, res) {
 
 });
 
-<<<<<<< HEAD
 app.get('/equipment', function(req, res) {
   schedule.scheduleJob('* * 23 * * 7', function () {
     console.log('Update Equipment ' + new Date().toISOString());
@@ -115,19 +110,6 @@ app.get('/equipmentOffers', function(req, res) {
   var products = equipment.findByKeywordAmz(MongoClient, urlDB, req.query.domainCode, req.query.keyword, req.query.sortBy, req.query.page);
   products.then(function(result){
     res.setHeader('Content-Type', 'application/json');  
-=======
-app.get('/equipment', function (req, res) {
-
-  res.sendFile(path.join(__dirname + "/public/equipment_list.html"));
-
-});
-
-app.get('/equipmentProducts', function (req, res) {
-
-  var products = equipment.findByKeywordAmz(MongoClient, urlDB, req.get("domainCode"), req.get("keyword"), req.get("sortBy"), req.get("page"));
-  products.then(function (result) {
-    res.setHeader('Content-Type', 'application/json');
->>>>>>> c796db3cd09a1d2b0e3b573d20f456883f752931
     res.send(result);
   });
 });

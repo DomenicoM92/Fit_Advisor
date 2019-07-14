@@ -13,6 +13,12 @@ exports.initEquipmentCollection = function(MongoClient, urlDB, domainCode, sortB
   });
 }
 
+exports.updateEquipmentCollection = function(MongoClient, urlDB, domainCode, sortBy, page) {
+
+  console.log("EQUIPMENT: Updating Equipment Collection...");
+  populateEquipmentCollection(MongoClient, urlDB, domainCode, sortBy, page);
+}
+
 exports.findByKeywordAmz = function(MongoClient, urlDB, domainCode, keyword, sortBy, page) {
   
   return new Promise(function(fulfill, reject) {
@@ -51,7 +57,6 @@ function createEquipmentCollection(MongoClient, urlDB) {
       var dbo = db.db("Fit_AdvisorDB");
       var equipment = JSON.parse(response.body).results;
       equipment.forEach(eq => {
-        if(eq.name == "Dumbbell") eq.name = "Dumbell";
         if(eq.name == "SZ-Bar") eq.name = "EZ-Bar";
       });
 
@@ -92,14 +97,14 @@ function populateEquipmentCollection(MongoClient, urlDB, domainCode, sortBy, pag
 
 function lookupByKeywordAmz(MongoClient, urlDB, keyword) {
 
-  //console.log("Looking up for '" + keyword + "' in DB...");
+  console.log("Looking up for '" + keyword + "' in DB...");
   return new Promise(function (fulfill, reject){
     MongoClient.connect(urlDB,{ useNewUrlParser: true },function(err, db) {
       if (err) 
         throw err;
       else {
         var dbo = db.db("Fit_AdvisorDB");
-        dbo.collection("Equipment").findOne({name : keyword},  {fields : { _id : 0, amazonProducts : 1}}, function(err, found) {
+        dbo.collection("Equipment").findOne({name : keyword},  { _id : 0, amazonProducts : 1}, function(err, found) {
           if(err) {
             console.log(err);
             reject(err);
@@ -121,11 +126,13 @@ function searchByKeywordAmz(MongoClient, urlDB, domainCode, keyword, sortBy, pag
   //console.log("Axesso API Request for '" + keyword + "'...");
 
   if(keyword == "Bench") keyword = "Flat bench";
+  if(keyword == "EZ-Bar") keyword = "Ez curl bar";
 
   return new Promise(function (fulfill, reject) {
 
     var requestType = "amazon-search-by-keyword";
 
+    console.log("AXESSO API CALL"); 
   //Axesso Product Request
   unirest.get("https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/"+ requestType +"?sortBy="+ sortBy +"&domainCode=" + domainCode +"&page=" + page +"&keyword=" + keyword)
     .header("Content-Type", "application/json")
@@ -134,6 +141,8 @@ function searchByKeywordAmz(MongoClient, urlDB, domainCode, keyword, sortBy, pag
     .end(function(result) {
 
       if(keyword == "Flat bench") keyword = "Bench";
+      if(keyword == "Ez curl bar") keyword = "EZ-Bar";
+
 
       //console.log("Found Products for '" + keyword + "'...");
       updateProducts(result, keyword, MongoClient, urlDB);

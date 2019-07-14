@@ -18,9 +18,9 @@ module.exports = {
             const collection = db.collection('WorkoutRoutine');
             
             collection.drop(function(err, delOK) {
-                if (delOK) console.log("Collection deleted");
+                if (delOK) console.log("WOUTROUTINE: Collection deleted");
                 
-                console.log('Starting insertion...');
+                console.log('WOUTROUTINE: Starting insertion...');
 
                 for(i=0; i < equipment.length; i++){
                     for(j=0; j < muscularGroups.length; j++){
@@ -76,10 +76,10 @@ module.exports = {
                         }
                     }
                 }
-                console.log('Insertion ended')
-                console.log('Creating index...');
+                console.log('WOUTROUTINE: Insertion ended')
+                //console.log('WOUTROUTINE: Creating index...');
                 collection.createIndex({'muscularGroup': 1}, function(err, result) {
-                    console.log("Index:" + result + ", created correctly");
+                    console.log("WOUTROUTINE: Index created correctly");
                     client.close();
                 });
             });

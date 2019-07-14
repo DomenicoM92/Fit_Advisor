@@ -2,14 +2,31 @@
 <html>
 
 <head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <title>404</title>
+    <script>
+        $(function(){
+            $(".navbar").load("./html/nav-bar.html"); 
+        });    
+    </script> 
 </head>
 
 <body>
-
-    <h1>Not Found!</h1>
-    <p></p>
+    <nav class="navbar navbar-black default-color bg-dark"></nav>
+    <div class="page-wrap d-flex flex-row align-items-center">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-12 text-center">
+                        <span class="display-1 d-block">404</span>
+                        <div class="mb-4 lead">The exercise you are looking for was not found.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 </body>
 
 </html>
+

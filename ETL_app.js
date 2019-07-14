@@ -14,14 +14,14 @@ equipment.initEquipmentCollection(MongoClient, urlDB, "com", "relevanceblender",
 
 
 //Setup Injury Collection 
-injury.bodyParser(MongoClient, urlDB, function(){
-    MongoClient.connect(urlDB, { useNewUrlParser: true }, function (err, db) {
-        if (err) throw err;
-        var dbo = db.db("Fit_AdvisorDB");
-        dbo.collection("Injury").createIndex(
-          { "category": 1 }, function (err, result) {
-          });
-        db.close();
+injury.ETLInjury(MongoClient, urlDB, function(){
+    MongoClient.connect(urlDB, { useNewUrlParser: true }, function (err, client) {
+        var db = client.db("Fit_AdvisorDB");
+        var collection= db.collection("Injury");
+        collection.createIndex({'category': 1}, function(err, result) {
+            console.log("INJURY: Index created correctly");
+            client.close();
+        });
     });
 });
 

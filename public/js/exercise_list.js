@@ -58,7 +58,7 @@ function buildTable(category) {
                         document.getElementById("anchor" + i).style.backgroundColor = "White";
                 }
                 for (i = 0; i < allExer; i++) {
-                    if (i >= (offset * 10) && i <= ((offset * 10) + 10)) {
+                    if (i > (offset * 10) && i <= ((offset * 10) + 10)) {
                         document.getElementById(i).style.display = "table-row";
                     } else {
                         document.getElementById(i).style.display = "none";

@@ -9,7 +9,8 @@ var fs = require('fs');
 
 exports.update = function () {
 
-    //Setup Equipment Collection and Populate Products
+    //Update Equipment Collection and Populate Products
+    console.log('Update Equipment ' + new Date().toISOString());
     equipment.initEquipmentCollection(MongoClient, urlDB, "com", "relevanceblender", "1");
 
     //Setup Injury Collection 

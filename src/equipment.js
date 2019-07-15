@@ -28,7 +28,7 @@ exports.findByKeywordAmz = function(MongoClient, urlDB, domainCode, keyword, sor
       fulfill(result);
     },
     function (err) {
-      console.log("Nothing found for '" + keyword + "' in DB.");
+      //console.log("Nothing found for '" + keyword + "' in DB.");
       var APIResult = searchByKeywordAmz(MongoClient, urlDB, domainCode, keyword, sortBy, page);
       APIResult.then(function(result) {
         var lookupResult = lookupByKeywordAmz(MongoClient, urlDB, keyword);
@@ -100,7 +100,7 @@ function populateEquipmentCollection(MongoClient, urlDB, domainCode, sortBy, pag
 
 function lookupByKeywordAmz(MongoClient, urlDB, keyword) {
 
-  console.log("Looking up for '" + keyword + "' in DB...");
+  //console.log("Looking up for '" + keyword + "' in DB...");
   return new Promise(function (fulfill, reject){
     MongoClient.connect(urlDB,{ useNewUrlParser: true },function(err, db) {
       if (err) 
@@ -114,6 +114,10 @@ function lookupByKeywordAmz(MongoClient, urlDB, keyword) {
           }
           if(found.amazonProducts != undefined) {
             //console.log("Found '" + keyword + "' in DB!");
+            found.amazonProducts.sort(function(p1,p2) {
+              if(p1.price < p2.price) return -1
+              else return +1
+            });
             db.close();
             fulfill(found.amazonProducts);
           }

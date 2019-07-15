@@ -89,8 +89,9 @@ app.get('/injuryDetails', function (req, res) {
 });
 
 app.get('/equipment', function(req, res) {
+  //every sunday at 23:00
   schedule.scheduleJob('* * 23 * * 7', function () {
-    console.log('Update Equipment ' + new Date().toISOString());
+    console.log('Offers Update Started:' + new Date().toISOString());
     equipment.updateEquipmentCollection(MongoClient, urlDB, "com", "relevanceblender", "1");
   });
   exercise.findByCategory(req.query.category, MongoClient, urlDB).then(function(result) {

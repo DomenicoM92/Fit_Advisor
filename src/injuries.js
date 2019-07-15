@@ -3,7 +3,7 @@
   const categories=  [
     {
       title: "Arms",
-      values: ["bicep", "tricep", "forearm", "carpal"]
+      values: ["bicep", "tricep", "forearm", "carpal", "wrist"]
     },
     {
       title: "Abs",
@@ -11,7 +11,7 @@
     },
     {
       title: "Back",
-      values: ["back", "spine", "neck"]
+      values: ["back", "spinal", "neck", "sciatica"]
     },
     {
       title: "Chest",
@@ -19,7 +19,7 @@
     },
     {
       title: "Legs",
-      values: ["glute", "femor", "hamstring", "knee", "calf"]
+      values: ["glute", "femor", "hamstring", "knee", "calf", "thigh", "groin"]
     },
     {
       title: "Shoulders",
@@ -116,6 +116,11 @@
                   if($(this).attr('class')=="cta-btn"){
                     $(this).remove();
                   }
+                });
+
+                //REMOVE COLOR FROM 'g' ELEMENT
+                content.find('g').each(function(){
+                  $(this).removeAttr('style');
                 });
                 
                 //REMOVE ALL ELEMENTS AFTER THE 'ins' ELEMENT

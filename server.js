@@ -32,6 +32,7 @@ app.get('/', function (req, res) {
 
 app.get('/exercise', function (req, res) {
   res.render('exercise_list', { category: req.query.category });
+  //exercise.retrieveImgsByExercise("Abs", MongoClient, urlDB);
 });
 
 app.get('/exerciseCategory', function (req, res) {
@@ -74,6 +75,7 @@ app.get('/injury', function (req, res) {
 
 app.get("/injuryList", function (req, res) {
   var categoryName = req.query.category;
+  
   injuries.retrieveByMuscularGroup(categoryName, MongoClient, urlDB, function (result) {
     res.setHeader('Content-Type', 'application/json');
     res.send(result);
@@ -83,7 +85,7 @@ app.get("/injuryList", function (req, res) {
 app.get('/injuryDetails', function (req, res) {
   injuries.findByInjuryName(req.query.title, MongoClient, urlDB, function (result) {
     res.setHeader('Content-Type', 'text/html');
-    res.send(result.content);
+    res.render('injury_detail', {title: result.title, content: result.content});
   });
 
 });

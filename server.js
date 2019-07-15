@@ -58,7 +58,7 @@ app.post('/exercise_info', function (req, res) {
 });
 
 app.get('/exercise_video', function (req, res) {
-  var exercise_video = exercise.videoExerciseRequest(req.query.name);
+  var exercise_video = exercise.videoExerciseRequest(req.query.name, MongoClient,urlDB);
   exercise_video.then(function (result) {
     res.setHeader('Content-Type', 'application/json');
     res.send(result);
@@ -133,5 +133,15 @@ app.listen(8080, function () {
   schedule.scheduleJob('* * 23 * 1 7', function () {
     console.log('Update Started:' + new Date().toISOString());
     scheduledUpdate.update();
+  });
+  //flush video cache exercise everyday at midnight
+  schedule.scheduleJob('0 0 * * *', function () {
+    console.log('Started flush video exercise cache:' + new Date().toISOString());
+    MongoClient.connect(urlDB, { useNewUrlParser: true }, function (err, db) {
+      if (err) throw err;
+      var dbo = db.db("Fit_AdvisorDB");
+      dbo.collection("Url_Video_Cache").deleteMany();
+      console.log("Url_Video_Cache: Flushed!");
+    });
   });
 });

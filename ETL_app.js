@@ -59,5 +59,14 @@ if (request('GET', "https://wger.de/api/v2/exerciseinfo?page=1").statusCode == 2
     }).then(function () {
         //after deletion redo API call
         exercise.exerciseHandler(MongoClient, urlDB);
+    }).then(function(){
+        //Setup url video cache
+        MongoClient.connect(urlDB, { useNewUrlParser: true }, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db("Fit_AdvisorDB");
+            dbo.createCollection("Url_Video_Cache");
+            dbo.collection("Url_Video_Cache").deleteMany();
+            console.log("Url_Video_Cache: Created!");
+        });
     });
 }

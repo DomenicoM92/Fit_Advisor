@@ -60,7 +60,10 @@ function createEquipmentCollection(MongoClient, urlDB) {
         if(eq.name == "SZ-Bar") eq.name = "EZ-Bar";
       });
 
-      dbo.collection("Equipment").drop();
+      dbo.collection("Equipment").drop(function(err, res) {
+        if(err);
+        console.log("EQUIPMENT: Collection deleted");
+      });
       dbo.collection("Equipment").insertMany(equipment, function (err, res) {
         if (err) throw err;
         console.log("EQUIPMENT: Collection created");
@@ -78,11 +81,10 @@ function populateEquipmentCollection(MongoClient, urlDB, domainCode, sortBy, pag
   MongoClient.connect(urlDB, { useNewUrlParser: true },function (err, db) {
     if (err) throw err;
     var dbo = db.db("Fit_AdvisorDB");
-    dbo.collection("Equipment").find({},  {fields : { name : 1}}, function(err, equipment) {
-      if(err) {
-        console.log(err);
-      }
+    dbo.collection("Equipment").find({},  { name : 1}, function(err, equipment) {
+      if(err);
       if(equipment) {
+        console.log("EQUIPMENT: Populating collection...")
         equipment.forEach(eq => {
           if(eq.name != "none (bodyweight exercise)") {
             //console.log("Found equipment: '" + eq.name + "'.");
@@ -90,6 +92,7 @@ function populateEquipmentCollection(MongoClient, urlDB, domainCode, sortBy, pag
           }
         });
         db.close();
+        console.log("EQUIPMENT: Collection populated")
       }
     });
   });
@@ -132,7 +135,6 @@ function searchByKeywordAmz(MongoClient, urlDB, domainCode, keyword, sortBy, pag
 
     var requestType = "amazon-search-by-keyword";
 
-    console.log("AXESSO API CALL"); 
   //Axesso Product Request
   unirest.get("https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/"+ requestType +"?sortBy="+ sortBy +"&domainCode=" + domainCode +"&page=" + page +"&keyword=" + keyword)
     .header("Content-Type", "application/json")
@@ -167,7 +169,7 @@ function updateProducts(result, keyword, MongoClient, urlDB) {
       {"name" : keyword},
       {$set: {"amazonProducts": equipmentSearch}}
     );
-    console.log("'" + keyword + "' Equipment Collection created");
+    //console.log("'" + keyword + "' Equipment Collection created");
     db.close();
   });
 }

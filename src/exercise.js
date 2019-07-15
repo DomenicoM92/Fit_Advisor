@@ -49,27 +49,47 @@ exports.exerciseHandler = function (MongoClient, urlDB) {
         });
       db.close();
     });
-  }).then(function(){
-    //MARIO
-  }).then(function(){
-    //FRANCESCO
   });
 }
 
-exports.videoExerciseRequest = function (exerciseName) {
+exports.videoExerciseRequest = function (exerciseName, MongoClient, urlDB) {
   return new Promise(function (fulfill, reject) {
-    var opts = {
-      maxResults: 1,
-      key: 'AIzaSyB10jgQoDvOoZo3NopHUvYPpHFFIFU1e6o'
-    };
-    search(exerciseName + " GYM Exercise", opts, function (err, results) {
-      if (err) {
-        reject();
-      }
+    MongoClient.connect(urlDB, { useNewUrlParser: true }, function (err, db) {
+      if (err)
+        throw err;
       else {
-        fulfill(results);
+        var dbo = db.db("Fit_AdvisorDB");
+        dbo.collection("Url_Video_Cache").findOne({ "name": exerciseName }, function (err, result) {
+          if (err) throw err;
+          if (result) {
+            console.log("Url video in cached");
+            fulfill(result);
+          } else {
+            console.log("Url video not cached");
+            var opts = {
+              maxResults: 1,
+              key: 'AIzaSyBN8MLWR0-2bOIMbOzr8I3CX8y8OVBntiA'
+            };
+            search(exerciseName + " GYM Exercise", opts, function (err, results) {
+              if (err) {
+                reject();
+              }
+              else {
+                //console.log(results);
+                var dbo = db.db("Fit_AdvisorDB");
+                results[0]["name"] = exerciseName;
+                results[0]["timestamp"] = new Date().toISOString();
+                dbo.collection("Url_Video_Cache").insertOne(results[0], function (err) {
+                  if (err) throw err;
+                });
+                fulfill(results[0]);
+              }
+            });
+          }
+        });
       }
     });
+
   });
 }
 
@@ -105,26 +125,27 @@ exports.findByName = function (name, MongoClient, urlDB) {
         throw err;
       else {
         var dbo = db.db("Fit_AdvisorDB");
-        var query = ".*"+name+".*";
-        dbo.collection("Exercise").findOne({ 'name': {'$regex': query,'$options':'i'}, "lang.0": "english" }, function (err, result) {
+        var query = ".*" + name + ".*";
+        dbo.collection("Exercise").findOne({ 'name': { '$regex': query, '$options': 'i' }, "lang.0": "english" }, function (err, result) {
           if (err) throw err;
           db.close();
           fulfill(result);
         });
       }
     });
-  }).catch(function() {
+  }).catch(function () {
     reject();
   })
 }
 
 function checkBadResult(name) {
-  var rejectedValues = ["", "Test", "Test Pullups", "TestBicep", "Mart.05.035l", "What", "Awesome", "L-sit (tucked)", "52", "Abcd", "Developpé Couché", "Upper Body", "Snach"];
+  var rejectedValues = ["", "Test", "Test Pullups", "TestBicep", "Mart.05.035l", "What", "Awesome", "L-sit (tucked)", "52", "Abcd", "Developpé Couché", "Upper Body", "Snach", "BenchPress"];
   for (index in rejectedValues) {
     if (rejectedValues[index] == name) {
       return true;
     }
   }
+
   if (!docDuplicate[name])
     docDuplicate[name] = name;
   else

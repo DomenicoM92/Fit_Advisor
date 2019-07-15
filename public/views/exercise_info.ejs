@@ -43,7 +43,7 @@
                             <dd id="secondary_muscles"></dd>
                         </div>
                         <div class="exercise-info__term exercise-info__term--equipment">
-                            <dt style="text-align: left">Equipment:</dt>
+                            <dt>Equipment:</dt>
                             <dd id="equipment"></dd>
                         </div>
                     </dl>
@@ -53,7 +53,7 @@
     </header>
     <div class="content__wrap">
         <div class="content__row">
-            <main class="content__primary-two-column" role="main">
+            <main class="content__primary-one-column" role="main">
 
 
                 <div class="exercise-post">
@@ -69,19 +69,17 @@
                         </div>
                     </section>
                 </div>
-            </main>
-            <div class="content__secondary-two-column">
 
-                <div class="marquee-manager marquee-manager-flat Ads-Sitewide-Leaderboard ">
-                    <h1>Peter zone</h1>
+                <div id="offersDiv" style="display: flex; place-content: center; justify-content: space-evenly">
+                    
                 </div>
 
-            </div>
+            </main>
         </div>
     </div>
     <script src="../js/exercise_info.js"></script>
     <script>
-        var card = <%-card %>;
+        var card = <%-card%>;
         window.onload = fillSection(card);
     </script>
 </body>

@@ -55,11 +55,11 @@ app.get('/exerciseByName', function (req, res) {
 
 app.post('/exercise_info', function (req, res) {
   var exerciseCard = JSON.parse(req.body.card);
-  res.render('exercise_info', { card: JSON.stringify(exerciseCard), categoryName: exerciseCard.category.name, exeName: exerciseCard.name, description: exerciseCard.description });
+  res.render('exercise_info',{card:JSON.stringify(exerciseCard), categoryName:exerciseCard.category.name, exeName:exerciseCard.name, description:exerciseCard.description, equipment:exerciseCard.equipment});
 });
 
 app.get('/exercise_video', function (req, res) {
-  var exercise_video = exercise.videoExerciseRequest(req.query.name);
+  var exercise_video = exercise.videoExerciseRequest(req.query.name, MongoClient,urlDB);
   exercise_video.then(function (result) {
     res.setHeader('Content-Type', 'application/json');
     res.send(result);
@@ -90,17 +90,29 @@ app.get('/injuryDetails', function (req, res) {
 
 });
 
-app.get('/equipment', function (req, res) {
-
-  res.sendFile(path.join(__dirname + "/public/equipment_list.html"));
+app.get('/equipment', function(req, res) {
+  //every sunday at 23:00
+  schedule.scheduleJob('* * 23 * * 7', function () {
+    console.log('Offers Update Started:' + new Date().toISOString());
+    equipment.updateEquipmentCollection(MongoClient, urlDB, "com", "relevanceblender", "1");
+  });
+  exercise.findByCategory(req.query.category, MongoClient, urlDB).then(function(result) {
+    var equipment = [];
+    result.forEach(ex => {
+      ex.equipment.forEach(eq => {
+        if(!equipment.includes(eq.name) && !eq.name.startsWith("none"))
+          equipment.push(eq.name);
+      });
+    });
+    res.render("equipment_list", {category:req.query.category, equipment:equipment});
+  })
 
 });
 
-app.get('/equipmentProducts', function (req, res) {
-
-  var products = equipment.findByKeywordAmz(MongoClient, urlDB, req.get("domainCode"), req.get("keyword"), req.get("sortBy"), req.get("page"));
-  products.then(function (result) {
-    res.setHeader('Content-Type', 'application/json');
+app.get('/equipmentOffers', function(req, res) {
+  var products = equipment.findByKeywordAmz(MongoClient, urlDB, req.query.domainCode, req.query.keyword, req.query.sortBy, req.query.page);
+  products.then(function(result){
+    res.setHeader('Content-Type', 'application/json');  
     res.send(result);
   });
 });
@@ -123,5 +135,15 @@ app.listen(8080, function () {
   schedule.scheduleJob('* * 23 * 1 7', function () {
     console.log('Update Started:' + new Date().toISOString());
     scheduledUpdate.update();
+  });
+  //flush video cache exercise everyday at midnight
+  schedule.scheduleJob('0 0 * * *', function () {
+    console.log('Started flush video exercise cache:' + new Date().toISOString());
+    MongoClient.connect(urlDB, { useNewUrlParser: true }, function (err, db) {
+      if (err) throw err;
+      var dbo = db.db("Fit_AdvisorDB");
+      dbo.collection("Url_Video_Cache").deleteMany();
+      console.log("Url_Video_Cache: Flushed!");
+    });
   });
 });

@@ -13,6 +13,12 @@ exports.initEquipmentCollection = function(MongoClient, urlDB, domainCode, sortB
   });
 }
 
+exports.updateEquipmentCollection = function(MongoClient, urlDB, domainCode, sortBy, page) {
+
+  console.log("EQUIPMENT: Updating Equipment Collection...");
+  populateEquipmentCollection(MongoClient, urlDB, domainCode, sortBy, page);
+}
+
 exports.findByKeywordAmz = function(MongoClient, urlDB, domainCode, keyword, sortBy, page) {
   
   return new Promise(function(fulfill, reject) {
@@ -22,7 +28,7 @@ exports.findByKeywordAmz = function(MongoClient, urlDB, domainCode, keyword, sor
       fulfill(result);
     },
     function (err) {
-      console.log("Nothing found for '" + keyword + "' in DB.");
+      //console.log("Nothing found for '" + keyword + "' in DB.");
       var APIResult = searchByKeywordAmz(MongoClient, urlDB, domainCode, keyword, sortBy, page);
       APIResult.then(function(result) {
         var lookupResult = lookupByKeywordAmz(MongoClient, urlDB, keyword);
@@ -51,11 +57,13 @@ function createEquipmentCollection(MongoClient, urlDB) {
       var dbo = db.db("Fit_AdvisorDB");
       var equipment = JSON.parse(response.body).results;
       equipment.forEach(eq => {
-        if(eq.name == "Dumbbell") eq.name = "Dumbell";
         if(eq.name == "SZ-Bar") eq.name = "EZ-Bar";
       });
 
-      dbo.collection("Equipment").drop();
+      dbo.collection("Equipment").drop(function(err, res) {
+        if(err);
+        console.log("EQUIPMENT: Collection deleted");
+      });
       dbo.collection("Equipment").insertMany(equipment, function (err, res) {
         if (err) throw err;
         console.log("EQUIPMENT: Collection created");
@@ -73,11 +81,10 @@ function populateEquipmentCollection(MongoClient, urlDB, domainCode, sortBy, pag
   MongoClient.connect(urlDB, { useNewUrlParser: true },function (err, db) {
     if (err) throw err;
     var dbo = db.db("Fit_AdvisorDB");
-    dbo.collection("Equipment").find({},  {fields : { name : 1}}, function(err, equipment) {
-      if(err) {
-        console.log(err);
-      }
+    dbo.collection("Equipment").find({},  { name : 1}, function(err, equipment) {
+      if(err);
       if(equipment) {
+        console.log("EQUIPMENT: Populating collection...")
         equipment.forEach(eq => {
           if(eq.name != "none (bodyweight exercise)") {
             //console.log("Found equipment: '" + eq.name + "'.");
@@ -85,6 +92,7 @@ function populateEquipmentCollection(MongoClient, urlDB, domainCode, sortBy, pag
           }
         });
         db.close();
+        console.log("EQUIPMENT: Collection populated")
       }
     });
   });
@@ -99,13 +107,17 @@ function lookupByKeywordAmz(MongoClient, urlDB, keyword) {
         throw err;
       else {
         var dbo = db.db("Fit_AdvisorDB");
-        dbo.collection("Equipment").findOne({name : keyword},  {fields : { _id : 0, amazonProducts : 1}}, function(err, found) {
+        dbo.collection("Equipment").findOne({name : keyword},  { _id : 0, amazonProducts : 1}, function(err, found) {
           if(err) {
             console.log(err);
             reject(err);
           }
           if(found.amazonProducts != undefined) {
             //console.log("Found '" + keyword + "' in DB!");
+            found.amazonProducts.sort(function(p1,p2) {
+              if(p1.price < p2.price) return -1
+              else return +1
+            });
             db.close();
             fulfill(found.amazonProducts);
           }
@@ -121,6 +133,7 @@ function searchByKeywordAmz(MongoClient, urlDB, domainCode, keyword, sortBy, pag
   //console.log("Axesso API Request for '" + keyword + "'...");
 
   if(keyword == "Bench") keyword = "Flat bench";
+  if(keyword == "EZ-Bar") keyword = "Ez curl bar";
 
   return new Promise(function (fulfill, reject) {
 
@@ -134,6 +147,8 @@ function searchByKeywordAmz(MongoClient, urlDB, domainCode, keyword, sortBy, pag
     .end(function(result) {
 
       if(keyword == "Flat bench") keyword = "Bench";
+      if(keyword == "Ez curl bar") keyword = "EZ-Bar";
+
 
       //console.log("Found Products for '" + keyword + "'...");
       updateProducts(result, keyword, MongoClient, urlDB);
@@ -158,7 +173,7 @@ function updateProducts(result, keyword, MongoClient, urlDB) {
       {"name" : keyword},
       {$set: {"amazonProducts": equipmentSearch}}
     );
-    console.log("'" + keyword + "' Equipment Collection created");
+    //console.log("'" + keyword + "' Equipment Collection created");
     db.close();
   });
 }

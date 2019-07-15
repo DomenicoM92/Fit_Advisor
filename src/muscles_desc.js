@@ -10,9 +10,11 @@ exports.findByMuscGroup = function(muscGroup, callback){
     }
     
     request(url, function (error, response, body) {
-        if(error) throw error;
-        //console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-    
+        if(response.statusCode!=200 || error){
+            callback(description);
+            return;
+        }
+
         var $ = cheerio.load(body);
     
         var title = $('h3').filter(function() {

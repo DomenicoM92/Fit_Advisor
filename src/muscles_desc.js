@@ -19,7 +19,7 @@ exports.findByMuscGroup = function(muscGroup, callback){
             return $(this).text().trim() === muscGroup;
         });
 
-        description.title = title.text();
+        description.title = '<h1>' + title.text() + '</h1>';
 
 
         var content = title.nextUntil('h3').each(function(i, elem) {

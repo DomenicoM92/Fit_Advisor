@@ -1,5 +1,6 @@
   const URL_ROOT = "http://physioworks.com.au";
   const URL_LIST_ITEMS= "https://physioworks.com.au/Injuries-Conditions/Activities/weightlifting-injuries";
+  const URL_ABS_INJURY= "https://www.summitmedicalgroup.com/library/adult_health/sma_abdominal_muscle_strain/";
   const categories=  [
     {
       title: "Arms",
@@ -71,10 +72,10 @@
     callback();
   }
 
-
   function bodyParser(db){
     const request= require("request");
     const cheerio= require("cheerio");
+    //SCRAPING FROM physioworks
     request(URL_LIST_ITEMS,function(err,res,body){
       if(err){
         console.log(err);
@@ -150,11 +151,24 @@
           });    
         });
       }
-      console.log("INJURY: end etl module");
     }); 
+    //SCRAPING FROM summitmedialgroup
+    request(URL_ABS_INJURY, function(err, res, body){
+      if(err) console.log(err);
+      if(res.statusCode == 200){
+        var $= cheerio.load(body);
+        var title= "Abdominal Muscle Strain";
+        var content= $('div[class=col-md-9]');
+        //REMOVE ALL ANCHORS FROM CONTENT 
+        content.find('a').each(function(){
+          $(this).remove();
+        })
+      }
+    });
+
+    console.log("INJURY: end etl module");
+
   }
-
-
 
   function createMatchingByTitle(injuryName){
     var category="";

@@ -30,7 +30,7 @@
                 font-size: 50px;
             }
             img {
-            width: 250px; 
+                width: 250px; 
             }
         </style>
     </head>
@@ -61,16 +61,21 @@
 
         $(document).ready(function() {   
             $('h1').append("<hr style='border: 1px solid #e53d46'/>");
- 
+            var container = document.getElementById('container');
             var loading = document.getElementById('loading'); 
             $.get("/retrieveDesc?category=" + $.urlParam('category'), function(data, status){
                 loading.remove();
-
-                var container = document.getElementById('container');
-                container.innerHTML += data['title'];
-
-                for(i=0; i< data['content'].length; i++){
-                    container.innerHTML += data['content'][i];
+                if(data.title === ""){
+                    var errorMessage = document.createElement('h1');
+                    errorMessage.classList.add('text-center');
+                    errorMessage.innerHTML += 'Description temporary unavailable';
+                    container.append(errorMessage);
+                }
+                else{
+                    container.innerHTML += data['title'];
+                    for(i=0; i< data['content'].length; i++){
+                        container.innerHTML += data['content'][i];
+                    }
                 }
             });  
         });

@@ -15,11 +15,26 @@
                     $(".navbar").load("./html/nav-bar.html"); 
                 });    
             </script> 
+
+            <style>
+                body {
+                    font-family: sans-serif;
+                    -ms-text-size-adjust: 100%;
+                    -webkit-text-size-adjust: 100%;
+                    
+                }
+                h2 {
+                    color: #e53d46;
+                }
+                img {
+                    width: 250px; 
+                }
+            </style>
     </head>
     <body class='container-fluid'>
         <nav class="navbar navbar-black default-color bg-dark"></nav>
 
-        <div id="grid" class = "container-fluid p-4"></div>
+        <div id="grid" class = "container-fluid p-4" style="width: 80%; margin: 2% auto;"></div>
     </body>
 
     <script>
@@ -88,6 +103,7 @@
             var cardHeader = document.createElement('h2');
             cardHeader.classList.add('card-header');
             cardHeader.classList.add('text-center');
+            cardHeader.classList.add('bg-dark');
             cardHeader.innerHTML += woutRoutine['title'];
             
             var cardBody = document.createElement('div');

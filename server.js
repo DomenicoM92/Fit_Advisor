@@ -70,7 +70,6 @@ app.get('/exercise_video', function (req, res) {
   });
 });
 
-
 app.get('/injury', function (req, res) {
   res.sendFile(path.join(__dirname + "/public/html/injuries_list.html"));
 });
@@ -140,8 +139,7 @@ app.get('/retrieveDesc', function (req, res) {
   const mGroupCapitalized = muscleGroup.charAt(0).toUpperCase() + muscleGroup.slice(1);
   if (muscleGroup != undefined){
       muscGroupDesc.findByMuscGroup(mGroupCapitalized, function (description) {
-      //console.log(description);
-      res.send(description);
+        res.send(description);
     });
   }
 });

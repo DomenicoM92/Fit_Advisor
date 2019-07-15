@@ -9,6 +9,7 @@
     "ejs": "2.6.2",
     "express": "4.17.1",
     "fs": "0.0.1-security",
+    "hbs": "4.0.4",
     "languagedetect": "1.2.0",
     "mongodb": "3.2.7",
     "node-schedule": "1.3.2",

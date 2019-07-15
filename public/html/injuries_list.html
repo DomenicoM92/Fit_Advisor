@@ -21,7 +21,7 @@
 
 <body>
     <nav class="navbar navbar-black default-color bg-dark"></nav>
-    <div class="p-1" style="width: 100%; margin: 3% auto;">
+    <div class="container p-1" style="width: 100%;">
         
     </div>
     <script>
@@ -39,13 +39,18 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function(data){
+                    var index_to_append=0;
                     console.log(data);
                     for(var i=0; i< data.length; i++){
-                        $(".p-1").append(
-                        "<div class='col' style='float: left'>"+
+                        if(i%4 == 0){
+                            $(".container").append("<div class='row' id='row-"+i+"' style='margin:0 auto; '></div>");
+                            index_to_append=i;
+                        }
+                        $("#row-"+index_to_append).append(
+                        "<div class='card' style='width: 260px; float: left; margin:1%;'>"+
                             "<div class='card'>"+
                                 "<div class='view'>"+
-                                    "<img src='"+data[i].mainImg+"' class='card-img-top' alt='photo' style='height: 250px;'>"+
+                                    "<img src='"+data[i].mainImg+"' class='card-img-top' alt='photo' style='height: 200px;'>"+
                                 "</div>"+
                                 "<div class='card-body elegant-color white-text' style='height:200px'>"+
                                     "<h4 class='card-title'>"+data[i].title+"</h4>"+

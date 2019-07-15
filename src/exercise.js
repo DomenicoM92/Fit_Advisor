@@ -91,24 +91,6 @@ exports.findByCategory = function (category, MongoClient, urlDB) {
   });
 }
 
-function findByCat(category, MongoClient, urlDB) {
-
-  return new Promise(function (fulfill, reject) {
-    MongoClient.connect(urlDB, { useNewUrlParser: true }, function (err, db) {
-      if (err)
-        throw err;
-      else {
-        var dbo = db.db("Fit_AdvisorDB");
-        dbo.collection("Exercise").find({ "category.name": category, "lang.0": "english" }).sort({ name: 1 }).toArray(function (err, result) {
-          if (err) throw err;
-          db.close();
-          fulfill(result);
-        });
-      }
-    });
-  });
-}
-
 
 //MARIO: feature retrieve img to enhance exercise 
 exports.retrieveImgsByExercise= function(category,MongoClient, urlDB){

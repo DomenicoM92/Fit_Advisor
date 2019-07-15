@@ -787,3 +787,9 @@ body {
 .text-justify {
 	text-align: justify!important
 }
+
+.minitable {
+	height: 40px;
+	width: 600px;
+	font-size: 15px;
+}

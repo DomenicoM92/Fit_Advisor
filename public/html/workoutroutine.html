@@ -16,11 +16,10 @@
                 });    
             </script> 
     </head>
-    <body>
+    <body class='container-fluid'>
         <nav class="navbar navbar-black default-color bg-dark"></nav>
 
         <div id="grid" class = "container-fluid p-4"></div>
-        
     </body>
 
     <script>
@@ -51,13 +50,13 @@
                     };*/
                     var woutRoutine = data[i];
                     
-                    createCard(woutRoutine);  
+                    generateWoutCard(woutRoutine);  
                 }
                 
             });
         });
 
-        function createCard(woutRoutine){
+        function generateWoutCard(woutRoutine){
             /*var woutRoutine = {
                 title:"",
                 description:"",
@@ -83,40 +82,61 @@
             </div>*/
 
             var grid = document.getElementById('grid');
-            var container = document.createElement('div');
-            container.classList.add('row'); 
-            var br = document.createElement('br');
-            var woutRoutineTitle = document.createElement('h2');
-            woutRoutineTitle.innerHTML += woutRoutine['title'];
-            woutRoutineTitle.append(br);
-            var woutRoutineDesc = document.createElement('p');
-            woutRoutineDesc.innerHTML += woutRoutine['description'];
-            woutRoutineDesc.append(br);
+            var woutCard = document.createElement('div');
+            woutCard.classList.add('card'); woutCard.classList.add('mb-4')
+             
+            var cardHeader = document.createElement('h2');
+            cardHeader.classList.add('card-header');
+            cardHeader.classList.add('text-center');
+            cardHeader.innerHTML += woutRoutine['title'];
+            
+            var cardBody = document.createElement('div');
+            cardBody.classList.add('card-body');
 
-            var card, img, cardBody, cardHeader, cardText;
+            var cardsContainer = document.createElement('div');
+            cardsContainer.classList.add('row');
+            cardsContainer.classList.add('justify-content-center');
 
-            container.append(woutRoutineTitle);
-            container.append(woutRoutineDesc);
+
+            var cardTitle = document.createElement('p');
+            cardTitle.classList.add('text-justify');
+            cardTitle.classList.add('card-title');
+            cardTitle.classList.add('p-4');
+
+            cardTitle.innerHTML += woutRoutine['description'];
+
+            woutCard.append(cardHeader);
+            cardBody.append(cardTitle);
+            cardBody.append(cardsContainer);
 
             woutRoutine['routine'].forEach(function(exercise, index) {
-                card = document.createElement('div');
-                card.classList.add('card'); card.classList.add('bg-dark'); card.classList.add('m-4'); card.setAttribute('style', 'width: 18rem');
-                cardHeader = document.createElement('h5')
-                cardHeader.classList.add('card-header'); cardHeader.classList.add('text-white'); cardHeader.innerHTML += exercise['title'];
-                img = document.createElement('img')
-                img.classList.add('card-img-top'); img.setAttribute('src', exercise['img']); img.setAttribute('alt', 'Card image cap');
-                cardBody = document.createElement('div');
-                cardBody.classList.add('card-body');
-                cardText = document.createElement('p');
-                cardText.classList.add('card-text'); cardText.classList.add('text-white'); cardText.innerHTML += exercise['sets'] + "\t" + exercise['reps'] + "<br>" + exercise['notes'];
-                cardBody.append(cardText);
-                card.append(cardHeader)
-                card.append(img)
-                card.append(cardBody);
-                container.append(card);
+                cardsContainer.append(generateExeCard(exercise));
             });
 
-            grid.append(container);
+            woutCard.append(cardBody);
+            grid.append(woutCard);
+        }
+
+        function generateExeCard(exercise){
+            var card, img, cardBody, cardHeader, cardText;
+
+            card = document.createElement('div');
+            card.classList.add('card'); card.classList.add('bg-dark'); 
+            card.classList.add('m-4'); card.classList.add('rounded-0'); card.setAttribute('style', 'width: 18rem');
+            cardHeader = document.createElement('h5')
+            cardHeader.classList.add('card-header'); cardHeader.classList.add('text-white'); cardHeader.innerHTML += exercise['title'];
+            img = document.createElement('img')
+            img.classList.add('card-img-top'); img.setAttribute('src', exercise['img']); img.setAttribute('alt', 'Card image cap');
+            cardBody = document.createElement('div');
+            cardBody.classList.add('card-body');
+            cardText = document.createElement('p');
+            cardText.classList.add('card-text'); cardText.classList.add('text-white'); cardText.innerHTML += exercise['sets'] + "\t" + exercise['reps'] + "<br>" + exercise['notes'];
+            cardBody.append(cardText);
+            card.append(cardHeader)
+            card.append(img)
+            card.append(cardBody);
+
+            return card;
         }
 
         

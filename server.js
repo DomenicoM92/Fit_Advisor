@@ -13,6 +13,8 @@ var injuries = require('./src/injuries');
 var equipment = require('./src/equipment');
 var scheduledUpdate = require('./src/scheduled_update');
 const workoutRoutine = require('./src/workout_routine_mongo');
+const muscGroupDesc = require('./src/muscles_desc');
+
 
 //Serving static files such as Images, CSS, JavaScript
 app.use(express.static("public"));
@@ -122,11 +124,26 @@ app.get('/workoutRoutine', function (req, res) {
 });
 
 app.get('/retrieveRoutine', function (req, res) {
-  var muscularGroup = req.query.category;
-  if (muscularGroup != undefined)
-    workoutRoutine.retrieveByMuscularGroup(req.query.category, function (woutRoutines) {
+  var muscleGroup = req.query.category;
+  if (muscleGroup != undefined)
+    workoutRoutine.retrieveByMuscleGroup(req.query.category, function (woutRoutines) {
       res.send(woutRoutines);
     });
+});
+
+app.get('/description', function (req, res) {
+  res.sendFile(path.join(__dirname + "/public/html/description.html"));
+});
+
+app.get('/retrieveDesc', function (req, res) {
+  var muscleGroup = req.query.category;
+  const mGroupCapitalized = muscleGroup.charAt(0).toUpperCase() + muscleGroup.slice(1);
+  if (muscleGroup != undefined){
+      muscGroupDesc.findByMuscGroup(mGroupCapitalized, function (description) {
+      //console.log(description);
+      res.send(description);
+    });
+  }
 });
 
 app.listen(8080, function () {

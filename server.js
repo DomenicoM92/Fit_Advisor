@@ -58,7 +58,7 @@ app.post('/exercise_info', function (req, res) {
 });
 
 app.get('/exercise_video', function (req, res) {
-  var exercise_video = exercise.videoExerciseRequest(req.query.name);
+  var exercise_video = exercise.videoExerciseRequest(req.query.name, MongoClient,urlDB);
   exercise_video.then(function (result) {
     res.setHeader('Content-Type', 'application/json');
     res.send(result);

@@ -26,7 +26,7 @@ injury.ETLInjury(MongoClient, urlDB, function(){
 });
 
 //Setup and Populate Workout Routine Collection
-woutRoutine.ETLWoutRoutine();
+//woutRoutine.ETLWoutRoutine();
 
 //Check if API is available, then save a backup copy of Exercise collection, delete it, eventually call exercise handler (wrapper for exercise)
 //console.log('Update Exercise ' + new Date().toISOString());
@@ -61,3 +61,11 @@ if (request('GET', "https://wger.de/api/v2/exerciseinfo?page=1").statusCode == 2
         exercise.exerciseHandler(MongoClient, urlDB);
     });
 }
+//Setup url video cache
+MongoClient.connect(urlDB, { useNewUrlParser: true }, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("Fit_AdvisorDB");
+    dbo.createCollection("Url_Video_Cache").finally(function(){
+        console.log("ciao");
+    });
+});

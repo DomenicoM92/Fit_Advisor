@@ -58,7 +58,7 @@ function fillSection(card) {
         if(status == "success") {
             var video = data;
             console.log(video);
-            var link = "https://www.youtube.com/embed/" + video[0].id;
+            var link = "https://www.youtube.com/embed/" + video.id;
             document.getElementById('iFrame1').setAttribute("src", link);
         }else {
             console.log("error 403 (exceeded number request YouTube API)");

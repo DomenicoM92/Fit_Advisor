@@ -154,6 +154,7 @@ exports.videoExerciseRequest = function (exerciseName, MongoClient, urlDB) {
                 //console.log(results);
                 var dbo = db.db("Fit_AdvisorDB");
                 results[0]["name"] = exerciseName;
+                results[0]["timestamp"] = new Date().toISOString();
                 dbo.collection("Url_Video_Cache").insertOne(results[0], function (err) {
                   if (err) throw err;
                 });

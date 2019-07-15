@@ -18,8 +18,12 @@
     </head>
     <body class='container-fluid'>
         <nav class="navbar navbar-black default-color bg-dark"></nav>
-
-        <div id="container" class = "container-fluid p-4"></div>
+        
+        <div id="container" class = "container-fluid p-4">
+            <div id="loading" class="text-center">
+                <img src="../media/loading.gif" class="img-fluid" style="width:10%" alt="">
+            </div>
+        </div>
     </body>
     
 
@@ -32,18 +36,18 @@
             return decodeURI(results[1]) || 0;
         }
 
-        $(document).ready(function() {     
+        $(document).ready(function() {    
+            var loading = document.getElementById('loading'); 
             $.get("/retrieveDesc?category=" + $.urlParam('category'), function(data, status){
+                loading.remove();
                 var title = document.createElement('h2');
                 title.innerHTML += data['title'];
 
                 var container = document.getElementById('container');
                 container.append(title);
 
-                for(i=0; i< data['paragraphs'].length; i++){
-                    var p = document.createElement('p');
-                    p.innerHTML += data['paragraphs'][i];
-                    container.append(p);
+                for(i=0; i< data['content'].length; i++){
+                    container.innerHTML += data['content'][i];
                 }
             });  
         });

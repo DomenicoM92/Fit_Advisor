@@ -6,7 +6,7 @@ const url = 'https://legionathletics.com/muscle-groups/';
 exports.findByMuscGroup = function(muscGroup, callback){
     var description = {
         title:"",
-        paragraphs:[]
+        content:[]
     }
     
     request(url, function (error, response, body) {
@@ -21,8 +21,58 @@ exports.findByMuscGroup = function(muscGroup, callback){
 
         description.title = title.text();
 
+
         var content = title.nextUntil('h3').each(function(i, elem) {
-            description.paragraphs[i] = $(this).text();
+            var content = "";
+            
+            if(elem.tagName === 'p'){
+                if($(elem).first().children.length > 0){
+                    var image = undefined;
+
+                    if(elem.firstChild.tagName === "img"){
+                        $(elem).find('img').each(function(i, ele) {
+                            image = $(ele).attr('src');
+
+                        });
+                        if(image != undefined){
+                            content = '<p><img src="' + image + '"/></p>';
+                            description.content[i] = content;
+                        }
+                        else{
+                            content = '<p>' + $(this).text() + '</p>';
+                            description.content[i] = content;
+
+                        }
+
+                    }
+                    else {
+                        $(elem).find('span img').each(function(i, ele) {
+                                image = $(ele).attr('src');
+                        });
+                        if(image != undefined){
+                            content = '<p><img src="' + image + '"/></p>';
+                            description.content[i] = content;
+                        }
+                        else{
+                            content = '<p>' + $(this).text() + '</p>';
+                            description.content[i] = content;
+
+                        }
+                    }
+
+                    
+                }
+            }
+            else if(elem.tagName === 'ul'){
+                content = '<ul>' + $(this).html() + '</ul>';
+                description.content[i] = content;
+                //console.log(content);
+            }
+            else if(elem.tagName === 'h4'){
+                content = '<h4>' + $(this).text() +'</h4>';
+                description.content[i] = content;
+
+            }
         });
 
         callback(description);

@@ -138,6 +138,7 @@ app.get('/retrieveDesc', function (req, res) {
   const mGroupCapitalized = muscleGroup.charAt(0).toUpperCase() + muscleGroup.slice(1);
   if (muscleGroup != undefined){
       muscGroupDesc.findByMuscGroup(mGroupCapitalized, function (description) {
+      //console.log(description);
       res.send(description);
     });
   }

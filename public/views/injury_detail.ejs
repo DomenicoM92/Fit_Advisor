@@ -12,19 +12,21 @@
     <title>Injury Detail</title>
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>            
     <style>
+        body {
+            font-family: sans-serif;
+            -ms-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%;
+            text-align: justify;
+            text-justify: inter-word;
+            color: white;
+        }
         h1 {
-            color: red;
-            font-size: 60px;
+            color: #e53d46;
+            font-size: 50px;
         }
-
-        body{
-            color: white;
+        img {
+           width: 250px; 
         }
-
-        g{
-            color: white;
-        }
-    
     </style>
     <script>
         $(function(){
@@ -39,7 +41,7 @@
         <%- content %>
     </div>
     <script>
-        $('h1').append("<hr style='border: 1px solid #f00'/>");
+        $('h1').append("<hr style='border: 1px solid #e53d46'/>");
     </script>
 </body>
 

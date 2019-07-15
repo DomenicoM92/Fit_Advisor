@@ -136,7 +136,7 @@ exports.videoExerciseRequest = function (exerciseName) {
   return new Promise(function (fulfill, reject) {
     var opts = {
       maxResults: 1,
-      key: 'AIzaSyB10jgQoDvOoZo3NopHUvYPpHFFIFU1e6o'
+      key: 'AIzaSyBN8MLWR0-2bOIMbOzr8I3CX8y8OVBntiA'
     };
     search(exerciseName + " GYM Exercise", opts, function (err, results) {
       if (err) {

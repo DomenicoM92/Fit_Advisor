@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE = edge">
+            <meta name="viewport" content="width = device-width, initial-scale = 1">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">            
+            <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>            
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+            <link href="./css/index-style.css" rel="stylesheet">
+            <title>Workout Routine</title>
+            <script>
+                $(function(){
+                    $(".navbar").load("./html/nav-bar.html"); 
+                });    
+            </script> 
+
+        <style>
+            body {
+                font-family: sans-serif;
+                -ms-text-size-adjust: 100%;
+                -webkit-text-size-adjust: 100%;
+                text-align: justify;
+                text-justify: inter-word;
+                color: white;
+            }
+            h1 {
+                color: #e53d46;
+                font-size: 50px;
+            }
+            img {
+            width: 250px; 
+            }
+        </style>
+    </head>
+
+    <title>Muscle gorup description</title>          
+
+
+    <body class='container-fluid'>
+        <nav class="navbar navbar-black default-color bg-dark"></nav>
+        
+        <div id="container" class = "bg-dark p-5" style="width: 70%; margin: 2% auto;">
+            <div id="loading" class="text-center">
+                <img src="../media/loading.gif" class="img-fluid" style="width:10%" alt="">
+            </div>
+        </div>
+    </body>
+    
+
+    <script>
+
+        $.urlParam = function(name){
+            var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+            if (results==null) {
+            return null;
+            }
+            return decodeURI(results[1]) || 0;
+        }
+
+        $(document).ready(function() {   
+            $('h1').append("<hr style='border: 1px solid #e53d46'/>");
+ 
+            var loading = document.getElementById('loading'); 
+            $.get("/retrieveDesc?category=" + $.urlParam('category'), function(data, status){
+                loading.remove();
+
+                var container = document.getElementById('container');
+                container.innerHTML += data['title'];
+
+                for(i=0; i< data['content'].length; i++){
+                    container.innerHTML += data['content'][i];
+                }
+            });  
+        });
+    
+    </script>
+</html>

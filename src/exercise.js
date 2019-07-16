@@ -75,7 +75,6 @@ exports.videoExerciseRequest = function (exerciseName, MongoClient, urlDB) {
                 reject();
               }
               else {
-                //console.log(results);
                 var dbo = db.db("Fit_AdvisorDB");
                 results[0]["name"] = exerciseName;
                 results[0]["timestamp"] = new Date().toISOString();

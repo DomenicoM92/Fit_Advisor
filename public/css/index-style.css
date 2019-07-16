@@ -25,9 +25,14 @@ span{
     max-height: 278px;
 }
 
+.row{
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+}
 .col{
-    width: 320px;
     margin:0.5%;
+    padding:0;
 }
 
 .box-part:hover img{
@@ -47,9 +52,17 @@ span{
 }
 
 .text{
-    margin:20px 0px;
+    height: 50px;
+    margin-bottom: 0;
+    margin-top: 20px;
 }
 
 .fa{
      color:#4183D7;
+}
+
+
+.btns-container{
+    position: relative;
+    top:0;
 }

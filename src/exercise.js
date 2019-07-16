@@ -75,7 +75,6 @@ exports.videoExerciseRequest = function (exerciseName, MongoClient, urlDB) {
                 reject();
               }
               else {
-                //console.log(results);
                 var dbo = db.db("Fit_AdvisorDB");
                 results[0]["name"] = exerciseName;
                 results[0]["timestamp"] = new Date().toISOString();
@@ -139,7 +138,7 @@ exports.findByName = function (name, MongoClient, urlDB) {
 }
 
 function checkBadResult(name) {
-  var rejectedValues = ["", "Test", "Test Pullups", "TestBicep", "Mart.05.035l", "What", "Awesome", "L-sit (tucked)", "52", "Abcd", "Developpé Couché", "Upper Body", "Snach", "BenchPress"];
+  var rejectedValues = ["", "Test", "Test Pullups", "TestBicep", "Mart.05.035l", "What", "Awesome", "L-sit (tucked)", "52", "Abcd", "Developpé Couché", "Upper Body", "Snach", "BenchPress","Arch Hold"];
   for (index in rejectedValues) {
     if (rejectedValues[index] == name) {
       return true;

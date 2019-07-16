@@ -14,7 +14,7 @@ equipment.initEquipmentCollection(MongoClient, urlDB, "com", "relevanceblender",
 
 
 //Setup Injury Collection 
-injury.ETLInjury(MongoClient, urlDB, function(){
+/* injury.ETLInjury(MongoClient, urlDB, function(){
     MongoClient.connect(urlDB, { useNewUrlParser: true }, function (err, client) {
         var db = client.db("Fit_AdvisorDB");
         var collection= db.collection("Injury");
@@ -23,7 +23,7 @@ injury.ETLInjury(MongoClient, urlDB, function(){
             client.close();
         });
     });
-});
+}); */
 
 //Setup and Populate Workout Routine Collection
 woutRoutine.ETLWoutRoutine();
@@ -66,6 +66,10 @@ if (request('GET', "https://wger.de/api/v2/exerciseinfo?page=1").statusCode == 2
             var dbo = db.db("Fit_AdvisorDB");
             dbo.createCollection("Url_Video_Cache");
             dbo.collection("Url_Video_Cache").deleteMany();
+            dbo.collection("Url_Video_Cache").createIndex({ "name": 1 }, function (err, result) {
+                console.log("Url_Video_Cache: Index created correctly");
+            });
+            db.close();
             console.log("Url_Video_Cache: Created!");
         });
     });

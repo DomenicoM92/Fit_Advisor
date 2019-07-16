@@ -7,7 +7,7 @@ const dbName = 'Fit_AdvisorDB';
 const SITE = 'www.workout-routine.com';
 const equipment = ['dumbbells', 'barbell', 'gym', 'ball', 'bands'];
 const muscularRoutines = ['hot-abs', 'strong-back', "large-chest", 'broad-shoulders', 'ripped-arms', 'defined-legs'];
-const muscularGroups = ['abs', 'back', 'chest', 'shoulders', 'arms', 'legs'];
+const muscleGroups = ['abs', 'back', 'chest', 'shoulders', 'arms', 'legs'];
 
 
 module.exports = {
@@ -23,7 +23,7 @@ module.exports = {
                 console.log('WOUTROUTINE: Starting insertion...');
 
                 for(i=0; i < equipment.length; i++){
-                    for(j=0; j < muscularGroups.length; j++){
+                    for(j=0; j < muscleGroups.length; j++){
                         var scrapeUrl = 'https://' + SITE + '/' + equipment[i] + "/" + muscularRoutines[j];
                         var res = request('GET', scrapeUrl);
                         //console.log('statusCode:', res.statusCode);
@@ -33,7 +33,7 @@ module.exports = {
                             var woutRoutine = {
                                 title:"",
                                 description:"",
-                                muscularGroup:"",
+                                muscleGroup:"",
                                 equipment:"",
                                 routine:[{
                                     title:"",
@@ -47,7 +47,7 @@ module.exports = {
             
                             woutRoutine['title'] = cleanText('title', $('title').text());
                             woutRoutine['description'] = cleanText('description', $('p').first().text());
-                            woutRoutine['muscularGroup'] = muscularGroups[j];
+                            woutRoutine['muscleGroup'] = muscleGroups[j];
                             woutRoutine['equipment'] = equipment[i];
                                 
                             $('th.tableName').each(function(index, elem) {
@@ -78,7 +78,7 @@ module.exports = {
                 }
                 console.log('WOUTROUTINE: Insertion ended')
                 //console.log('WOUTROUTINE: Creating index...');
-                collection.createIndex({'muscularGroup': 1}, function(err, result) {
+                collection.createIndex({'muscleGroup': 1}, function(err, result) {
                     console.log("WOUTROUTINE: Index created correctly");
                     client.close();
                 });

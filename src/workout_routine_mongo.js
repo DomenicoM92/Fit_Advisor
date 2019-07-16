@@ -5,15 +5,15 @@ const dbName = 'Fit_AdvisorDB';
 
 
 module.exports = {
-    retrieveByMuscularGroup: function(muscularGroup, callback){
-        console.log(muscularGroup);
+    retrieveByMuscleGroup: function(muscleGroup, callback){
+        //console.log(muscleGroup);
         MongoClient.connect(url, {useNewUrlParser:true}, function(err, client) {
             assert.equal(null, err);
-            console.log("Connected successfully to server");
+            //console.log("Connected successfully to server");
             var db = client.db('Fit_AdvisorDB');
             const collection = db.collection('WorkoutRoutine');
             
-            findDocuments(muscularGroup, db, function(results){
+            findDocuments(muscleGroup, db, function(results){
                 client.close();
                 callback(results);
             })
@@ -21,12 +21,12 @@ module.exports = {
     }
 }
 
-const findDocuments = function(muscularGroup, db, callback) {
+const findDocuments = function(muscleGroup, db, callback) {
     const collection = db.collection('WorkoutRoutine');
     
-    collection.find({'muscularGroup': ""+muscularGroup+""}).toArray(function(err, docs) {
+    collection.find({'muscleGroup': ""+muscleGroup+""}).toArray(function(err, docs) {
       assert.equal(err, null);
-      console.log("Found records");
+      //console.log("Found records");
       callback(docs);
     });
 }

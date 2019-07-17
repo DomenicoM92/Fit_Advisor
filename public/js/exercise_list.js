@@ -31,7 +31,7 @@ function buildTable(category) {
             cell1.style.textAlign = "left";
             cell1.style.fontSize = "medium";
             cell2.style.textAlign = "center";
-            if (i > LIMIT_ITEM)
+            if (i >= LIMIT_ITEM)
                 row.style.display = "none";
             row.appendChild(cell1);
             row.appendChild(cell2);
@@ -58,7 +58,7 @@ function buildTable(category) {
                         document.getElementById("anchor" + i).style.backgroundColor = "White";
                 }
                 for (i = 0; i < allExer; i++) {
-                    if (i > (offset * 10) && i <= ((offset * 10) + 10)) {
+                    if (i >= (offset * 10) && i < ((offset * 10) + 10)) {
                         document.getElementById(i).style.display = "table-row";
                     } else {
                         document.getElementById(i).style.display = "none";

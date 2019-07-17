@@ -47,6 +47,13 @@
                     </dl>
                 </div>
             </div>
+            <!--Best logo-->
+            <%if (!isBest) { %>
+                <div class='container-fluid pt-5'>
+                    <img src="../media/bestLogo.png"/>
+                    <p class="text-white">Best exercise for this muscle group</p>
+                </div>
+            <% } %>
         </div>
     </header>
     <div class="content__wrap">
@@ -79,7 +86,10 @@
     <script>
         var card = <%-card%>;
         window.onload = fillSection(card);
+
     </script>
+
 </body>
 
+    
 </html>

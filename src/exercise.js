@@ -5,6 +5,7 @@ const LanguageDetect = require('languagedetect');
 const lngDetector = new LanguageDetect();
 var docDuplicate = {};
 
+
 exports.exerciseHandler = function (MongoClient, urlDB) {
 
   return new Promise(function (fulfill, reject) {
@@ -238,6 +239,7 @@ exports.scrapeBestEx = function (MongoClient, urlDB) {
     });
   });
 }
+
 
 exports.checkBest = function (category, exerciseName, MongoClient, urlDB, callback) {
   MongoClient.connect(urlDB, {useNewUrlParser:true}, function(err, client) {

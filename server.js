@@ -48,7 +48,7 @@ app.get('/exerciseByName', function (req, res) {
   var exerciseByName = exercise.findByName(req.query.exe_name, MongoClient, urlDB);
   exerciseByName.then(function (result) {
     var exerciseCard = result;
-    res.render('exercise_info', { card: JSON.stringify(exerciseCard), categoryName: exerciseCard.category.name, exeName: exerciseCard.name, description: exerciseCard.description });
+    res.render('exercise_info', { card: JSON.stringify(exerciseCard), categoryName: exerciseCard.category.name, exeName: exerciseCard.name, description: exerciseCard.description, img:exerciseCard.category.name.toLowerCase() });
   }).catch(function () {
     res.sendFile(path.join(__dirname + "/public/html/not_found.html"));
   })
@@ -57,7 +57,7 @@ app.get('/exerciseByName', function (req, res) {
 app.post('/exercise_info', function (req, res) {
   var exerciseCard = JSON.parse(req.body.card);
   //Francesco
-  res.render('exercise_info',{card:JSON.stringify(exerciseCard), categoryName:exerciseCard.category.name, exeName:exerciseCard.name, description:exerciseCard.description, equipment:exerciseCard.equipment, img:exerciseCard.category.name.toLowerCase()});
+  res.render('exercise_info',{card:JSON.stringify(exerciseCard), categoryName:exerciseCard.category.name, exeName:exerciseCard.name, description:exerciseCard.description, img:exerciseCard.category.name.toLowerCase()});
 });
 
 app.get('/exercise_video', function (req, res) {

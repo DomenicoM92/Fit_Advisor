@@ -9,12 +9,18 @@ var request = require('sync-request');
 
 var fs = require('fs');
 
+//Scraping and insertion in Mongo collection BestExercise
+//exercise.scrapeBestEx(MongoClient, urlDB);
+exercise.checkBest('Legs', 'Low Bar Squat', MongoClient, urlDB, function(result){
+    console.log(result);
+});
+/* 
 //Setup Equipment Collection and Populate Products
 equipment.initEquipmentCollection(MongoClient, urlDB, "com", "relevanceblender", "1");
 
 
 //Setup Injury Collection 
-/* injury.ETLInjury(MongoClient, urlDB, function(){
+injury.ETLInjury(MongoClient, urlDB, function(){
     MongoClient.connect(urlDB, { useNewUrlParser: true }, function (err, client) {
         var db = client.db("Fit_AdvisorDB");
         var collection= db.collection("Injury");
@@ -23,7 +29,7 @@ equipment.initEquipmentCollection(MongoClient, urlDB, "com", "relevanceblender",
             client.close();
         });
     });
-}); */
+}); 
 
 //Setup and Populate Workout Routine Collection
 woutRoutine.ETLWoutRoutine();
@@ -73,4 +79,4 @@ if (request('GET', "https://wger.de/api/v2/exerciseinfo?page=1").statusCode == 2
             console.log("Url_Video_Cache: Created!");
         });
     });
-}
+} */

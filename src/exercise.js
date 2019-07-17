@@ -68,9 +68,11 @@ exports.videoExerciseRequest = function (exerciseName, MongoClient, urlDB) {
             console.log("Url video not cached");
             var opts = {
               maxResults: 1,
-              key: 'AIzaSyBN8MLWR0-2bOIMbOzr8I3CX8y8OVBntiA'
+              key: 'AIzaSyBN8MLWR0-2bOIMbOzr8I3CX8y8OVBntiA',
+              type: 'video',
+              videoCategoryId: '17'
             };
-            search(exerciseName + "GYM Exercise", opts, function (err, results) {
+            search(exerciseName, opts, function (err, results) {
               if (err) {
                 reject();
               }

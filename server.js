@@ -48,7 +48,9 @@ app.get('/exerciseByName', function (req, res) {
   var exerciseByName = exercise.findByName(req.query.exe_name, MongoClient, urlDB);
   exerciseByName.then(function (result) {
     var exerciseCard = result;
-    res.render('exercise_info', { card: JSON.stringify(exerciseCard), categoryName: exerciseCard.category.name, exeName: exerciseCard.name, description: exerciseCard.description, img:exerciseCard.category.name.toLowerCase() });
+    exercise.checkBest(exerciseCard.category, exerciseCard.name, MongoClient, urlDB, function(isBest) {
+      res.render('exercise_info',{card:JSON.stringify(exerciseCard), categoryName:exerciseCard.category.name, exeName:exerciseCard.name, description:exerciseCard.description, equipment:exerciseCard.equipment, img:exerciseCard.category.name.toLowerCase(), isBest:isBest});
+    });
   }).catch(function () {
     res.sendFile(path.join(__dirname + "/public/html/not_found.html"));
   })

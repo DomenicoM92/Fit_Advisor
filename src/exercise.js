@@ -240,7 +240,6 @@ exports.scrapeBestEx = function (MongoClient, urlDB) {
   });
 }
 
-
 exports.checkBest = function (category, exerciseName, MongoClient, urlDB, callback) {
   MongoClient.connect(urlDB, {useNewUrlParser:true}, function(err, client) {
     assert.equal(null, err);
@@ -271,6 +270,11 @@ exports.checkBest = function (category, exerciseName, MongoClient, urlDB, callba
     });
   });
 }
+
+
+//Esercizi da prendere da altra fonte
+
+
 
 ////////////////
 

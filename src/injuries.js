@@ -244,11 +244,6 @@
 
   }
 
-  exports.test= function(){
-    const request= require("request");
-    const cheerio= require("cheerio");
-  }
-
   function createMatchingByTitle(injuryName){
     var category="";
     var str= "Biceps Tendinopathy";

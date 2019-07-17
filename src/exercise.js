@@ -281,7 +281,7 @@ exports.checkBest = function (category, exerciseName, MongoClient, urlDB, callba
 
 
 function checkBadResult(name) {
-  var rejectedValues = ["", "Test", "Test Pullups", "TestBicep", "Mart.05.035l", "What", "Awesome", "L-sit (tucked)", "52", "Abcd", "Developpé Couché", "Upper Body", "Snach", "BenchPress", "Arch Hold", "10 Min Abs", "Back Squat", "Run - Interval Training", "Boxing", "Circuit - Pullups", "Pushups", "Crunches", "Air Squats", "Squat", "Swimming", "Walking", "Bicep", "Nuevo", "Yolk Walks"];
+  var rejectedValues = ["", "Test", "Test Pullups", "TestBicep", "Mart.05.035l", "What", "Awesome", "L-sit (tucked)", "52", "Abcd", "Developpé Couché", "Upper Body", "Snach", "BenchPress", "Arch Hold", "10 Min Abs", "Back Squat", "Run - Interval Training", "Boxing", "Circuit - Pullups", "Pushups", "Crunches", "Air Squats", "Squat", "Swimming", "Walking", "Bicep", "Nuevo", "Yolk Walks","Soccer"];
   for (index in rejectedValues) {
     if (rejectedValues[index] == name) {
       return true;

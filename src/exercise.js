@@ -156,50 +156,35 @@ exports.scrapeBestEx = function (MongoClient, urlDB) {
     var db = client.db('Fit_AdvisorDB');
     const collection = db.collection('BestExercise');
 
-    request(url, function (error, response, body) {
-      if (error) throw error;
+    collection.drop(function(err, delOK) {
+      if (delOK) console.log("BESTEXERCISE: Collection deleted");
+      
+      console.log('BESTEXERCISE: Starting insertion...');
 
-      var $ = cheerio.load(body);
-      //console.log(response.body);
-      const keys = Object.keys(muscleGroups);
-      //console.log(keys);
+      request(url, function (error, response, body) {
+        if (error) throw error;
 
-      for(i=0; i<keys.length; i++){
-        var bestObject = {
-          category: "",
-          exercises: []
-        }
+        var $ = cheerio.load(body);
+        //console.log(response.body);
+        const keys = Object.keys(muscleGroups);
+        //console.log(keys);
 
-        var key = keys[i];
-        var muscles = muscleGroups[key];      
-        var musclesNum = muscles.length;
-        var category;
+        for(i=0; i<keys.length; i++){
+          var bestObject = {
+            category: "",
+            exercises: []
+          }
 
-        bestObject.exercises = [];
-        bestObject.category = keys[i];
+          var key = keys[i];
+          var muscles = muscleGroups[key];      
+          var musclesNum = muscles.length;
+          var category;
 
-        if(musclesNum == 0){//Scraping caso nessun sotto muscolo
-          category = keys[i];
+          bestObject.exercises = [];
+          bestObject.category = keys[i];
 
-          var title = $('h4').filter(function(i, el) {
-            return $(this).text().trim() === "Best "+ category +" Exercises";
-          });
-
-          var exercisesList = title.nextUntil('ul').next();
-
-          exercisesList.find('li').each(function(index, elem) {
-            if($(this).text() === 'Single Arm Overhead Press (my favorite)')
-              bestObject.exercises.push('Single Arm Overhead Press');
-            else
-              bestObject.exercises.push($(this).text());
-          });
-
-          //console.log(bestObject.category);
-          //console.log(bestObject.exercises+"\n\n");
-        }
-        else{//Scraping caso sottomuscoli
-          for(j=0; j<muscles.length;j++){  
-            category = muscles[j];
+          if(musclesNum == 0){//Scraping caso nessun sotto muscolo
+            category = keys[i];
 
             var title = $('h4').filter(function(i, el) {
               return $(this).text().trim() === "Best "+ category +" Exercises";
@@ -208,27 +193,48 @@ exports.scrapeBestEx = function (MongoClient, urlDB) {
             var exercisesList = title.nextUntil('ul').next();
 
             exercisesList.find('li').each(function(index, elem) {
-              var duplicate = false;
-              for(k=0; k<bestObject.exercises.length;k++){
-                var savedExercise = bestObject.exercises[k];
-                if(savedExercise === $(this).text())
-                  duplicate = true;
-              }
-              if(!duplicate)
+              if($(this).text() === 'Single Arm Overhead Press (my favorite)')
+                bestObject.exercises.push('Single Arm Overhead Press');
+              else
                 bestObject.exercises.push($(this).text());
             });
+
+            //console.log(bestObject.category);
+            //console.log(bestObject.exercises+"\n\n");
           }
+          else{//Scraping caso sottomuscoli
+            for(j=0; j<muscles.length;j++){  
+              category = muscles[j];
+
+              var title = $('h4').filter(function(i, el) {
+                return $(this).text().trim() === "Best "+ category +" Exercises";
+              });
+
+              var exercisesList = title.nextUntil('ul').next();
+
+              exercisesList.find('li').each(function(index, elem) {
+                var duplicate = false;
+                for(k=0; k<bestObject.exercises.length;k++){
+                  var savedExercise = bestObject.exercises[k];
+                  if(savedExercise === $(this).text())
+                    duplicate = true;
+                }
+                if(!duplicate)
+                  bestObject.exercises.push($(this).text());
+              });
+            }
+          }
+          /*
+          console.log(bestObject.category);
+          console.log(bestObject.exercises+"\n\n");*/
+
+          //Mongo insertion
+          collection.insertOne(bestObject);
+
         }
-        /*
-        console.log(bestObject.category);
-        console.log(bestObject.exercises+"\n\n");*/
-
-        //Mongo insertion
-        collection.insertOne(bestObject);
-
-      }
-      if(i==keys.length)
-        client.close();
+        if(i==keys.length)
+          client.close();
+      });
     });
   });
 }
@@ -242,7 +248,13 @@ exports.checkBest = function (category, exerciseName, MongoClient, urlDB, callba
 
     collection.findOne({'category': category}, function(err, result) {
       if (err) throw err;
-      console.log(result);
+
+      if(result == null) {
+        client.close();
+        callback(false);
+        return;
+      }
+      //console.log(result);
       for(i=0; i<result.exercises.length; i++){
         if(result.exercises[i] == exerciseName){
           console.log(exerciseName);

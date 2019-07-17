@@ -12,7 +12,7 @@ var exercise = require('./src/exercise');
 var injuries = require('./src/injuries');
 var equipment = require('./src/equipment');
 var scheduledUpdate = require('./src/scheduled_update');
-const workoutRoutine = require('./src/workout_routine_mongo');
+const workoutRoutine = require('./src/woutRoutine');
 const muscGroupDesc = require('./src/muscles_desc');
 
 

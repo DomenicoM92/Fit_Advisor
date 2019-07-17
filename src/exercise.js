@@ -110,12 +110,6 @@ exports.findByCategory = function (category, MongoClient, urlDB) {
   });
 }
 
-
-//MARIO: feature retrieve img to enhance exercise 
-exports.retrieveImgsByExercise= function(category,MongoClient, urlDB){
-
-}
-
 exports.findByName = function (name, MongoClient, urlDB) {
 
   return new Promise(function (fulfill, reject) {

@@ -1,10 +1,12 @@
   const URL_ROOT = "http://physioworks.com.au";
   const URL_LIST_ITEMS= "https://physioworks.com.au/Injuries-Conditions/Activities/weightlifting-injuries";
   const URL_ABS_INJURY= "https://www.summitmedicalgroup.com/library/adult_health/sma_abdominal_muscle_strain/";
+  const URL_CHEST_INJURY= "https://www.hughston.com/chest-muscle-injuries-strains-tears-pectoralis-major/";
+
   const categories=  [
     {
       title: "Arms",
-      values: ["bicep", "tricep", "forearm", "carpal", "wrist"]
+      values: ["bicep", "tricep", "forearm", "carpal", "wrist", "elbow"]
     },
     {
       title: "Abs",
@@ -105,7 +107,7 @@
                   }
                   //console.log($(el).attr('src'));
                 });
-                var main_scr_img= content.find('img').first().attr('src');
+                var main_src_img= content.find('img').first().attr('src');
                 //REMOVE ALL SCRIPTS AND PRE ELEMENTS FROM THE CONTENT
                 content.find('script, pre').each(function(){
                   $(this).remove();
@@ -137,7 +139,7 @@
                 var injury_obj= {
                   category: createMatchingByTitle(title),
                   title: title, 
-                  mainImg: main_scr_img,
+                  mainImg: main_src_img,
                   timestamp: new Date().toISOString(), 
                   content: ""+content.html()
                 };
@@ -151,23 +153,101 @@
           });    
         });
       }
-    }); 
+    });
+
     //SCRAPING FROM summitmedialgroup
     request(URL_ABS_INJURY, function(err, res, body){
-      if(err) console.log(err);
-      if(res.statusCode == 200){
-        var $= cheerio.load(body);
-        var title= "Abdominal Muscle Strain";
-        var content= $('div[class=col-md-9]');
-        //REMOVE ALL ANCHORS FROM CONTENT 
-        content.find('a').each(function(){
-          $(this).remove();
-        })
+      if(err) 
+        console.log(err);
+      else{
+        if(res.statusCode == 200){
+          var $= cheerio.load(body);
+          var title= "Abdominal Muscle Strain";
+          var main_src_img='https://www.summitmedicalgroup.com/media/db/relayhealth-images/abdstrai_3.jpg';
+          var content= $('div[class=col-md-9]');
+          //REMOVE ALL ANCHORS FROM CONTENT 
+          content.find('a').each(function(){
+            $(this).remove();
+          });
+          //REMOVE THE LAST TAG P 
+          content.find('p[class="library_topic_credits"]').first().remove();
+          //REPLACE ALL SUB HEADER 'p' WITH 'h3'
+          content.find("p[class='library_subhead_navy_blue_bold']").each(function(){
+            var txt= $(this).text(); 
+            $(this).replaceWith("<h3>"+txt+"</h3>");
+          });
+          //INCLUDE THE TITLE 
+          content.find('p').first().append("<h1>"+title+"</h1>");
+          //INCLUDE THE  MAIN IMG
+          content.find('h3').first().append("<p><img src='"+main_src_img+"'></img></p>");
+          var injury_obj= {
+            category: "abs",
+            title: title, 
+            mainImg: main_src_img,
+            timestamp: new Date().toISOString(), 
+            content: ""+content.html()
+          };
+    
+          db.collection("Injury").insertOne(injury_obj, function (err, res) {
+          if (err) throw err;
+          });
+        }
+      }
+    });
+
+    //SCRAPING FROM hughston
+    request(URL_CHEST_INJURY, function(err,res, body){
+      if(err) 
+      console.log(err);
+      else{
+        if(res.statusCode == 200){
+          var $= cheerio.load(body);
+          var title= "Chest Muscle Injuries";
+          var main_src_img= "https://i0.wp.com/www.hughston.com/wp-content/uploads/2018/12/chest.png?resize=282%2C357&ssl=1";
+          var content= $('div[class=entry-content]');
+
+          content.find('p').first().prepend("<h1>"+title+"</h1>");
+
+          content.find('h3').first().contents()
+          .filter(function(){
+              return this.nodeType === 3;
+          }).remove();
+          console.log(content.html());
+          content.find('p').each(function() {
+            var $this = $(this);
+            if($this.html().replace(/\s|&#xA0;/g, '').length == 0)
+               $this.remove();
+          });
+          console.log(content.html());
+          content.find("h3").each(function(){
+            if($(this).text()=="Outcomes"){
+              $(this).nextAll().remove();
+              $(this).remove();
+            }
+          });
+          
+          var injury_obj= {
+            category: "chest",
+            title: title, 
+            mainImg: main_src_img,
+            timestamp: new Date().toISOString(), 
+            content: ""+content.html()
+          };
+    
+          db.collection("Injury").insertOne(injury_obj, function (err, res) {
+          if (err) throw err;
+          });
+        }
       }
     });
 
     console.log("INJURY: end etl module");
 
+  }
+
+  exports.test= function(){
+    const request= require("request");
+    const cheerio= require("cheerio");
   }
 
   function createMatchingByTitle(injuryName){

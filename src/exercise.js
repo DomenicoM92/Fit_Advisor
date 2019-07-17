@@ -72,7 +72,7 @@ exports.videoExerciseRequest = function (exerciseName, MongoClient, urlDB) {
               type: 'video',
               videoCategoryId: '17'
             };
-            search(exerciseName, opts, function (err, results) {
+            search(exerciseName + "GYM EXERCISE", opts, function (err, results) {
               if (err) {
                 reject();
               }

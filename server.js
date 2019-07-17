@@ -72,7 +72,6 @@ app.get('/exercise_video', function (req, res) {
 
 app.get('/injury', function (req, res) {
   res.sendFile(path.join(__dirname + "/public/html/injuries_list.html"));
-  injuries.test();
 });
 
 app.get("/injuryList", function (req, res) {

@@ -14,7 +14,7 @@ equipment.initEquipmentCollection(MongoClient, urlDB, "com", "relevanceblender",
 
 
 //Setup Injury Collection 
-/* injury.ETLInjury(MongoClient, urlDB, function(){
+injury.ETLInjury(MongoClient, urlDB, function(){
     MongoClient.connect(urlDB, { useNewUrlParser: true }, function (err, client) {
         var db = client.db("Fit_AdvisorDB");
         var collection= db.collection("Injury");
@@ -23,7 +23,7 @@ equipment.initEquipmentCollection(MongoClient, urlDB, "com", "relevanceblender",
             client.close();
         });
     });
-}); */
+});
 
 //Setup and Populate Workout Routine Collection
 woutRoutine.ETLWoutRoutine();

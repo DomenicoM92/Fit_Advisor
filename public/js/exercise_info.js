@@ -67,7 +67,6 @@ function fillSection(card) {
 
 }
 
-
 function createOffersTable(equipment) {
     var LIMIT_ITEM = 5;
 

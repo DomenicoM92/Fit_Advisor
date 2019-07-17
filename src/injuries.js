@@ -212,13 +212,12 @@
           .filter(function(){
               return this.nodeType === 3;
           }).remove();
-          console.log(content.html());
           content.find('p').each(function() {
             var $this = $(this);
             if($this.html().replace(/\s|&#xA0;/g, '').length == 0)
                $this.remove();
           });
-          console.log(content.html());
+          //console.log(content.html());
           content.find("h3").each(function(){
             if($(this).text()=="Outcomes"){
               $(this).nextAll().remove();

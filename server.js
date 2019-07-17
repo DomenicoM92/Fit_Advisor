@@ -34,7 +34,6 @@ app.get('/', function (req, res) {
 
 app.get('/exercise', function (req, res) {
   res.render('exercise_list', { category: req.query.category });
-  //exercise.retrieveImgsByExercise("Abs", MongoClient, urlDB);
 });
 
 app.get('/exerciseCategory', function (req, res) {
@@ -57,7 +56,8 @@ app.get('/exerciseByName', function (req, res) {
 
 app.post('/exercise_info', function (req, res) {
   var exerciseCard = JSON.parse(req.body.card);
-  res.render('exercise_info',{card:JSON.stringify(exerciseCard), categoryName:exerciseCard.category.name, exeName:exerciseCard.name, description:exerciseCard.description, equipment:exerciseCard.equipment});
+  //Francesco
+  res.render('exercise_info',{card:JSON.stringify(exerciseCard), categoryName:exerciseCard.category.name, exeName:exerciseCard.name, description:exerciseCard.description, equipment:exerciseCard.equipment, img:exerciseCard.category.name.toLowerCase()});
 });
 
 app.get('/exercise_video', function (req, res) {

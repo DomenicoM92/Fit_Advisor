@@ -68,9 +68,11 @@ exports.videoExerciseRequest = function (exerciseName, MongoClient, urlDB) {
             console.log("Url video not cached");
             var opts = {
               maxResults: 1,
-              key: 'AIzaSyBN8MLWR0-2bOIMbOzr8I3CX8y8OVBntiA'
+              key: 'AIzaSyBN8MLWR0-2bOIMbOzr8I3CX8y8OVBntiA',
+              type: 'video',
+              videoCategoryId: '17'
             };
-            search(exerciseName + "GYM Exercise", opts, function (err, results) {
+            search(exerciseName + "GYM EXERCISE", opts, function (err, results) {
               if (err) {
                 reject();
               }
@@ -110,12 +112,15 @@ exports.findByCategory = function (category, MongoClient, urlDB) {
   });
 }
 
+<<<<<<< HEAD
 
 //MARIO: feature retrieve img to enhance exercise 
 exports.retrieveImgsByExercise = function (category, MongoClient, urlDB) {
 
 }
 
+=======
+>>>>>>> bca6bafc8f15e0c9e7e28bee55ba4ffdd5a535cb
 exports.findByName = function (name, MongoClient, urlDB) {
 
   return new Promise(function (fulfill, reject) {

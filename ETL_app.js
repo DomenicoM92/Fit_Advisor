@@ -29,7 +29,7 @@ injury.ETLInjury(MongoClient, urlDB, function(){
             client.close();
         });
     });
-}); 
+});
 
 //Setup and Populate Workout Routine Collection
 woutRoutine.ETLWoutRoutine();

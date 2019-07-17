@@ -63,7 +63,8 @@ function fillSection(card) {
         }else {
             console.log("error 403 (exceeded number request YouTube API)");
         }
-    });
+    }); 
+
 }
 
 function createOffersTable(equipment) {

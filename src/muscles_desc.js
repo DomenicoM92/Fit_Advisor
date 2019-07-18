@@ -9,12 +9,17 @@ exports.findByMuscGroup = function(muscGroup, callback){
         content:[]
     }
     
+
+    if(muscGroup === 'Abs'){
+
+    }
+
+
     request(url, function (error, response, body) {
         if(response.statusCode!=200 || error){
             callback(description);
             return;
         }
-
         var $ = cheerio.load(body);
     
         var title = $('h3').filter(function() {

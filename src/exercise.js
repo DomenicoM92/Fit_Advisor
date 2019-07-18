@@ -175,16 +175,24 @@ exports.scrapeBestEx = function (MongoClient, urlDB) {
             category: "",
             exercises: []
           }
+          
 
           var key = keys[i];
           var muscles = muscleGroups[key];      
           var musclesNum = muscles.length;
           var category;
 
-          bestObject.exercises = [];
           bestObject.category = keys[i];
+          bestObject.exercises = [];
+
+          
 
           if(musclesNum == 0){//Scraping caso nessun sotto muscolo
+            var exerciseObject = {
+              name: '',
+              isBest: true
+            }
+
             category = keys[i];
 
             var title = $('h4').filter(function(i, el) {
@@ -194,17 +202,27 @@ exports.scrapeBestEx = function (MongoClient, urlDB) {
             var exercisesList = title.nextUntil('ul').next();
 
             exercisesList.find('li').each(function(index, elem) {
-              if($(this).text() === 'Single Arm Overhead Press (my favorite)')
-                bestObject.exercises.push('Single Arm Overhead Press');
-              else
-                bestObject.exercises.push($(this).text());
+              
+              if($(this).text() === 'Single Arm Overhead Press (my favorite)'){
+                exerciseObject.name = 'Single Arm Overhead Press';
+                exerciseObject.isBest = true;
+
+                bestObject.exercises.push(exerciseObject);
+              }
+              else{
+                exerciseObject.name = $(this).text();
+                exerciseObject.isBest = true;
+
+                bestObject.exercises.push(exerciseObject);
+              }
             });
 
             //console.log(bestObject.category);
             //console.log(bestObject.exercises+"\n\n");
           }
           else{//Scraping caso sottomuscoli
-            for(j=0; j<muscles.length;j++){  
+            for(j=0; j<muscles.length;j++){ 
+        
               category = muscles[j];
 
               var title = $('h4').filter(function(i, el) {
@@ -214,14 +232,24 @@ exports.scrapeBestEx = function (MongoClient, urlDB) {
               var exercisesList = title.nextUntil('ul').next();
 
               exercisesList.find('li').each(function(index, elem) {
+                var exerciseObject = {
+                  name: '',
+                  isBest: true
+                }
                 var duplicate = false;
+
                 for(k=0; k<bestObject.exercises.length;k++){
-                  var savedExercise = bestObject.exercises[k];
+                  var savedExercise = bestObject.exercises[k].name;
+                  console.log(savedExercise);
                   if(savedExercise === $(this).text())
                     duplicate = true;
                 }
-                if(!duplicate)
-                  bestObject.exercises.push($(this).text());
+                if(!duplicate){
+                  exerciseObject.name = $(this).text();
+                  exerciseObject.isBest = true;
+
+                  bestObject.exercises.push(exerciseObject);
+                }
               });
             }
           }
@@ -257,7 +285,7 @@ exports.checkBest = function (category, exerciseName, MongoClient, urlDB, callba
       }
       //console.log(result);
       for(i=0; i<result.exercises.length; i++){
-        if(result.exercises[i] == exerciseName){
+        if(result.exercises[i].name == exerciseName){
           console.log(exerciseName);
           client.close();
           callback(true);

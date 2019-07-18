@@ -2,7 +2,6 @@ const exercise = require('./src/exercise');
 const equipment = require('./src/equipment');
 const injury = require('./src/injuries');
 const woutRoutine= require('./src/woutRoutine');
-
 const MongoClient = require('mongodb').MongoClient;
 const urlDB = 'mongodb://localhost:27017/';
 var request = require('sync-request');
@@ -11,9 +10,6 @@ var fs = require('fs');
 
 //Scraping and insertion in Mongo collection BestExercise
 exercise.scrapeBestEx(MongoClient, urlDB);
-/*exercise.checkBest('Abs', 'Low Bar Squat', MongoClient, urlDB, function(result){
-    console.log(result);
-});*/
 
 //Setup Equipment Collection and Populate Products
 equipment.initEquipmentCollection(MongoClient, urlDB, "com", "relevanceblender", "1");

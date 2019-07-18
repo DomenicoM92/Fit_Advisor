@@ -272,12 +272,47 @@ exports.checkBest = function (category, exerciseName, MongoClient, urlDB, callba
 }
 
 
-//Esercizi da prendere da altra fonte
+/*Esercizi da prendere da altra fonte
+Legs:
+"Low Bar Squat"
+"High Bar Squat"
+"Safety Bar Squat"
+"Bulgarian Squat"
+"Zercher Squat"
+"Lunges"
+"Goblet Squat"
+"Stiff Leg Deadlift"
+"Romanian Deadlift"
+"Barbell Deadlift"
+"Pull Thru"
+"Good Mornings"
+"Glute/Ham Raise"
+"Leg Press Calf Raises"
+"Standing Calf Raises"
+"Squat Raises"
+"Seated Calf Raises"
+"Reverse Calf Raises"
 
+Chest:
+"Push Ups" -> "Push Up" su Jefit
+"Dips"
+"Pullovers"
 
+Back:
+"Rows" -> "Bent Over Barbell Row"
+"Chin Ups" -> "Chin-ups"
+"Pull Ups" -> "Pull-ups"
+"Cleans"  
+"Snatches"
+"Power Shrug" -> "Barbell Shrug" su Jefit
+"Overhead Press"
+"Overhead Squat"
+"Farmer's Walk"
+"Rack Pulls"
+"Dips"
 
+*/
 ////////////////
-
 
 
 function checkBadResult(name) {

@@ -138,7 +138,7 @@ exports.findByName = function (name, MongoClient, urlDB) {
 //Francesco Zone
 const cheerio = require('cheerio');
 const assert = require('assert');
-
+var t = 0;
 const url = 'https://www.weight-lifting-complete.com/major-muscle-groups/';
 
 const muscleGroups = {
@@ -181,57 +181,126 @@ exports.scrapeBestEx = function (MongoClient, urlDB) {
           var musclesNum = muscles.length;
           var category;
 
-          bestObject.exercises = [];
           bestObject.category = keys[i];
+          bestObject.exercises = [];
 
+          
           if(musclesNum == 0){//Scraping caso nessun sotto muscolo
+            
             category = keys[i];
-
+            //console.log('categoria: ' + category);
             var title = $('h4').filter(function(i, el) {
               return $(this).text().trim() === "Best "+ category +" Exercises";
             });
 
-            var exercisesList = title.nextUntil('ul').next();
+            var exercisesList = title.nextUntil('ul').next('ul').nextUntil('ul').next('ul');
+            //console.log(exercisesList);
 
             exercisesList.find('li').each(function(index, elem) {
-              if($(this).text() === 'Single Arm Overhead Press (my favorite)')
-                bestObject.exercises.push('Single Arm Overhead Press');
-              else
-                bestObject.exercises.push($(this).text());
+              var exerciseObject = {
+                name: '',
+                isBest: true
+              }
+              //console.log($(this).text());
+              if($(this).text() === 'Ab Wheel (this is a great ab exercise)'){
+                exerciseObject.name = 'Ab Wheel';
+                exerciseObject.isBest = true;
+
+                bestObject.exercises.push(exerciseObject);
+              }
+              else if($(this).text() === 'Weighted Planks (start of push up position)'){
+                exerciseObject.name = 'Weighted Planks';
+                exerciseObject.isBest = true;
+
+                bestObject.exercises.push(exerciseObject);
+              }
+              else{
+                exerciseObject.name = $(this).text();
+                exerciseObject.isBest = true;
+
+                bestObject.exercises.push(exerciseObject);
+              }
             });
 
             //console.log(bestObject.category);
             //console.log(bestObject.exercises+"\n\n");
           }
           else{//Scraping caso sottomuscoli
-            for(j=0; j<muscles.length;j++){  
+            for(j=0; j<muscles.length;j++){ 
+        
               category = muscles[j];
 
               var title = $('h4').filter(function(i, el) {
                 return $(this).text().trim() === "Best "+ category +" Exercises";
               });
 
-              var exercisesList = title.nextUntil('ul').next();
+              var exercisesList;
 
-              exercisesList.find('li').each(function(index, elem) {
-                var duplicate = false;
-                for(k=0; k<bestObject.exercises.length;k++){
-                  var savedExercise = bestObject.exercises[k];
-                  if(savedExercise === $(this).text())
-                    duplicate = true;
-                }
-                if(!duplicate)
-                  bestObject.exercises.push($(this).text());
-              });
+              if(category === 'Calves'){
+                //Devo prendere la prima lista
+                exercisesList = title.nextUntil('ul').next('ul');
+
+                exercisesList.find('li').each(function(index, elem) {
+
+                  var exerciseObject = {
+                    name: '',
+                    isBest: true
+                  }
+                  var duplicate = false;
+  
+                  for(k=0; k<bestObject.exercises.length;k++){
+                    var savedExercise = bestObject.exercises[k].name;
+                    //console.log(savedExercise);
+                    if(savedExercise === $(this).text())
+                      duplicate = true;
+                  }
+                  if(!duplicate){
+                    exerciseObject.name = $(this).text();
+                    exerciseObject.isBest = true;
+  
+                    bestObject.exercises.push(exerciseObject);
+                  }
+                });
+              }
+              else{
+                exercisesList = title.nextUntil('ul').next('ul').nextUntil('ul').next('ul');
+              
+                exercisesList.find('li').each(function(index, elem) {
+                  //console.log($(elem).text());
+                  var exerciseObject = {
+                    name: '',
+                    isBest: true
+                  }
+                  var duplicate = false;
+                  
+                  for(k=0; k<bestObject.exercises.length;k++){
+                    var savedExercise = bestObject.exercises[k].name;
+                    //console.log(savedExercise);
+                    if(savedExercise === $(this).text())
+                      duplicate = true;
+                  }
+                  if(!duplicate){
+                    exerciseObject.name = $(this).text();
+                    exerciseObject.isBest = true;
+  
+                    bestObject.exercises.push(exerciseObject);
+                  }
+                });
+              }
             }
           }
-          /*
+          
           console.log(bestObject.category);
-          console.log(bestObject.exercises+"\n\n");*/
+          
+          bestObject.exercises.forEach(element => {
+            console.log(t + ": " + element.name + "\n");  
+            t++;
+          });
+          
 
           //Mongo insertion
           collection.insertOne(bestObject);
-
+          
         }
         if(i==keys.length)
           client.close();
@@ -257,7 +326,7 @@ exports.checkBest = function (category, exerciseName, MongoClient, urlDB, callba
       }
       //console.log(result);
       for(i=0; i<result.exercises.length; i++){
-        if(result.exercises[i] == exerciseName){
+        if(result.exercises[i].name == exerciseName){
           console.log(exerciseName);
           client.close();
           callback(true);
@@ -272,12 +341,47 @@ exports.checkBest = function (category, exerciseName, MongoClient, urlDB, callba
 }
 
 
-//Esercizi da prendere da altra fonte
+/*Esercizi da prendere da altra fonte
+Legs:
+"Low Bar Squat"
+"High Bar Squat"
+"Safety Bar Squat"
+"Bulgarian Squat"
+"Zercher Squat"
+"Lunges"
+"Goblet Squat"
+"Stiff Leg Deadlift"
+"Romanian Deadlift"
+"Barbell Deadlift"
+"Pull Thru"
+"Good Mornings"
+"Glute/Ham Raise"
+"Leg Press Calf Raises"
+"Standing Calf Raises"
+"Squat Raises"
+"Seated Calf Raises"
+"Reverse Calf Raises"
 
+Chest:
+"Push Ups" -> "Push Up" su Jefit
+"Dips"
+"Pullovers"
 
+Back:
+"Rows" -> "Bent Over Barbell Row"
+"Chin Ups" -> "Chin-ups"
+"Pull Ups" -> "Pull-ups"
+"Cleans"  
+"Snatches"
+"Power Shrug" -> "Barbell Shrug" su Jefit
+"Overhead Press"
+"Overhead Squat"
+"Farmer's Walk"
+"Rack Pulls"
+"Dips"
 
+*/
 ////////////////
-
 
 
 function checkBadResult(name) {

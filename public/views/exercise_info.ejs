@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="../css/exercise_info.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
     <link href="../css/index-style.css" rel="stylesheet">
@@ -29,7 +30,16 @@
             </div>
             <div class="exercise-hero__content-wrap">
                 <h2 class="exercise-hero__category-title"> <%= categoryName %> Exercises</h2>
-                <h1 class="exercise-hero__title"><%= exeName %></h1>
+                <h1 class="exercise-hero__title"><%= exeName %>
+                    <button type="button" style="background: none" class="border-0" data-toggle="tooltip" data-placement="right" title="Best exercise for this muscle group" disabled>
+                         <!--Best logo-->
+                        <%if (!isBest) { %>
+                            <img style="width: 50px" src="../media/bestLogo.png"/>
+                        <% } %>
+                    </button>
+                
+                </h1>
+                
                 <div class="exercise-hero__data">
                     <dl class="exercise-info exercise-info--hero">
                         <div class="exercise-info__term exercise-info__term--body-part">
@@ -47,13 +57,7 @@
                     </dl>
                 </div>
             </div>
-            <!--Best logo-->
-            <%if (!isBest) { %>
-                <div class='container-fluid pt-5'>
-                    <img src="../media/bestLogo.png"/>
-                    <p class="text-white">Best exercise for this muscle group</p>
-                </div>
-            <% } %>
+            
         </div>
     </header>
     <div class="content__wrap">

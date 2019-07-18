@@ -289,14 +289,14 @@ exports.scrapeBestEx = function (MongoClient, urlDB) {
               }
             }
           }
-          
+          /*
           console.log(bestObject.category);
           
           bestObject.exercises.forEach(element => {
             console.log(t + ": " + element.name + "\n");  
             t++;
           });
-          
+          */
 
           //Mongo insertion
           collection.insertOne(bestObject);

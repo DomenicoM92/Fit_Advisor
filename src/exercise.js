@@ -310,7 +310,6 @@ exports.scrapeBestEx = function (MongoClient, urlDB) {
 }
 
 exports.checkBest = function (category, exerciseName, MongoClient, urlDB, callback) {
-  console.log(category);
   var category = category;
   if(category === 'Abs')
     category = 'Ab';
@@ -320,7 +319,7 @@ exports.checkBest = function (category, exerciseName, MongoClient, urlDB, callba
   var exerciseName = exerciseName.toLowerCase();
   exerciseName = exerciseName.replace("-", " ");
 
-  console.log(exerciseName);
+  //console.log(exerciseName);
 
   MongoClient.connect(urlDB, {useNewUrlParser:true}, function(err, client) {
     assert.equal(null, err);

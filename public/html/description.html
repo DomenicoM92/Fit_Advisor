@@ -74,7 +74,8 @@
                 else{
                     container.innerHTML += data['title'];
                     for(i=0; i< data['content'].length; i++){
-                        container.innerHTML += data['content'][i];
+                        if(data['content'][i] != null)
+                            container.innerHTML += data['content'][i];
                     }
                 }
             });  

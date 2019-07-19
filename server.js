@@ -48,7 +48,8 @@ app.get('/exerciseByName', function (req, res) {
   var exerciseByName = exercise.findByName(req.query.exe_name, MongoClient, urlDB);
   exerciseByName.then(function (result) {
     var exerciseCard = result;
-    exercise.checkBest(exerciseCard.category, exerciseCard.name, MongoClient, urlDB, function(isBest) {
+    exercise.checkBest(exerciseCard.category.name, exerciseCard.name, MongoClient, urlDB, function(isBest) {
+      console.log(isBest);
       res.render('exercise_info',{card:JSON.stringify(exerciseCard), categoryName:exerciseCard.category.name, exeName:exerciseCard.name, description:exerciseCard.description, equipment:exerciseCard.equipment, img:exerciseCard.category.name.toLowerCase(), isBest:isBest});
     });
   }).catch(function () {
@@ -96,11 +97,6 @@ app.get('/injuryDetails', function (req, res) {
 });
 
 app.get('/equipment', function(req, res) {
-  //every sunday at 23:00
-  schedule.scheduleJob('* * 23 * * 7', function () {
-    console.log('Offers Update Started:' + new Date().toISOString());
-    equipment.updateEquipmentCollection(MongoClient, urlDB, "com", "relevanceblender", "1");
-  });
   exercise.findByCategory(req.query.category, MongoClient, urlDB).then(function(result) {
     var equipment = [];
     result.forEach(ex => {
@@ -164,5 +160,10 @@ app.listen(8080, function () {
       dbo.collection("Url_Video_Cache").deleteMany();
       console.log("Url_Video_Cache: Flushed!");
     });
+  });
+  //every sunday at 23:00
+  schedule.scheduleJob('* * 23 * * 7', function () {
+    console.log('Offers Update Started:' + new Date().toISOString());
+    equipment.updateEquipmentCollection(MongoClient, urlDB, "com", "relevanceblender", "1");
   });
 });

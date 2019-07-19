@@ -33,7 +33,7 @@
                 <h1 class="exercise-hero__title"><%= exeName %>
                     <button type="button" style="background: none" class="border-0" data-toggle="tooltip" data-placement="right" title="Best exercise for this muscle group" disabled>
                          <!--Best logo-->
-                        <%if (!isBest) { %>
+                        <%if (isBest) { %>
                             <img style="width: 50px" src="../media/bestLogo.png"/>
                         <% } %>
                     </button>

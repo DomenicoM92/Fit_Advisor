@@ -310,6 +310,18 @@ exports.scrapeBestEx = function (MongoClient, urlDB) {
 }
 
 exports.checkBest = function (category, exerciseName, MongoClient, urlDB, callback) {
+  console.log(category);
+  var category = category;
+  if(category === 'Abs')
+    category = 'Ab';
+  else if(category === 'Shoulders')
+    category = 'Shoulder';
+
+  var exerciseName = exerciseName.toLowerCase();
+  exerciseName = exerciseName.replace("-", " ");
+
+  console.log(exerciseName);
+
   MongoClient.connect(urlDB, {useNewUrlParser:true}, function(err, client) {
     assert.equal(null, err);
     //console.log("Connected successfully to server");
@@ -326,7 +338,8 @@ exports.checkBest = function (category, exerciseName, MongoClient, urlDB, callba
       }
       //console.log(result);
       for(i=0; i<result.exercises.length; i++){
-        if(result.exercises[i].name == exerciseName){
+        if(exerciseName.includes(result.exercises[i].name.toLowerCase())
+            || result.exercises[i].name.toLowerCase().includes(exerciseName)){
           console.log(exerciseName);
           client.close();
           callback(true);

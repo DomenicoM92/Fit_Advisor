@@ -5,11 +5,7 @@ body{
 span{
     font-size:15px;
 }
-.navbar-brand{
-  text-decoration:none; 
-  color: #0062cc;
-  border-bottom:2px solid #0062cc;
-}
+
 .box{
     padding:60px 0px;
 }
@@ -30,6 +26,7 @@ span{
     margin-right: auto;
     margin-left: auto;
 }
+
 .col{
     margin:0.5%;
     padding:0;

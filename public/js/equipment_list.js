@@ -21,10 +21,10 @@ function createOffersTable(category, equipment) {
                     var offers = data;
                     var tbody = document.getElementById("body_table_" + j);
                     document.getElementById("equipmentName_" + j).innerHTML = equipment[j];
-                    for (i = 0; i < offers.length; i++) {
+                    for (i = 0, rows = 0; i < offers.length; i++, rows++) {
                         var row = tbody.insertRow(i);
                         row.id = i;
-                        
+
                         var cell1 = row.insertCell(0); //image
                         var cell2 = row.insertCell(1); //name
                         var cell3 = row.insertCell(2); //price
@@ -34,16 +34,24 @@ function createOffersTable(category, equipment) {
                         var cell7 = row.insertCell(6); //seller
                         var cell8 = row.insertCell(7); //marketplace
             
-                        cell1.innerHTML = "<img src='" + offers[i].imageUrlList[0] +"' width = '40px' height = '40px'>"
-                        cell2.innerHTML = offers[i].productTitle;
-                        cell3.innerHTML = offers[i].price+" $";
-                        cell4.innerHTML = offers[i].productRating;
-                        cell5.innerHTML = offers[i].countReview;
-                        cell6.innerHTML = offers[i].manufacturer;
-                        cell7.innerHTML = offers[i].soldBy;
-                        cell8.innerHTML = "<a href='https://www.amazon.com/dp/" + offers[i].asin + "'><img src='./media/amazon.png' height='40px'></img></a>" ;
-
-
+                        cell1.innerHTML = "<img src='" + offers[row.id].image +"' width = '40px' height = '40px'>"
+                        cell2.innerHTML = offers[row.id].name;
+                        if(offers[row.id].price == "0") {
+                            cell3.innerHTML = "More Buying Choices";
+                            row.style.display = "none";
+                            rows--;
+                        }
+                        else
+                            cell3.innerHTML = offers[row.id].price+"$";
+                        cell4.innerHTML = offers[row.id].rating;
+                        cell5.innerHTML = offers[row.id].reviews;
+                        cell6.innerHTML = offers[row.id].producer;
+                        cell7.innerHTML = offers[row.id].seller;
+                        
+                        if(offers[row.id].marketplace == "amazon")
+                            cell8.innerHTML = "<a href='" + offers[row.id].itemLink + "'><img src='./media/amazon.png' height='30px'></img></a>";
+                        else if(offers[row.id].marketplace == "ebay")
+                            cell8.innerHTML = "<a href='" + offers[row.id].itemLink + "'><img src='./media/ebay.png' height='30px'></img></a>";
                         cell1.style.textAlign = "center";
                         cell2.style.textAlign = "center";
                         cell3.style.textAlign = "center";
@@ -53,9 +61,9 @@ function createOffersTable(category, equipment) {
                         cell7.style.textAlign = "center";
                         cell8.style.textAlign = "center";
             
-                        cell2.style.cssText = "text-overflow:ellipsis; overflow: hidden; white-space: nowrap; max-width: 200px;"
+                        cell2.style.cssText = "text-overflow:ellipsis; overflow: hidden; white-space: nowrap; max-width: 400px;"
             
-                        if (i >= LIMIT_ITEM)
+                        if (rows >= LIMIT_ITEM)
                             row.style.display = "none";
             
                         row.appendChild(cell1);

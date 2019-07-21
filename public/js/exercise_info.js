@@ -98,11 +98,14 @@ function createOffersTable(equipment) {
                         var cell4 = row.insertCell(3); //rating
                         var cell5 = row.insertCell(4); //platform
             
-                        cell1.innerHTML = "<img src='" + offers[i].imageUrlList[0] +"' width = '40px' height = '40px'>"
-                        cell2.innerHTML = offers[i].productTitle;
-                        cell3.innerHTML = offers[i].price+" $";
-                        cell4.innerHTML = offers[i].productRating;
-                        cell5.innerHTML = "<a href='https://www.amazon.com/dp/" + offers[i].asin + "'><img src='./media/amazon.png' height='40px'></img></a>" ;
+                        cell1.innerHTML = "<img src='" + offers[row.id].image +"' width = '40px' height = '40px'>"
+                        cell2.innerHTML = offers[row.id].name;
+                        cell3.innerHTML = offers[row.id].price+" $";
+                        cell4.innerHTML = offers[row.id].rating;
+                        if(offers[row.id].marketplace == "amazon")
+                            cell5.innerHTML = "<a href='" + offers[row.id].itemLink + "'><img src='./media/amazon.png' height='30px'></img></a>";
+                        else if(offers[row.id].marketplace == "ebay")
+                            cell5.innerHTML = "<a href='" + offers[row.id].itemLink + "'><img src='./media/ebay.png' height='30px'></img></a>";
             
                         cell1.style.textAlign = "center";
                         cell2.style.textAlign = "center";

@@ -63,3 +63,13 @@ span{
     position: relative;
     top:0;
 }
+
+.minitable {
+	height: 40px;
+	width: 600px;
+	font-size: 15px;
+}
+
+.maxitable td {
+	padding: 5px;
+}

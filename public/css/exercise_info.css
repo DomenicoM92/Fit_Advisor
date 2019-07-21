@@ -793,3 +793,7 @@ body {
 	width: 600px;
 	font-size: 15px;
 }
+
+.maxitable td {
+	padding: 5px;
+}

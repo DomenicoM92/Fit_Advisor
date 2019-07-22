@@ -15,8 +15,6 @@ function createOffersTable(category, equipment) {
                 document.getElementById("body_table").id = "body_table_" + j;
                 document.getElementById("equipmentName").id = "equipmentName_" + j;
 
-                if(equipment[j] == "SZ-Bar") equipment[j] = "EZ-Bar"; 
-
                 $.get("/equipmentOffers?domainCode=com&keyword=" + equipment[j] + "&sortBy=relevancebalancer&page=1", function (data, status) {
                     var offers = data;
                     var tbody = document.getElementById("body_table_" + j);

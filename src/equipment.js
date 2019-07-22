@@ -57,9 +57,6 @@ function createEquipmentCollection(MongoClient, urlDB) {
       if (err) throw err;
       var dbo = db.db("Fit_AdvisorDB");
       var equipment = JSON.parse(response.body).results;
-      equipment.forEach(eq => {
-        if(eq.name == "SZ-Bar") eq.name = "EZ-Bar";
-      });
 
       dbo.collection("Equipment").drop(function(err, res) {
         if(err);
@@ -114,16 +111,25 @@ function lookupByKeyword(MongoClient, urlDB, keyword) {
             console.log(err);
             reject(err);
           }
-          if(found.offers != undefined) {
-            //console.log("Found '" + keyword + "' in DB!");
-            found.offers.sort(function(p1,p2) {
-              if(parseInt(p1.price) < parseInt(p2.price)) return -1
-              else return +1
-            });
-            db.close();
-            fulfill(found.offers);
+          try {
+            if(found.offers != undefined) {
+              //console.log("Found '" + keyword + "' in DB!");
+              found.offers.sort(function(p1,p2) {
+                if(parseInt(p1.price) < parseInt(p2.price)) return -1
+                else return +1
+              });
+              db.close();
+              fulfill(found.offers);
+            }
+            reject(false);
           }
-          reject(false);
+          catch (err) {
+            console.log(err);
+            reject(false);
+          }
+          finally {
+            db.close();
+          }
         });
       } 
     });
@@ -135,7 +141,7 @@ function searchByKeywordAmz(MongoClient, urlDB, keyword) {
   //console.log("Axesso API Request for '" + keyword + "'...");
 
   if(keyword == "Bench") keyword = "Flat bench";
-  if(keyword == "EZ-Bar") keyword = "Ez curl bar";
+  if(keyword == "SZ-Bar") keyword = "Super EZ curl";
 
   return new Promise(function (fulfill, reject) {
 
@@ -152,7 +158,7 @@ function searchByKeywordAmz(MongoClient, urlDB, keyword) {
     .end(function(result) {
 
       if(keyword == "Flat bench") keyword = "Bench";
-      if(keyword == "Ez curl bar") keyword = "EZ-Bar";
+      if(keyword == "Super EZ curl") keyword = "SZ-Bar";
 
 
       //console.log("Found Products for '" + keyword + "'...");
@@ -210,7 +216,7 @@ function searchByKeywordEbay(MongoClient, urlDB, keyword) {
   //console.log("Ebay API Request for '" + keyword + "'...");
 
   if(keyword == "Bench") keyword = "Flat bench";
-  if(keyword == "EZ-Bar") keyword = "Ez curl bar";
+  if(keyword == "SZ-Bar") keyword = "Super EZ curl";
 
   return new Promise(function (fulfill, reject) {
 
@@ -228,7 +234,7 @@ function searchByKeywordEbay(MongoClient, urlDB, keyword) {
       .end(function(result) {
 
         if(keyword == "Flat bench") keyword = "Bench";
-        if(keyword == "Ez curl bar") keyword = "EZ-Bar";
+        if(keyword == "Super EZ curl") keyword = "SZ-Bar";
         
         //Update Equipment Collection Offers
         MongoClient.connect(urlDB, { useNewUrlParser: true },function (err, db) {

@@ -60,7 +60,6 @@ app.get('/exerciseByName', function (req, res) {
 app.post('/exercise_info', function (req, res) {
   var exerciseCard = JSON.parse(req.body.card);
   exercise.checkBest(exerciseCard.category.name, exerciseCard.name, MongoClient, urlDB, function(isBest) {
-    console.log(isBest);
     res.render('exercise_info',{card:JSON.stringify(exerciseCard), categoryName:exerciseCard.category.name, exeName:exerciseCard.name, description:exerciseCard.description, equipment:exerciseCard.equipment, img:exerciseCard.category.name.toLowerCase(), isBest:isBest});
   });
 });

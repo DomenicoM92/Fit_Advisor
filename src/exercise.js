@@ -78,7 +78,6 @@ exports.videoExerciseRequest = function (exerciseName, MongoClient, urlDB) {
                 reject();
               }
               else {
-                console.log(results);
                 var dbo = db.db("Fit_AdvisorDB");
                 results[0]["name"] = exerciseName;
                 results[0]["timestamp"] = new Date().toISOString();
@@ -340,7 +339,6 @@ exports.checkBest = function (category, exerciseName, MongoClient, urlDB, callba
       for (i = 0; i < result.exercises.length; i++) {
         if (exerciseName.includes(result.exercises[i].name.toLowerCase())
           || result.exercises[i].name.toLowerCase().includes(exerciseName)) {
-          console.log(exerciseName);
           client.close();
           callback(true);
           return;

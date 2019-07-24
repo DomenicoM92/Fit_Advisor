@@ -20,26 +20,32 @@ exports.updateEquipmentCollection = function(MongoClient, urlDB) {
 
 exports.findByKeyword = function(MongoClient, urlDB, keyword) {
   
-  return new Promise(function(fulfill, reject) {
+  try {
+    return new Promise(function(fulfill, reject) {
 
-    var lookupResult = lookupByKeyword(MongoClient, urlDB, keyword);
-    lookupResult.then(function(result) {
-      fulfill(result);
-    },
-    function (err) {
-      //console.log("Nothing found for '" + keyword + "' in DB.");
-      var AmzResult = searchByKeywordAmz(MongoClient, urlDB, keyword);
-      AmzResult.then(function(result) {
-        var EbayResult = searchByKeywordEbay(MongoClient, urlDB, keyword);
-        EbayResult.then(function(result) {
-          var lookupResult = lookupByKeyword(MongoClient, urlDB, keyword);
-          lookupResult.then(function(result) {
-            fulfill(result);
+      var lookupResult = lookupByKeyword(MongoClient, urlDB, keyword);
+      lookupResult.then(function(result) {
+        fulfill(result);
+      },
+      function (err) {
+        //console.log("Nothing found for '" + keyword + "' in DB.");
+        var AmzResult = searchByKeywordAmz(MongoClient, urlDB, keyword);
+        AmzResult.then(function(result) {
+          var EbayResult = searchByKeywordEbay(MongoClient, urlDB, keyword);
+          EbayResult.then(function(result) {
+            var lookupResult = lookupByKeyword(MongoClient, urlDB, keyword);
+            lookupResult.then(function(result) {
+              fulfill(result);
+            });
           });
         });
       });
     });
-  });
+  }
+  catch (err) {
+    console.log(err);
+  }
+
 }
 
 function createEquipmentCollection(MongoClient, urlDB) {
@@ -100,23 +106,29 @@ function populateEquipmentCollection(MongoClient, urlDB) {
 function lookupByKeyword(MongoClient, urlDB, keyword) {
 
   //console.log("Looking up for '" + keyword + "' in DB...");
-  return new Promise(function (fulfill, reject){
-    MongoClient.connect(urlDB,{ useNewUrlParser: true },function(err, db) {
-      if (err) 
-        throw err;
-      else {
-        var dbo = db.db("Fit_AdvisorDB");
-        dbo.collection("Equipment").findOne({name : keyword},  { _id : 0, offers : 1}, function(err, found) {
-          if(err) {
-            console.log(err);
-            reject(err);
-          }
-          db.close();
-          fulfill(found.offers);
-        });
-      } 
+  try {
+    return new Promise(function (fulfill, reject){
+      MongoClient.connect(urlDB,{ useNewUrlParser: true },function(err, db) {
+        if (err) 
+          throw err;
+        else {
+          var dbo = db.db("Fit_AdvisorDB");
+          dbo.collection("Equipment").findOne({name : keyword},  { _id : 0, offers : 1}, function(err, found) {
+            if(err) {
+              console.log(err);
+              db.close();
+              reject(err);
+            }
+            db.close();
+            fulfill(found.offers);
+          });
+        } 
+      });
     });
-  });
+  }
+  catch (err) {
+    console.log(err); 
+  }
 }
 
 function searchByKeywordAmz(MongoClient, urlDB, keyword) {
@@ -126,68 +138,76 @@ function searchByKeywordAmz(MongoClient, urlDB, keyword) {
   if(keyword == "Bench") keyword = "Flat bench";
   if(keyword == "SZ-Bar") keyword = "Super EZ curl";
 
-  return new Promise(function (fulfill, reject) {
+  try {
+    return new Promise(function (fulfill, reject) {
 
-    var requestType = "amazon-search-by-keyword";
-    var domainCode = "com";
-    var sortBy = "relevanceblender";
-    var page = "2";
-
-  //Axesso Product Request
-  unirest.get("https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/"+ requestType +"?sortBy="+ sortBy +"&domainCode=" + domainCode +"&page=" + page +"&keyword=" + keyword)
-    .header("Content-Type", "application/json")
-    .header("X-RapidAPI-Host", "axesso-axesso-amazon-data-service-v1.p.rapidapi.com")
-    .header("X-RapidAPI-Key", "adb25ade7fmsh2995e9bd3850f02p118461jsnf575decdb55f")
-    .end(function(result) {
-
-      if(result.statusCode != 200 || result.body.responseMessage != "PRODUCT_FOUND_RESPONSE") reject("API call failed");
-
-      if(keyword == "Flat bench") keyword = "Bench";
-      if(keyword == "Super EZ curl") keyword = "SZ-Bar";
-
-
-      //console.log("Found Products for '" + keyword + "'...");
-      
-      //Update Equipment Collection Offers
-      MongoClient.connect(urlDB, { useNewUrlParser: true },function (err, db) {
-        if (err) throw err;
-        var dbo = db.db("Fit_AdvisorDB");
-        var offers = [];
-        var equipmentSearch = JSON.parse(JSON.stringify(result.body)).foundProductDetails;
-
-        equipmentSearch.forEach(eq => {
-
-          let offer = {
-            id: eq.asin,
-            name: eq.productTitle,
-            producer: eq.manufacturer,
-            reviews: eq.countReview,
-            rating: eq.productRating==null?"0 out of 5 stars":eq.productRating,
-            seller: eq.soldBy==null?"Amazon":eq.soldBy,
-            price: eq.price=="0"?"More buying offers":eq.price,
-            image: eq.imageUrlList[0],
-            itemLink: "https://www.amazon.com/dp/" + eq.asin,
-            marketplace: "amazon"
-          };
-          if(offer.name != "") {
-            offers.push(offer);
-          }
+      var requestType = "amazon-search-by-keyword";
+      var domainCode = "com";
+      var sortBy = "relevanceblender";
+      var page = "2";
+  
+    //Axesso Product Request
+    unirest.get("https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/"+ requestType +"?sortBy="+ sortBy +"&domainCode=" + domainCode +"&page=" + page +"&keyword=" + keyword)
+      .header("Content-Type", "application/json")
+      .header("X-RapidAPI-Host", "axesso-axesso-amazon-data-service-v1.p.rapidapi.com")
+      .header("X-RapidAPI-Key", "adb25ade7fmsh2995e9bd3850f02p118461jsnf575decdb55f")
+      .end(function(result) {
+  
+        if(result.statusCode != 200 || result.body.responseStatus != "PRODUCT_FOUND_RESPONSE") reject("API call failed");
+        
+        //console.log("Amazon " + result.statusCode, result.body.responseStatus);
+  
+        if(keyword == "Flat bench") keyword = "Bench";
+        if(keyword == "Super EZ curl") keyword = "SZ-Bar";
+  
+  
+        //console.log("Found Products for '" + keyword + "'...");
+        
+        //Update Equipment Collection Offers
+        MongoClient.connect(urlDB, { useNewUrlParser: true },function (err, db) {
+          if (err) throw err;
+          var dbo = db.db("Fit_AdvisorDB");
+          var offers = [];
+          var equipmentSearch = JSON.parse(JSON.stringify(result.body)).foundProductDetails;
+  
+          equipmentSearch.forEach(eq => {
+  
+            let offer = {
+              id: eq.asin,
+              name: eq.productTitle,
+              producer: eq.manufacturer,
+              reviews: eq.countReview,
+              rating: eq.productRating==null?"0 out of 5 stars":eq.productRating,
+              seller: eq.soldBy==null?"Amazon":eq.soldBy,
+              price: eq.price=="0"?"More buying offers":eq.price,
+              image: eq.imageUrlList[0],
+              itemLink: "https://www.amazon.com/dp/" + eq.asin,
+              marketplace: "amazon"
+            };
+            if(offer.name != "") {
+              offers.push(offer);
+            }
+          });
+  
+          //console.log("Updating '" + keyword + "' in DB...");
+  
+          dbo.collection("Equipment").updateMany(
+            {"name" : keyword},
+            {$addToSet: {"offers": {$each: offers}}}
+          );
+          //console.log("'" + keyword + "' Equipment Collection created");
+          db.close();
         });
-
-        //console.log("Updating '" + keyword + "' in DB...");
-
-        dbo.collection("Equipment").updateMany(
-          {"name" : keyword},
-          {$addToSet: {"offers": {$each: offers}}}
-        );
-        //console.log("'" + keyword + "' Equipment Collection created");
-        db.close();
+        
+        fulfill(true);
+  
       });
-      
-      fulfill(true);
-
     });
-  });
+  }
+  catch (err) {
+    console.log(err);
+  }
+  
 }
 
 function searchByKeywordEbay(MongoClient, urlDB, keyword) {
@@ -204,65 +224,72 @@ function searchByKeywordEbay(MongoClient, urlDB, keyword) {
   if(keyword == "Bench") keyword = "Flat bench";
   if(keyword == "SZ-Bar") keyword = "Super EZ curl";
 
-  return new Promise(function (fulfill, reject) {
+  try {
+    return new Promise(function (fulfill, reject) {
 
 
-    //Ebay findItemsAdvanced Request
-    unirest.get("https://svcs.ebay.com/services/search/FindingService/v1" +
-    "?keywords=" + keyword +
-    "&paginationInput.entriesPerPage=" + entries +
-    "&outputSelector(0)=SellerInfo")
-      .header("X-EBAY-SOA-GLOBAL-ID" , GLOBAL_ID)
-      .header("X-EBAY-SOA-SECURITY-APPNAME", SECURITY_APPNAME)
-      .header("X-EBAY-SOA-SERVICE-VERSION", SERVICE_VERSION)
-      .header("X-EBAY-SOA-OPERATION-NAME", OPERATION_NAME)
-      .header("X-EBAY-SOA-RESPONSE-DATA-FORMAT", RESPONSE_DATA_FORMAT)
-      .end(function(result) {
-        
-        if(result.statusCode != 200 || result.body.ack != "Success") reject("API call failed");
-
-        if(keyword == "Flat bench") keyword = "Bench";
-        if(keyword == "Super EZ curl") keyword = "SZ-Bar";
-        
-        //Update Equipment Collection Offers
-        MongoClient.connect(urlDB, { useNewUrlParser: true },function (err, db) {
-          if (err) throw err;
-          var dbo = db.db("Fit_AdvisorDB");
-          var offers = [];
+      //Ebay findItemsAdvanced Request
+      unirest.get("https://svcs.ebay.com/services/search/FindingService/v1" +
+      "?keywords=" + keyword +
+      "&paginationInput.entriesPerPage=" + entries +
+      "&outputSelector(0)=SellerInfo")
+        .header("X-EBAY-SOA-GLOBAL-ID" , GLOBAL_ID)
+        .header("X-EBAY-SOA-SECURITY-APPNAME", SECURITY_APPNAME)
+        .header("X-EBAY-SOA-SERVICE-VERSION", SERVICE_VERSION)
+        .header("X-EBAY-SOA-OPERATION-NAME", OPERATION_NAME)
+        .header("X-EBAY-SOA-RESPONSE-DATA-FORMAT", RESPONSE_DATA_FORMAT)
+        .end(function(result) {
           
-          var equipmentSearch = findAndCorrect(JSON.parse(result.body)).findItemsAdvancedResponse.searchResult.item;
+          if(result.statusCode != 200 || findAndCorrect(JSON.parse(result.body)).findItemsAdvancedResponse.ack != "Success") reject("API call failed");
+          
+          //console.log("Ebay " + result.statusCode, findAndCorrect(JSON.parse(result.body)).findItemsAdvancedResponse.ack);
 
-          equipmentSearch.forEach(eq => {
+          if(keyword == "Flat bench") keyword = "Bench";
+          if(keyword == "Super EZ curl") keyword = "SZ-Bar";
+          
+          //Update Equipment Collection Offers
+          MongoClient.connect(urlDB, { useNewUrlParser: true },function (err, db) {
+            if (err) throw err;
+            var dbo = db.db("Fit_AdvisorDB");
+            var offers = [];
+            
+            var equipmentSearch = findAndCorrect(JSON.parse(result.body)).findItemsAdvancedResponse.searchResult.item;
 
-            let offer = {
-              id: eq.itemId[0],
-              name: eq.title[0], 
-              producer: "Not available",
-              reviews: "0",
-              rating: "0 out of 5 stars",
-              seller: eq.sellerInfo[0].sellerUserName[0],
-              price: eq.sellingStatus[0].currentPrice[0].__value__,
-              image: eq.galleryURL[0],
-              itemLink: eq.viewItemURL[0],
-              marketplace: "ebay"
-            };
+            equipmentSearch.forEach(eq => {
 
-            offers.push(offer);
+              let offer = {
+                id: eq.itemId[0],
+                name: eq.title[0], 
+                producer: "Not available",
+                reviews: "0",
+                rating: "0 out of 5 stars",
+                seller: eq.sellerInfo[0].sellerUserName[0],
+                price: eq.sellingStatus[0].currentPrice[0].__value__,
+                image: eq.galleryURL[0],
+                itemLink: eq.viewItemURL[0],
+                marketplace: "ebay"
+              };
+
+              offers.push(offer);
+            });
+
+            //console.log("Updating '" + keyword + "' in DB...");
+            dbo.collection("Equipment").updateMany(
+              {"name" : keyword},
+              {$addToSet: {"offers": {$each: offers}}}
+            );
+
+            //console.log("'" + keyword + "' Equipment Collection created");
+            db.close();
+
+            fulfill(true);
           });
-
-          //console.log("Updating '" + keyword + "' in DB...");
-          dbo.collection("Equipment").updateMany(
-            {"name" : keyword},
-            {$addToSet: {"offers": {$each: offers}}}
-          );
-
-          //console.log("'" + keyword + "' Equipment Collection created");
-          db.close();
-
-          fulfill(true);
-        });
+      });
     });
-  });
+  }
+  catch (err) {
+    console.log(err);
+  }
 }
 
 function findAndCorrect(obj){

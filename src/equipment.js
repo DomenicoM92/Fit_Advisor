@@ -49,7 +49,7 @@ function createEquipmentCollection(MongoClient, urlDB) {
     // Wger API Request
     var APIUrl = 'https://wger.de/api/v2/equipment';
     var response = request('GET', APIUrl);
-    //console.log("Request Status Code: " + response.statusCode);
+    if(response.statusCode != 200) reject("API call failed");
 
     //console.log("Creating Collection...");
     // Create Equipment Collection
@@ -140,6 +140,8 @@ function searchByKeywordAmz(MongoClient, urlDB, keyword) {
     .header("X-RapidAPI-Key", "adb25ade7fmsh2995e9bd3850f02p118461jsnf575decdb55f")
     .end(function(result) {
 
+      if(result.statusCode != 200 || result.body.responseMessage != "PRODUCT_FOUND_RESPONSE") reject("API call failed");
+
       if(keyword == "Flat bench") keyword = "Bench";
       if(keyword == "Super EZ curl") keyword = "SZ-Bar";
 
@@ -216,6 +218,8 @@ function searchByKeywordEbay(MongoClient, urlDB, keyword) {
       .header("X-EBAY-SOA-OPERATION-NAME", OPERATION_NAME)
       .header("X-EBAY-SOA-RESPONSE-DATA-FORMAT", RESPONSE_DATA_FORMAT)
       .end(function(result) {
+        
+        if(result.statusCode != 200 || result.body.ack != "Success") reject("API call failed");
 
         if(keyword == "Flat bench") keyword = "Bench";
         if(keyword == "Super EZ curl") keyword = "SZ-Bar";
@@ -226,7 +230,6 @@ function searchByKeywordEbay(MongoClient, urlDB, keyword) {
           var dbo = db.db("Fit_AdvisorDB");
           var offers = [];
           
-          //console.log(findAndCorrect(JSON.parse(result.body)).findItemsAdvancedResponse.searchResult.item);
           var equipmentSearch = findAndCorrect(JSON.parse(result.body)).findItemsAdvancedResponse.searchResult.item;
 
           equipmentSearch.forEach(eq => {

@@ -868,3 +868,9 @@ span{
     position: relative;
     top:0;
 }
+
+.pagination .page-link {color:#343a40!important}
+.pagination .page-item.active .page-link {background-color:#343a40!important}
+.pagination .page-item.active .page-link {color:white!important}
+.pagination .page-item.active .page-link {border-color:white!important}
+.dataTables_info {font-size: 10px}

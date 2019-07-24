@@ -120,7 +120,8 @@ function createOffersTable(equipment) {
                         cell3.style.textAlign = "center";
                         cell4.style.textAlign = "center";
             
-                        cell2.style.cssText = "text-overflow:ellipsis; overflow: hidden; white-space: nowrap; max-width: 50px"
+                        cell1.style.cssText = "max-width: 50px"
+                        cell2.style.cssText = "text-overflow:ellipsis; overflow: hidden; white-space: nowrap; max-width: 300px; font-size: 12px; padding-left: 5px"
             
                         row.appendChild(cell1);
                         row.appendChild(cell2);
@@ -140,7 +141,7 @@ function createOffersTable(equipment) {
                         bAutoWidth: false,
                         language: {
                             search: "_INPUT_",
-                            searchPlaceholder: "Search for equipment..."
+                            searchPlaceholder: "Search for " + equipment[j].name + "..."
                         },
                         "lengthChange": false
                     });

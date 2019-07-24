@@ -9,12 +9,16 @@
         <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>            
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <link href="./css/index-style.css" rel="stylesheet">
+        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+        <link href="./css/equipment_list.css" rel="stylesheet">
         <title>Equipment List</title>
         <script>
             $(function(){
-                $(".navbar").load("./html/nav-bar.html"); 
-            });    
+                $(".navbar").load("./html/nav-bar.html", function() {
+                    document.getElementById("searchDiv").remove();
+                });
+            });
         </script> 
 </head>
 
@@ -33,7 +37,10 @@
         var string = "<%-equipment%>";
         var equipment = string.split(',');
         console.log(equipment);
-        window.onload = createOffersTable(category, equipment);
+        window.onload = function() {
+            createOffersTable(category, equipment);
+        }
+
     </script>
 
 </body>

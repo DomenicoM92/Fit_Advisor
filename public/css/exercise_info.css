@@ -790,10 +790,81 @@ body {
 
 .minitable {
 	height: 40px;
-	width: 600px;
+	width: 550px;
 	font-size: 15px;
 }
 
-.maxitable td {
-	padding: 5px;
+.minitable row {
+	width: 100%;
+}
+
+div.dataTables_wrapper  div.dataTables_filter {
+    width: 100%;
+    text-align: left;
+}
+
+body{
+    background: #eee;
+    width: 100%
+}
+span{
+    font-size:15px;
+}
+
+.box{
+    padding:60px 0px;
+}
+
+.box-part{
+    border-radius:0;
+    padding:10px;
+    margin:10px 0px 10px 0px;
+}
+
+.box-img-content{
+    overflow: hidden;
+    max-height: 278px;
+}
+
+.row{
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.col{
+    margin:0.5%;
+    padding:0;
+}
+
+.box-part:hover img{
+    -webkit-transform:scale(1.5); /* Safari and Chrome */
+    -moz-transform:scale(1.5); /* Firefox */
+    -ms-transform:scale(1.5); /* IE 9 */
+    -o-transform:scale(1.5); /* Opera */
+     transform:scale(1.5);
+}
+
+.box-part img{
+    -webkit-transition: all 1s ease; /* Safari and Chrome */
+    -moz-transition: all 1s ease; /* Firefox */
+    -ms-transition: all 1s ease; /* IE 9 */
+    -o-transition: all 1s ease; /* Opera */
+    transition: all 1s ease;
+}
+
+.text{
+    height: 50px;
+    margin-bottom: 0;
+    margin-top: 20px;
+}
+
+.fa{
+     color:#4183D7;
+}
+
+
+.btns-container{
+    position: relative;
+    top:0;
 }

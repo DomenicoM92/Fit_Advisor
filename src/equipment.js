@@ -111,25 +111,8 @@ function lookupByKeyword(MongoClient, urlDB, keyword) {
             console.log(err);
             reject(err);
           }
-          try {
-            if(found.offers != undefined) {
-              //console.log("Found '" + keyword + "' in DB!");
-              found.offers.sort(function(p1,p2) {
-                if(parseInt(p1.price) < parseInt(p2.price)) return -1
-                else return +1
-              });
-              db.close();
-              fulfill(found.offers);
-            }
-            reject(false);
-          }
-          catch (err) {
-            console.log(err);
-            reject(false);
-          }
-          finally {
-            db.close();
-          }
+          db.close();
+          fulfill(found.offers);
         });
       } 
     });
@@ -177,15 +160,16 @@ function searchByKeywordAmz(MongoClient, urlDB, keyword) {
             name: eq.productTitle,
             producer: eq.manufacturer,
             reviews: eq.countReview,
-            rating: eq.productRating,
-            seller: eq.soldBy,
-            price: eq.price,
+            rating: eq.productRating==null?"0 out of 5 stars":eq.productRating,
+            seller: eq.soldBy==null?"Amazon":eq.soldBy,
+            price: eq.price=="0"?"More buying offers":eq.price,
             image: eq.imageUrlList[0],
             itemLink: "https://www.amazon.com/dp/" + eq.asin,
             marketplace: "amazon"
           };
-          offers.push(offer);
-          
+          if(offer.name != "") {
+            offers.push(offer);
+          }
         });
 
         //console.log("Updating '" + keyword + "' in DB...");
@@ -250,9 +234,9 @@ function searchByKeywordEbay(MongoClient, urlDB, keyword) {
             let offer = {
               id: eq.itemId[0],
               name: eq.title[0], 
-              producer: "Not Found",
-              reviews: "Not Found",
-              rating: "Not Found",
+              producer: "Not available",
+              reviews: "0",
+              rating: "0 out of 5 stars",
               seller: eq.sellerInfo[0].sellerUserName[0],
               price: eq.sellingStatus[0].currentPrice[0].__value__,
               image: eq.galleryURL[0],

@@ -111,7 +111,7 @@ app.get('/equipment', function(req, res) {
 app.get('/equipmentOffers', function(req, res) {
   var products = equipment.findByKeyword(MongoClient, urlDB, req.query.keyword);
   products.then(function(result){
-    res.setHeader('Content-Type', 'application/json');  
+    res.setHeader('Content-Type', 'application/json');
     res.send(result);
   });
 });

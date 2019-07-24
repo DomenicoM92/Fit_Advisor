@@ -53,15 +53,14 @@ function fillSection(card) {
         document.getElementById("secondary_muscles").innerHTML = "-";
     }
    
-    $.get("/exercise_video?name=" + card.name, function (data, status) {
-        console.log("data"+data)
-        if(status == "success") {
+    $.get("/exercise_video?name=" + card.name, function (data) {
+        if(data != "Not Found") {
             var video = data;
-            console.log(video);
             var link = "https://www.youtube.com/embed/" + video.id;
             document.getElementById('iFrame1').setAttribute("src", link);
         }else {
-            console.log("error 403 (exceeded number request YouTube API)");
+            console.log("Status:"+ data);
+            document.getElementById('iFrame1').style.display = "none";
         }
     }); 
 

@@ -60,7 +60,6 @@ app.get('/exerciseByName', function (req, res) {
 app.post('/exercise_info', function (req, res) {
   var exerciseCard = JSON.parse(req.body.card);
   exercise.checkBest(exerciseCard.category.name, exerciseCard.name, MongoClient, urlDB, function(isBest) {
-    console.log(isBest);
     res.render('exercise_info',{card:JSON.stringify(exerciseCard), categoryName:exerciseCard.category.name, exeName:exerciseCard.name, description:exerciseCard.description, equipment:exerciseCard.equipment, img:exerciseCard.category.name.toLowerCase(), isBest:isBest});
   });
 });
@@ -68,10 +67,9 @@ app.post('/exercise_info', function (req, res) {
 app.get('/exercise_video', function (req, res) {
   var exercise_video = exercise.videoExerciseRequest(req.query.name, MongoClient,urlDB);
   exercise_video.then(function (result) {
-    res.setHeader('Content-Type', 'application/json');
     res.send(result);
   }).catch(function () {
-    res.sendStatus(403);
+    res.send("Not Found");
   });
 });
 

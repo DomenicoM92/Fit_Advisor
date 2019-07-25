@@ -18,8 +18,6 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://github.com/FranCali/Fit_Advisor/blob/master/public/media/FitAdvisorLogo.png)
-
 FitAdvisor is intended to be a unified platform where every person can have all information needed for training in autonomous way.
 
 With FitAdvisor you can have:

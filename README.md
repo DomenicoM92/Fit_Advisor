@@ -1,5 +1,4 @@
-<!-- PROJECT SHIELDS -->
-[![Contributors][contributors-shield]]()
+
 
 <p align="center">
   
